@@ -1,5 +1,5 @@
-import { Button, ScrollView, StyleSheet, Text, View } from 'react-native';
-import { AppBar, Icon, IconButton, IconComponentProvider, ListItem } from '@react-native-material/core'
+import { Button, Image, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Icon, ListItem } from '@react-native-material/core'
 import * as Progress from 'react-native-progress'
 
 const tasks = {
@@ -46,7 +46,9 @@ export const GradeLevelScreen = ({ navigation, route }) => {
     return (
       <ScrollView contentContainerStyle={styles.container}>
         <View style={styles.gradeHeader}>
-            <Text>{ route.params.year }th Grade Freshman - Begin your story</Text>
+            <Image source={require("../../assets/9th.png")}/>
+            <Text>Freshman</Text>
+            <Text>Begin your story</Text>
         </View>
         <View style={styles.progressContainer}>
             <Text style={{ fontWeight: '400', marginBottom: 8 }}>Progress</Text>
@@ -92,7 +94,8 @@ export const GradeLevelScreen = ({ navigation, route }) => {
     },
   
     gradeHeader: {
-      margin: 8
+      display: 'flex',
+      flexDirection: 'row',
     },
 
     progressContainer: {
