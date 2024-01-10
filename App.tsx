@@ -3,6 +3,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { AppBar, Icon, IconButton, IconComponentProvider, ListItem } from '@react-native-material/core'
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
+import { GradeLevelScreen } from './src/GradeLevel/GradeLevelScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -61,30 +62,6 @@ const RoadmapScreen = ({ navigation }) => {
     </View>
   );
 }
-
-const GradeLevelScreen = ({ navigation, route }) => {
-  return (
-    <View style={styles.container}>
-      <Text>{ route.params.year }th Grade</Text>
-      <Text>Freshman - Begin your story</Text>
-      <Text>Progress bar here</Text>
-      <Text>Tasks and plus button here</Text>
-      <Text>Fall</Text>
-      <ListItem 
-        title="Join a club / take up a hobby"
-        leading={<Icon size={24} name="checkbox-blank-circle-outline"/>}
-        trailing={<Icon size={24} name="dots-horizontal"/>}
-      />
-      <Text>Spring</Text>
-      <Text>Summer</Text>
-      <Button 
-        title="Go home"
-        onPress={() => navigation.navigate('Roadmap')}
-      />
-    </View>
-  );
-}
-
 
 const styles = StyleSheet.create({
   container: {
