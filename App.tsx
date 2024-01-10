@@ -1,7 +1,7 @@
 import { Button, StyleSheet, Text, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { Icon, IconComponentProvider, ListItem } from '@react-native-material/core'
+import { AppBar, Icon, IconButton, IconComponentProvider, ListItem } from '@react-native-material/core'
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 
 const Stack = createNativeStackNavigator();
@@ -10,21 +10,14 @@ export default function App() {
   return (
     <IconComponentProvider IconComponent={MaterialCommunityIcons}>
       <NavigationContainer>
-        <Stack.Navigator>
+        <Stack.Navigator screenOptions={{headerShown: false}}>
           <Stack.Screen 
-            name="Home"
-            component={HomeScreen}
-            options={{
-              title: 'Your roadmap', 
-              headerStyle: {
-                backgroundColor: '#365a75'
-              },
-              headerTintColor: '#fff'
-            }}
+            name="Roadmap"
+            component={RoadmapScreen}
           />
           <Stack.Screen 
-            name="Profile"
-            component={SecondaryScreen}
+            name="GradeLevel"
+            component={GradeLevelScreen}
           />
         </Stack.Navigator>
       </NavigationContainer>
@@ -32,24 +25,50 @@ export default function App() {
   );
 }
 
-const HomeScreen = ({ navigation }) => {
+const RoadmapScreen = ({ navigation }) => {
   return (
-    <>  
-      <ListItem title="Freshman" secondaryText="Begin your story" trailing={<Icon size={24} name="chevron-right"/>} />
-      <ListItem title="Sophomore" secondaryText="Develop your story" trailing={<Icon size={24} name="chevron-right"/>} />
-      <ListItem title="Junior" secondaryText="Refine your story" trailing={<Icon size={24} name="chevron-right"/>} />
-      <ListItem title="Senior" secondaryText="Tell your story" trailing={<Icon size={24} name="chevron-right"/>} />
-    </>
+    <View style={styles.container}>
+      <AppBar 
+        contentContainerStyle={styles.appBar}
+        centerTitle
+        title="Your roadmap"
+        color="#365a75"
+        leading={props => (
+          <IconButton icon={props => <Icon name="menu" {...props} />} {...props} />
+        )}
+      />
+      <ListItem 
+        title="Freshman" 
+        secondaryText="Begin your story" 
+        trailing={<Icon size={24} name="chevron-right"/>}
+        onPress={() => navigation.navigate('GradeLevel', { year: 9 })}
+      />
+      <ListItem 
+        title="Sophomore" 
+        secondaryText="Develop your story" 
+        trailing={<Icon size={24} name="chevron-right"/>} 
+      />
+      <ListItem 
+        title="Junior" 
+        secondaryText="Refine your story" 
+        trailing={<Icon size={24} name="chevron-right"/>} 
+      />
+      <ListItem 
+        title="Senior" 
+        secondaryText="Tell your story" 
+        trailing={<Icon size={24} name="chevron-right"/>} 
+      />
+    </View>
   );
 }
 
-const SecondaryScreen = ({ navigation, route }) => {
+const GradeLevelScreen = ({ navigation, route }) => {
   return (
     <View style={styles.container}>
-      <Text>Hi { route.params.name }!</Text>
+      <Text>{ route.params.year }th Grade</Text>
       <Button 
         title="Go home"
-        onPress={() => navigation.navigate('Home')}
+        onPress={() => navigation.navigate('Roadmap')}
       />
     </View>
   );
@@ -58,9 +77,11 @@ const SecondaryScreen = ({ navigation, route }) => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    marginTop: 32,
   },
+
+  appBar: { 
+    marginTop: 32, 
+    marginBottom: 32 
+  }
 });
