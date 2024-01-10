@@ -1,5 +1,6 @@
 import { Button, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { AppBar, Icon, IconButton, IconComponentProvider, ListItem } from '@react-native-material/core'
+import * as Progress from 'react-native-progress'
 
 const tasks = {
     "Freshman": {
@@ -43,14 +44,24 @@ const tasks = {
 
 export const GradeLevelScreen = ({ navigation, route }) => {
     return (
-      <ScrollView style={styles.container}>
-        <Text>{ route.params.year }th Grade Freshman - Begin your story</Text>
-        <Text>Progress bar here</Text>
-        <Text>Tasks and plus button here</Text>
-        <Text>Fall</Text>
-        { tasks["Freshman"].Fall.map(task => <GradeLevelListItem title={task} />) }
-        <Text>Spring</Text>
-        <Text>Summer</Text>
+      <ScrollView contentContainerStyle={styles.container}>
+        <View style={styles.gradeHeader}>
+            <Text>{ route.params.year }th Grade Freshman - Begin your story</Text>
+        </View>
+        <View style={styles.progressContainer}>
+            <Text style={{ fontWeight: '400', marginBottom: 8 }}>Progress</Text>
+            <Progress.Bar borderColor='#eee' unfilledColor='#eee' width={ null }/>
+        </View>
+        <View style={styles.tasksHeader}>
+            <Text style={{ fontSize: 20, fontWeight: '500' }}>Tasks</Text>
+            <Icon size={24} name="plus-circle" color="#365a75"/>
+        </View>
+        <View>
+            <Text style={{ fontSize: 16, fontWeight: '500' }}>Fall</Text>
+            { tasks["Freshman"].Fall.map(task => <GradeLevelListItem title={task} />) }
+            <Text>Spring</Text>
+            <Text>Summer</Text>
+        </View>
         <Button 
           title="Go home"
           onPress={() => navigation.navigate('Roadmap')}
@@ -61,10 +72,11 @@ export const GradeLevelScreen = ({ navigation, route }) => {
 
   const GradeLevelListItem = ({ title }) => {
     return (
-        <ListItem 
+        <ListItem
+          key={title}
           title={title}
-          leading={<Icon size={24} name="checkbox-blank-circle-outline"/>}
-          trailing={<Icon size={24} name="dots-horizontal"/>}
+          leading={<Icon size={24} name="checkbox-blank-circle-outline" color="#365a75"/>}
+          trailing={<Icon size={24} name="dots-horizontal" color="#365a75"/>}
         />
     );
   }
@@ -72,11 +84,25 @@ export const GradeLevelScreen = ({ navigation, route }) => {
   const styles = StyleSheet.create({
     container: {
       backgroundColor: "#fff",
+      display: 'flex',
+      justifyContent: 'space-between',
       marginTop: 32,
+      padding: 8,
+      paddingRight: 16,
     },
   
-    appBar: { 
-      marginTop: 32, 
-      marginBottom: 32 
+    gradeHeader: {
+      margin: 8
+    },
+
+    progressContainer: {
+        marginVertical: 16,
+    },
+
+    tasksHeader: {
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        marginBottom: 16
     }
   });
