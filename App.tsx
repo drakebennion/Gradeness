@@ -4,6 +4,7 @@ import { IconComponentProvider } from '@react-native-material/core'
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import { GradeLevelScreen } from './src/GradeLevel/GradeLevelScreen';
 import { RoadmapScreen } from './src/Roadmap/RoadmapScreen';
+import { TaskScreen } from './src/Task/TaskScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -19,6 +20,10 @@ export default function App() {
           <Stack.Screen 
             name="GradeLevel"
             component={GradeLevelScreen}
+          />
+          <Stack.Screen 
+            name="Task"
+            component={TaskScreen}
           />
         </Stack.Navigator>
       </NavigationContainer>

@@ -77,7 +77,14 @@ export const GradeLevelScreen = ({ navigation, route }) => {
                   return (
                     <View key={semester}>
                       <Text style={{ fontSize: 16, fontWeight: '500' }}>{ semester }</Text>
-                      { tasks["Freshman"][semester].map(task => <GradeLevelListItem key={task} title={task} />) }
+                      { tasks["Freshman"][semester].map(task => 
+                        <GradeLevelListItem 
+                          key={task}
+                          title={task}
+                          onPress={() => {
+                            navigation.navigate('Task')
+                          }}
+                        />) }
                     </View>
                   );
                 })
@@ -91,11 +98,12 @@ export const GradeLevelScreen = ({ navigation, route }) => {
     );
   };
 
-  const GradeLevelListItem = ({ title }) => {
+  const GradeLevelListItem = ({ title, onPress }) => {
     return (
         <ListItem
           key={title}
           title={title}
+          onPress={onPress}
           leading={<Icon size={24} name="checkbox-blank-circle-outline" color="#365a75"/>}
           trailing={<Icon size={24} name="dots-horizontal" color="#365a75"/>}
         />
