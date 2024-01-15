@@ -2,9 +2,9 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { IconComponentProvider } from '@react-native-material/core'
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
-import { GradeLevelScreen } from './src/GradeLevel/GradeLevelScreen';
+import { GradeLevelScreen } from './src/Roadmap/GradeLevelScreen';
 import { RoadmapScreen } from './src/Roadmap/RoadmapScreen';
-import { TaskScreen } from './src/Task/TaskScreen';
+import { TaskScreen } from './src/Roadmap/TaskScreen';
 
 const Stack = createNativeStackNavigator();
 

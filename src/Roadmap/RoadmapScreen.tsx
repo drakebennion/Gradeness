@@ -1,42 +1,9 @@
 import { AppBar, Icon, IconButton, ListItem } from "@react-native-material/core";
-import { Image, View } from "react-native";
+import { Text, View } from "react-native";
 import { styles } from "../styles";
+import { GradeLevels } from "./Repository";
 
-const assetsPath = '../../assets';
-
-const ninth = require(`${assetsPath}/9th.png`);
-const tenth = require(`${assetsPath}/10th.png`);
-const eleventh = require(`${assetsPath}/11th.png`);
-const twelfth = require(`${assetsPath}/12th.png`);
-
-const makeImage = (source) => {
-    return (
-        <Image style={{ height: 48, width: 48 }} source={source}/>
-    );
-}
-
-const roadmapGradeLevels = [
-    { 
-        title: 'Freshman', 
-        secondaryText: 'Begin your story', 
-        image: makeImage(ninth)
-    },
-    { 
-        title: 'Sophomore', 
-        secondaryText: 'Develop your story', 
-        image: makeImage(tenth)
-    },
-    { 
-        title: 'Junior', 
-        secondaryText: 'Refine your story', 
-        image: makeImage(eleventh)
-    },
-    { 
-        title: 'Senior', 
-        secondaryText: 'Tell your story', 
-        image: makeImage(twelfth)
-    },
-];
+const roadmapGradeLevels = GradeLevels;
 
 export const RoadmapScreen = ({ navigation }) => {
     return (
@@ -53,10 +20,10 @@ export const RoadmapScreen = ({ navigation }) => {
         {
             roadmapGradeLevels.map(level => 
                 <ListItem
-                    key={level.title}
-                    title={level.title}
-                    secondaryText={level.secondaryText}
-                    leading={level.image}
+                    key={level.year}
+                    title={level.name}
+                    secondaryText={level.objective}
+                    leading={makeIcon(level)}
                     trailing={<Icon size={24} name="chevron-right"/>}
                     onPress={() => navigation.navigate('GradeLevel')}
                 />
@@ -64,4 +31,32 @@ export const RoadmapScreen = ({ navigation }) => {
         }
       </View>
     );
+  }
+
+  const makeIcon = (gradeLevel) => {
+    return (
+        <View style={{
+            alignItems: 'center',
+            backgroundColor: '#1C222E',
+            display: 'flex',
+            height: 48,
+            justifyContent: 'center',
+            width: 48,
+        }}>
+        <Text 
+            style={{
+                color: getColorForYear(gradeLevel.year),
+                fontSize: 36,
+            }}>{ gradeLevel.year }
+        </Text>
+        </View>
+    );
+  }
+
+  const getColorForYear = (year: number) => {
+    if (year === 9) return '#4AF466';
+    if (year === 10) return '#F6629D';
+    if (year === 11) return '#3CD0F5';
+    if (year === 12) return '#FCD411';
+    return '#4AF466';
   }
