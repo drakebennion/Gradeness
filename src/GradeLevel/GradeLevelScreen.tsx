@@ -77,12 +77,12 @@ export const GradeLevelScreen = ({ navigation, route }) => {
                   return (
                     <View key={semester}>
                       <Text style={{ fontSize: 16, fontWeight: '500' }}>{ semester }</Text>
-                      { tasks["Freshman"][semester].map(task => 
+                      { tasks["Freshman"][semester].map(task =>   
                         <GradeLevelListItem 
                           key={task}
                           title={task}
                           onPress={() => {
-                            navigation.navigate('Task')
+                            navigation.navigate('Task', { semester, task })
                           }}
                         />) }
                     </View>
@@ -91,7 +91,7 @@ export const GradeLevelScreen = ({ navigation, route }) => {
             }
         </View>
         <Button 
-          title="Go home"
+          title="Go back"
           onPress={() => navigation.navigate('Roadmap')}
         />
       </ScrollView>

@@ -1,9 +1,16 @@
-import { ScrollView, StyleSheet, Text } from "react-native"
+import { Button, ScrollView, StyleSheet, Text } from "react-native"
 
-export const TaskScreen = ({ navigation }) => {
+export const TaskScreen = ({ navigation, route }) => {
+    const { task, semester } = route.params;
     return (
         <ScrollView contentContainerStyle={styles.container}>
-            <Text>Tasks!!!</Text>
+            <Text>{ task }</Text>
+            <Text>{ semester }</Text>
+            <Button title="Mark as complete"/>
+            <Button 
+                title="Go back"
+                onPress={() => navigation.pop()}
+            />
         </ScrollView>
     )
 }
