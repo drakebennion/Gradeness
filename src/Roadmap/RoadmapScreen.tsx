@@ -4,26 +4,37 @@ import { styles } from "../styles";
 
 const assetsPath = '../../assets';
 
+const ninth = require(`${assetsPath}/9th.png`);
+const tenth = require(`${assetsPath}/10th.png`);
+const eleventh = require(`${assetsPath}/11th.png`);
+const twelfth = require(`${assetsPath}/12th.png`);
+
+const makeImage = (source) => {
+    return (
+        <Image style={{ height: 48, width: 48 }} source={source}/>
+    );
+}
+
 const roadmapGradeLevels = [
     { 
         title: 'Freshman', 
         secondaryText: 'Begin your story', 
-        image: <Image source={require(`${assetsPath}/9th.png`)}/>
+        image: makeImage(ninth)
     },
     { 
         title: 'Sophomore', 
         secondaryText: 'Develop your story', 
-        image: <Image source={require(`${assetsPath}/10th.png`)}/>
+        image: makeImage(tenth)
     },
     { 
         title: 'Junior', 
         secondaryText: 'Refine your story', 
-        image: <Image source={require(`${assetsPath}/11th.png`)}/>
+        image: makeImage(eleventh)
     },
     { 
         title: 'Senior', 
         secondaryText: 'Tell your story', 
-        image: <Image source={require(`${assetsPath}/12th.png`)}/>
+        image: makeImage(twelfth)
     },
 ];
 

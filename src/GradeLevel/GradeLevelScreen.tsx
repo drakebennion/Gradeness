@@ -22,8 +22,20 @@ const tasks = {
             "Learn how to ask for help",
             "Choose your Freshman Spring class schedule",
         ],
-        Spring: [],
-        Summer: [],
+        Spring: [
+          "Form relationships with teachers",
+          "Set a reading goal for summer",
+          "Look for enrichment activities for the summer months",
+          "Choose your Sophomore Fall classes",
+          "Familiarize yourself with important tests you should take like ACT, SAT, etc",
+        ],
+        Summer: [
+          "Get a job",
+          "Volunteer",
+          "Get and manage a bank account",
+          "Learn to cook and prepare a meal",
+          "Learn how to shop for groceries",
+        ],
     },
     "Sophomore": {
         Fall: [],
@@ -46,7 +58,7 @@ export const GradeLevelScreen = ({ navigation, route }) => {
     return (
       <ScrollView contentContainerStyle={styles.container}>
         <View style={styles.gradeHeader}>
-            <Image source={require("../../assets/9th.png")}/>
+            <Image style={{ height: 80, width: 80 }} source={require("../../assets/9th.png")}/>
             <Text>Freshman</Text>
             <Text>Begin your story</Text>
         </View>
@@ -59,10 +71,17 @@ export const GradeLevelScreen = ({ navigation, route }) => {
             <Icon size={24} name="plus-circle" color="#365a75"/>
         </View>
         <View>
-            <Text style={{ fontSize: 16, fontWeight: '500' }}>Fall</Text>
-            { tasks["Freshman"].Fall.map(task => <GradeLevelListItem title={task} />) }
-            <Text>Spring</Text>
-            <Text>Summer</Text>
+            {
+              Object.keys(tasks["Freshman"])
+                .map(semester => {
+                  return (
+                    <View key={semester}>
+                      <Text style={{ fontSize: 16, fontWeight: '500' }}>{ semester }</Text>
+                      { tasks["Freshman"][semester].map(task => <GradeLevelListItem key={task} title={task} />) }
+                    </View>
+                  );
+                })
+            }
         </View>
         <Button 
           title="Go home"
@@ -88,7 +107,8 @@ export const GradeLevelScreen = ({ navigation, route }) => {
       backgroundColor: "#fff",
       display: 'flex',
       justifyContent: 'space-between',
-      marginTop: 32,
+      marginVertical: 32,
+      paddingBottom: 32,
       padding: 8,
       paddingRight: 16,
     },
