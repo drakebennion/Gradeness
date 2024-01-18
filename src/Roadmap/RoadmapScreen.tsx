@@ -53,7 +53,7 @@ export const RoadmapScreen = ({ navigation }) => {
     );
   }
 
-  const getColorForYear = (year: number) => {
+  export const getColorForYear = (year: number) => {
     if (year === 9) return '#4AF466';
     if (year === 10) return '#F6629D';
     if (year === 11) return '#3CD0F5';

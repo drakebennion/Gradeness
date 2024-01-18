@@ -1,6 +1,9 @@
-import { Button, Image, ScrollView, StyleSheet, Text, View } from 'react-native';
-import { Icon, ListItem } from '@react-native-material/core'
+import { Image, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { AppBar, Button, Icon, IconButton, ListItem } from '@react-native-material/core'
 import * as Progress from 'react-native-progress'
+import { styles as globalStyles } from "../styles";
+import { getColorForYear } from './RoadmapScreen';
+import { Colors } from '../Colors';
 
 const tasks = {
     "Freshman": {
@@ -56,47 +59,55 @@ const tasks = {
 
 export const GradeLevelScreen = ({ navigation, route }) => {
     return (
-      <ScrollView contentContainerStyle={styles.container}>
-        <View style={{ backgroundColor: '#1C222E' }}>
-          <View>
-              {/* <Image style={{ height: 80, width: 80 }} source={require("../../assets/9th.png")}/> */}
-              <Text style={{color: '#4AF466'}}>Freshman</Text>
-              <Text style={{color: '#4AF466'}}>Begin your story</Text>
-          </View>
-          <View style={styles.progressContainer}>
-              <Text style={{ fontWeight: '400', marginBottom: 8, color: '#fff' }}>Progress</Text>
-              <Progress.Bar borderColor='#eee' unfilledColor='#eee' width={ null }/>
-          </View>
-        </View>
-        <View style={styles.tasksHeader}>
-            <Text style={{ fontSize: 20, fontWeight: '500' }}>Tasks</Text>
-            <Icon size={24} name="plus-circle" color="#365a75"/>
-        </View>
-        <View>
-            {
-              Object.keys(tasks["Freshman"])
-                .map(semester => {
-                  return (
-                    <View key={semester}>
-                      <Text style={{ fontSize: 16, fontWeight: '500' }}>{ semester }</Text>
-                      { tasks["Freshman"][semester].map(task =>   
-                        <GradeLevelListItem 
-                          key={task}
-                          title={task}
-                          onPress={() => {
-                            navigation.navigate('Task', { semester, task })
-                          }}
-                        />) }
-                    </View>
-                  );
-                })
-            }
-        </View>
-        <Button 
-          title="Go back"
-          onPress={() => navigation.navigate('Roadmap')}
+      <View>
+        <AppBar 
+          contentContainerStyle={globalStyles.appBar}
+          centerTitle
+          title="Freshman"
+          color="#1C222E"
+          titleStyle={{color: getColorForYear(9)}}
+          leading={props => (
+            <IconButton 
+              onPress={() => navigation.pop()}
+              icon={<Icon name="arrow-left" {...props} />}
+            />
+          )}
         />
-      </ScrollView>
+        <ScrollView contentContainerStyle={styles.container}>
+          <View style={{ backgroundColor: '#1C222E', borderBottomLeftRadius: 8, borderBottomRightRadius: 8 }}>
+            <View>
+                <Text style={{color: '#fff'}}>Begin your story</Text>
+            </View>
+            <View style={styles.progressContainer}>
+                <Text style={{ fontWeight: '400', marginBottom: 8, color: '#fff' }}>Progress</Text>
+                <Progress.Bar borderColor='#eee' unfilledColor='#eee' width={ null }/>
+            </View>
+            <View>
+                <Button title="Add task" color={Colors.highlight2} tintColor={Colors.background} />
+            </View>
+          </View>
+          <View>
+              {
+                Object.keys(tasks["Freshman"])
+                  .map(semester => {
+                    return (
+                      <View key={semester}>
+                        <Text style={{ fontSize: 16, fontWeight: '500' }}>{ semester }</Text>
+                        { tasks["Freshman"][semester].map(task =>   
+                          <GradeLevelListItem 
+                            key={task}
+                            title={task}
+                            onPress={() => {
+                              navigation.navigate('Task', { semester, task })
+                            }}
+                          />) }
+                      </View>
+                    );
+                  })
+              }
+          </View>
+        </ScrollView>
+      </View>
     );
   };
 
@@ -107,7 +118,7 @@ export const GradeLevelScreen = ({ navigation, route }) => {
           title={title}
           onPress={onPress}
           leading={<Icon size={24} name="checkbox-blank-circle-outline" color="#365a75"/>}
-          trailing={<Icon size={24} name="dots-horizontal" color="#365a75"/>}
+          trailing={<Icon size={24} name="chevron-right" color="#365a75"/>}
         />
     );
   }
@@ -117,10 +128,7 @@ export const GradeLevelScreen = ({ navigation, route }) => {
       backgroundColor: "#fff",
       display: 'flex',
       justifyContent: 'space-between',
-      marginVertical: 32,
-      paddingBottom: 32,
-      padding: 8,
-      paddingRight: 16,
+      paddingBottom: 128,
     },
 
     progressContainer: {
