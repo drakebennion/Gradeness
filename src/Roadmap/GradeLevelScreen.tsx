@@ -57,14 +57,16 @@ const tasks = {
 export const GradeLevelScreen = ({ navigation, route }) => {
     return (
       <ScrollView contentContainerStyle={styles.container}>
-        <View style={styles.gradeHeader}>
-            <Image style={{ height: 80, width: 80 }} source={require("../../assets/9th.png")}/>
-            <Text>Freshman</Text>
-            <Text>Begin your story</Text>
-        </View>
-        <View style={styles.progressContainer}>
-            <Text style={{ fontWeight: '400', marginBottom: 8 }}>Progress</Text>
-            <Progress.Bar borderColor='#eee' unfilledColor='#eee' width={ null }/>
+        <View style={{ backgroundColor: '#1C222E' }}>
+          <View>
+              {/* <Image style={{ height: 80, width: 80 }} source={require("../../assets/9th.png")}/> */}
+              <Text style={{color: '#4AF466'}}>Freshman</Text>
+              <Text style={{color: '#4AF466'}}>Begin your story</Text>
+          </View>
+          <View style={styles.progressContainer}>
+              <Text style={{ fontWeight: '400', marginBottom: 8, color: '#fff' }}>Progress</Text>
+              <Progress.Bar borderColor='#eee' unfilledColor='#eee' width={ null }/>
+          </View>
         </View>
         <View style={styles.tasksHeader}>
             <Text style={{ fontSize: 20, fontWeight: '500' }}>Tasks</Text>
@@ -119,11 +121,6 @@ export const GradeLevelScreen = ({ navigation, route }) => {
       paddingBottom: 32,
       padding: 8,
       paddingRight: 16,
-    },
-  
-    gradeHeader: {
-      display: 'flex',
-      flexDirection: 'row',
     },
 
     progressContainer: {

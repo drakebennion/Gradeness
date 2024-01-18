@@ -11,8 +11,8 @@ export const RoadmapScreen = ({ navigation }) => {
         <AppBar 
           contentContainerStyle={styles.appBar}
           centerTitle
-          title="Your roadmap"
-          color="#365a75"
+          title="Roadmap"
+          color="#1C222E"
           leading={props => (
             <IconButton icon={props => <Icon name="menu" {...props} />} {...props} />
           )}
