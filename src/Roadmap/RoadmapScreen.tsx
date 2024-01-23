@@ -1,11 +1,14 @@
-import { AppBar, Icon, IconButton, ListItem } from "@react-native-material/core";
+import { AppBar, Button, Icon, IconButton, ListItem } from "@react-native-material/core";
 import { Text, View } from "react-native";
 import { styles } from "../styles";
 import { GradeLevels } from "./Repository";
+import { getAuth, signOut } from "firebase/auth";
 
 const roadmapGradeLevels = GradeLevels;
 
 export const RoadmapScreen = ({ navigation }) => {
+  const auth = getAuth();
+
     return (
       <View style={styles.container}>
         <AppBar 
@@ -15,6 +18,9 @@ export const RoadmapScreen = ({ navigation }) => {
           color="#1C222E"
           leading={props => (
             <IconButton icon={props => <Icon name="menu" {...props} />} {...props} />
+          )}
+          trailing={ props => (
+            <Button title="Log out" onPress={() => signOut(auth)} {...props}/>
           )}
         />
         {
