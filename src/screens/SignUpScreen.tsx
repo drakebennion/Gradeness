@@ -1,21 +1,63 @@
-import { StatusBar } from 'expo-status-bar';
-import React from 'react';
+import { Button, TextInput } from '@react-native-material/core';
+import React, { useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
+import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
 
-export default function HomeScreen() {
+export default function SignUpScreen({ navigation }) {
+  const auth = getAuth();
+
+  const [signUp, setSignUp] = useState({
+    email: '',
+    password: '',
+    error: '',
+  });
+
+  function onSignUp() {
+    if (signUp.email === '' || signUp.password === '') {
+      setSignUp({
+        ...signUp,
+        error: 'Email and password are required'
+      });
+      return;
+    }
+
+    createUserWithEmailAndPassword(auth, signUp.email, signUp.password)
+      // should i even have this 'then'? this authenticates them and
+      // sends them right to the Roadmap so idk
+      .then(() => navigation.navigate('Sign In'))
+      .catch(error => setSignUp({ ...signUp, error: error.message }));
+  }
+
   return (
     <View style={styles.container}>
-      <Text>Home screen!</Text>
-      <StatusBar style="auto" />
+      <Text>Sign Up</Text>
+
+      { !!signUp.error && <View><Text>{signUp.error}</Text></View> }
+
+      <View>
+        <TextInput 
+          label='Email'
+          value={signUp.email}
+          onChangeText={(email) => setSignUp({ ...signUp, email })}
+        />
+        <TextInput 
+          label='Password'
+          value={signUp.password}
+          onChangeText={(password) => setSignUp({ ...signUp, password })}
+          secureTextEntry
+        />
+
+        <Button title="Sign up" onPress={onSignUp} />
+      </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    //flex: 1,
     backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    //alignItems: 'center',
+    //justifyContent: 'center',
   },
 });

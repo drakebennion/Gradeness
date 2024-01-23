@@ -1,12 +1,12 @@
-import { StatusBar } from 'expo-status-bar';
+import { Button } from '@react-native-material/core';
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 
-export default function HomeScreen() {
+export default function HomeScreen({ navigation }) {
   return (
     <View style={styles.container}>
-      <Text>Home screen!</Text>
-      <StatusBar style="auto" />
+      <Button title="Sign In" style={styles.button} onPress={() => navigation.navigate('Sign In')} />
+      <Button title="Sign Up" style={styles.button} onPress={() => navigation.navigate('Sign Up')} />
     </View>
   );
 }
@@ -17,5 +17,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
-  },
+  }, 
+  button: {}
 });
