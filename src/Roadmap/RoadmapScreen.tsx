@@ -3,6 +3,7 @@ import { Text, View } from "react-native";
 import { styles } from "../styles";
 import { GradeLevels } from "./Repository";
 import { getAuth, signOut } from "firebase/auth";
+import { doDataImport } from "../utils/init/db";
 
 const roadmapGradeLevels = GradeLevels;
 
@@ -35,6 +36,7 @@ export const RoadmapScreen = ({ navigation }) => {
                 />
             )
         }
+        <Button title="IMPORT DATA DRAKE" onPress={doDataImport}/>
       </View>
     );
   }
