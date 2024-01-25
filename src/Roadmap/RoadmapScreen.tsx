@@ -25,14 +25,14 @@ export const RoadmapScreen = ({ navigation }) => {
           )}
         />
         {
-            roadmapGradeLevels.map(level => 
+            roadmapGradeLevels.map(({ year, name, objective }) => 
                 <ListItem
-                    key={level.year}
-                    title={level.name}
-                    secondaryText={level.objective}
-                    leading={makeIcon(level)}
+                    key={year}
+                    title={name}
+                    secondaryText={objective}
+                    leading={makeIcon(year)}
                     trailing={<Icon size={24} name="chevron-right"/>}
-                    onPress={() => navigation.navigate('GradeLevel')}
+                    onPress={() => navigation.navigate('GradeLevel', { year })}
                 />
             )
         }
@@ -41,7 +41,7 @@ export const RoadmapScreen = ({ navigation }) => {
     );
   }
 
-  const makeIcon = (gradeLevel) => {
+  const makeIcon = (year) => {
     return (
         <View style={{
             alignItems: 'center',
@@ -53,9 +53,9 @@ export const RoadmapScreen = ({ navigation }) => {
         }}>
         <Text 
             style={{
-                color: getColorForYear(gradeLevel.year),
+                color: getColorForYear(year),
                 fontSize: 36,
-            }}>{ gradeLevel.year }
+            }}>{ year }
         </Text>
         </View>
     );

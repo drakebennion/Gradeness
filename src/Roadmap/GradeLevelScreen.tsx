@@ -4,61 +4,46 @@ import * as Progress from 'react-native-progress'
 import { styles as globalStyles } from "../styles";
 import { getColorForYear } from './RoadmapScreen';
 import { Colors } from '../Colors';
+import { useEffect, useState } from 'react';
+import { collection, getDocs, getFirestore, query, where } from 'firebase/firestore';
+import { useAuthentication } from '../utils/hooks/useAuthentication';
 
-const tasks = {
-    "Freshman": {
-        Fall: [
-            "Orientation and familiarization",
-            "Connect with upper classmen",
-            "Meet with your counselor",
-            "Research ways to stay organized ",
-            "Develop good attendance habits",
-            "Learn how to manage and complete your school work",
-            "Take some personality tests to understand your strengths",
-            "Evaluate your clothing and appearance ",
-            "Understand how grades can impact your life",
-            "Explore career options after high school",
-            "Understand graduation requirements",
-            "Learn how to set goals for yourself",
-            "Attend a school sponsored social event",
-            "Join a club",
-            "Learn how to ask for help",
-            "Choose your Freshman Spring class schedule",
-        ],
-        Spring: [
-          "Form relationships with teachers",
-          "Set a reading goal for summer",
-          "Look for enrichment activities for the summer months",
-          "Choose your Sophomore Fall classes",
-          "Familiarize yourself with important tests you should take like ACT, SAT, etc",
-        ],
-        Summer: [
-          "Get a job",
-          "Volunteer",
-          "Get and manage a bank account",
-          "Learn to cook and prepare a meal",
-          "Learn how to shop for groceries",
-        ],
-    },
-    "Sophomore": {
-        Fall: [],
-        Spring: [],
-        Summer: [],
-    },
-    "Junior": {
-        Fall: [],
-        Spring: [],
-        Summer: [],
-    },
-    "Senior": {
-        Fall: [],
-        Spring: [],
-        Summer: [],
-    },
+// seems Object.groupBy not available in my current version oops
+var groupBy = function(xs, key) {
+  return xs.reduce(function(rv, x) {
+    (rv[x[key]] = rv[x[key]] || []).push(x);
+    return rv;
+  }, {});
 };
 
 export const GradeLevelScreen = ({ navigation, route }) => {
-    return (
+  const { year } = route.params;
+  console.log(year)
+  const db = getFirestore();
+  const { user } = useAuthentication();
+  const [tasks, setTasks] = useState({});
+  const [loadingTasks, setLoadingTasks] = useState(true);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      if (user) {
+        const q = query(collection(db, "tasks"), 
+          where("userId", "==", user.uid),
+          where("year", "==", year));
+        const tasks = await getDocs(q);
+        const tasksData = tasks.docs.map(doc => doc.data());
+        // need to split these by semester
+        const tasksBySemester = groupBy(tasksData, 'semester');
+        console.log(tasksBySemester)
+        setTasks(tasksBySemester);
+        setLoadingTasks(false);
+      }
+    }
+
+    fetchData().catch(console.error);
+  }, [user]);
+
+    return loadingTasks ? <Text>Loading</Text> :
       <View>
         <AppBar 
           contentContainerStyle={globalStyles.appBar}
@@ -88,17 +73,17 @@ export const GradeLevelScreen = ({ navigation, route }) => {
           </View>
           <View>
               {
-                Object.keys(tasks["Freshman"])
+                Object.keys(tasks)
                   .map(semester => {
                     return (
                       <View key={semester}>
                         <Text style={{ fontSize: 16, fontWeight: '500' }}>{ semester }</Text>
-                        { tasks["Freshman"][semester].map(task =>   
+                        { tasks[semester].map(({ displayName }) =>   
                           <GradeLevelListItem 
-                            key={task}
-                            title={task}
+                            key={displayName}
+                            title={displayName}
                             onPress={() => {
-                              navigation.navigate('Task', { semester, task })
+                              navigation.navigate('Task', { semester, displayName })
                             }}
                           />) }
                       </View>
@@ -108,7 +93,6 @@ export const GradeLevelScreen = ({ navigation, route }) => {
           </View>
         </ScrollView>
       </View>
-    );
   };
 
   const GradeLevelListItem = ({ title, onPress }) => {
