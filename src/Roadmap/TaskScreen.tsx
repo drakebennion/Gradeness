@@ -1,10 +1,10 @@
 import { Button, ScrollView, StyleSheet, Text } from "react-native"
 
 export const TaskScreen = ({ navigation, route }) => {
-    const { task, semester } = route.params;
+    const { displayName, semester } = route.params;
     return (
         <ScrollView contentContainerStyle={styles.container}>
-            <Text>{ task }</Text>
+            <Text>{ displayName }</Text>
             <Text>{ semester }</Text>
             <Button title="Mark as complete"/>
             <Button 

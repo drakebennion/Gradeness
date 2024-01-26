@@ -1,12 +1,12 @@
-import { Image, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import { AppBar, Button, Icon, IconButton, ListItem } from '@react-native-material/core'
 import * as Progress from 'react-native-progress'
 import { styles as globalStyles } from "../styles";
-import { getColorForYear } from './RoadmapScreen';
 import { Colors } from '../Colors';
 import { useEffect, useState } from 'react';
 import { collection, getDocs, getFirestore, query, where } from 'firebase/firestore';
 import { useAuthentication } from '../utils/hooks/useAuthentication';
+import { getColorForYear, getGradeLevelNameForYear, getGradeLevelObjectiveForYear } from '../utils/style';
 
 // seems Object.groupBy not available in my current version oops
 var groupBy = function(xs, key) {
@@ -38,6 +38,7 @@ export const GradeLevelScreen = ({ navigation, route }) => {
         const tasks = await getDocs(q);
         const tasksData = tasks.docs.map(doc => doc.data());
         const tasksBySemester = groupBy(tasksData, 'semester');
+        // todo: need handling for if there are no tasks at all, plus network error handling
         setTasks(tasksBySemester);
         setLoadingTasks(false);
       }
@@ -51,9 +52,9 @@ export const GradeLevelScreen = ({ navigation, route }) => {
         <AppBar 
           contentContainerStyle={globalStyles.appBar}
           centerTitle
-          title="Freshman"
+          title={getGradeLevelNameForYear(year)}
           color="#1C222E"
-          titleStyle={{color: getColorForYear(9)}}
+          titleStyle={{color: getColorForYear(year)}}
           leading={props => (
             <IconButton 
               onPress={() => navigation.pop()}
@@ -64,7 +65,7 @@ export const GradeLevelScreen = ({ navigation, route }) => {
         <ScrollView contentContainerStyle={styles.container}>
           <View style={{ backgroundColor: '#1C222E', borderBottomLeftRadius: 8, borderBottomRightRadius: 8 }}>
             <View>
-                <Text style={{color: '#fff'}}>Begin your story</Text>
+                <Text style={{color: '#fff'}}>{getGradeLevelObjectiveForYear(year)}</Text>
             </View>
             <View style={styles.progressContainer}>
                 <Text style={{ fontWeight: '400', marginBottom: 8, color: '#fff' }}>Progress</Text>

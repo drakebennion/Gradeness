@@ -4,6 +4,7 @@ import { styles } from "../styles";
 import { GradeLevels } from "./Repository";
 import { getAuth, signOut } from "firebase/auth";
 import { doDataImport } from "../utils/init/db";
+import { getColorForYear, getGradeLevelNameForYear, getGradeLevelObjectiveForYear } from "../utils/style";
 
 const roadmapGradeLevels = GradeLevels;
 
@@ -25,11 +26,11 @@ export const RoadmapScreen = ({ navigation }) => {
           )}
         />
         {
-            roadmapGradeLevels.map(({ year, name, objective }) => 
+            roadmapGradeLevels.map(({ year, objective }) => 
                 <ListItem
                     key={year}
-                    title={name}
-                    secondaryText={objective}
+                    title={getGradeLevelNameForYear(year)}
+                    secondaryText={getGradeLevelObjectiveForYear(year)}
                     leading={makeIcon(year)}
                     trailing={<Icon size={24} name="chevron-right"/>}
                     onPress={() => navigation.navigate('GradeLevel', { year })}
@@ -59,12 +60,4 @@ export const RoadmapScreen = ({ navigation }) => {
         </Text>
         </View>
     );
-  }
-
-  export const getColorForYear = (year: number) => {
-    if (year === 9) return '#4AF466';
-    if (year === 10) return '#F6629D';
-    if (year === 11) return '#3CD0F5';
-    if (year === 12) return '#FCD411';
-    return '#4AF466';
   }
