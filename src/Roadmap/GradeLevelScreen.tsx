@@ -83,12 +83,12 @@ export const GradeLevelScreen = ({ navigation, route }) => {
                       <View key={semester}>
                         <Text style={{ fontSize: 16, fontWeight: '500' }}>{ semester }</Text>
                         { toSorted(tasks[semester], (a, b) => Number.parseInt(a.defaultTaskId) - Number.parseInt(b.defaultTaskId))
-                          .map(({ displayName }) =>   
+                          .map(({ objective }) =>   
                           <GradeLevelListItem 
-                            key={displayName}
-                            title={displayName}
+                            key={objective}
+                            title={objective}
                             onPress={() => {
-                              navigation.navigate('Task', { semester, displayName })
+                              navigation.navigate('Task', { semester, objective })
                             }}
                           />) }
                       </View>

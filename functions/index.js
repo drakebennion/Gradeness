@@ -12,8 +12,12 @@ exports.createUserTasks = auth.user().onCreate(async (user) => {
       .get();
 
   try {
+    // todo: may need to await _all these_ before finishing the function,
+    // I think some are being dropped
+    
+    // from Function logs: Exception from a finished function: Error: 4 DEADLINE_EXCEEDED: Deadline exceeded
     defaultTasks.forEach(async (defaultTask) => {
-      const {year, semester, displayName, id, order} = defaultTask.data();
+      const {year, semester, objective, id, order} = defaultTask.data();
       await getFirestore()
           .collection("tasks")
           .add({
@@ -25,7 +29,7 @@ exports.createUserTasks = auth.user().onCreate(async (user) => {
             order,
             year,
             semester,
-            displayName,
+            objective,
           });
     });
   } catch (e) {
