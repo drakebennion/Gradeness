@@ -13,7 +13,7 @@ exports.createUserTasks = auth.user().onCreate(async (user) => {
 
   try {
     defaultTasks.forEach(async (defaultTask) => {
-      const {year, semester, displayName} = defaultTask.data();
+      const {year, semester, displayName, id, order} = defaultTask.data();
       await getFirestore()
           .collection("tasks")
           .add({
@@ -21,6 +21,8 @@ exports.createUserTasks = auth.user().onCreate(async (user) => {
             createdAt: Date.now(),
             updatedAt: Date.now(),
             complete: false,
+            defaultTaskId: id,
+            order,
             year,
             semester,
             displayName,

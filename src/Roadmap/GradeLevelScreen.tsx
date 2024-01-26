@@ -16,9 +16,14 @@ var groupBy = function(xs, key) {
   }, {});
 };
 
+// I gotta get my version shit figured out lols
+var toSorted = function(xs, fn) {
+  xs.sort(fn);
+  return xs;
+}
+
 export const GradeLevelScreen = ({ navigation, route }) => {
   const { year } = route.params;
-  console.log(year)
   const db = getFirestore();
   const { user } = useAuthentication();
   const [tasks, setTasks] = useState({});
@@ -32,9 +37,7 @@ export const GradeLevelScreen = ({ navigation, route }) => {
           where("year", "==", year));
         const tasks = await getDocs(q);
         const tasksData = tasks.docs.map(doc => doc.data());
-        // need to split these by semester
         const tasksBySemester = groupBy(tasksData, 'semester');
-        console.log(tasksBySemester)
         setTasks(tasksBySemester);
         setLoadingTasks(false);
       }
@@ -73,12 +76,13 @@ export const GradeLevelScreen = ({ navigation, route }) => {
           </View>
           <View>
               {
-                Object.keys(tasks)
+                ["Fall", "Spring", "Summer"]
                   .map(semester => {
                     return (
                       <View key={semester}>
                         <Text style={{ fontSize: 16, fontWeight: '500' }}>{ semester }</Text>
-                        { tasks[semester].map(({ displayName }) =>   
+                        { toSorted(tasks[semester], (a, b) => Number.parseInt(a.defaultTaskId) - Number.parseInt(b.defaultTaskId))
+                          .map(({ displayName }) =>   
                           <GradeLevelListItem 
                             key={displayName}
                             title={displayName}
