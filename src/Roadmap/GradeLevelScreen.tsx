@@ -29,6 +29,7 @@ export const GradeLevelScreen = ({ navigation, route }) => {
   const { user } = useAuthentication();
   const [tasks, setTasks] = useState({});
   const [loadingTasks, setLoadingTasks] = useState(true);
+  const [progress, setProgress] = useState(0.0);
 
   useFocusEffect(
     useCallback(() => {
@@ -41,6 +42,7 @@ export const GradeLevelScreen = ({ navigation, route }) => {
               const tasksData = tasks.docs.map(doc => ({id: doc.id, ...doc.data() }));
               const tasksBySemester = groupBy(tasksData, 'semester');
               // todo: need handling for if there are no tasks at all, plus network error handling
+              setProgress(tasksData.filter(taskData => taskData.complete).length / tasksData.length);
               setTasks(tasksBySemester);
               setLoadingTasks(false);
             }
@@ -72,7 +74,7 @@ export const GradeLevelScreen = ({ navigation, route }) => {
             </View>
             <View style={styles.progressContainer}>
                 <Text style={{ fontWeight: '400', marginBottom: 8, color: '#fff' }}>Progress</Text>
-                <Progress.Bar borderColor='#eee' unfilledColor='#eee' width={ null }/>
+                <Progress.Bar borderColor='#eee' unfilledColor='#eee' width={ null } progress={progress} />
             </View>
             <View>
                 <Button title="Add task" color={Colors.highlight2} tintColor={Colors.background} />

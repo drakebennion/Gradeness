@@ -6,9 +6,9 @@ export const TaskScreen = ({ navigation, route }) => {
     const db = getFirestore();
     const { taskId, objective, semester, complete } = route.params;
 
-    const markComplete = async () => {
+    const toggleComplete = async () => {
         const taskRef = doc(db, 'tasks', taskId);
-        await updateDoc(taskRef, { complete: true });
+        await updateDoc(taskRef, { complete: !complete });
     };
 
     return (
@@ -16,9 +16,8 @@ export const TaskScreen = ({ navigation, route }) => {
             <Text>{ objective }</Text>
             <Text>{ semester }</Text>
             <Button 
-                title="Mark as complete"
-                disabled={complete}
-                onPress={() => markComplete().then(navigation.pop)}
+                title={ complete ? "Mark as uncomplete" : "Mark as complete" }
+                onPress={() => toggleComplete().then(navigation.pop)}
             />
             <Button 
                 title="Go back"
