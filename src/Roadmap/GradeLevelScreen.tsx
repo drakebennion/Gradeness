@@ -3,10 +3,11 @@ import { AppBar, Button, Icon, IconButton, ListItem } from '@react-native-materi
 import * as Progress from 'react-native-progress'
 import { styles as globalStyles } from "../styles";
 import { Colors } from '../Colors';
-import { useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { collection, getDocs, getFirestore, query, where } from 'firebase/firestore';
 import { useAuthentication } from '../utils/hooks/useAuthentication';
 import { getColorForYear, getGradeLevelNameForYear, getGradeLevelObjectiveForYear } from '../utils/style';
+import { useFocusEffect } from '@react-navigation/native';
 
 // seems Object.groupBy not available in my current version oops
 var groupBy = function(xs, key) {
@@ -29,23 +30,25 @@ export const GradeLevelScreen = ({ navigation, route }) => {
   const [tasks, setTasks] = useState({});
   const [loadingTasks, setLoadingTasks] = useState(true);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      if (user) {
-        const q = query(collection(db, "tasks"), 
-          where("userId", "==", user.uid),
-          where("year", "==", year));
-        const tasks = await getDocs(q);
-        const tasksData = tasks.docs.map(doc => doc.data());
-        const tasksBySemester = groupBy(tasksData, 'semester');
-        // todo: need handling for if there are no tasks at all, plus network error handling
-        setTasks(tasksBySemester);
-        setLoadingTasks(false);
-      }
-    }
-
-    fetchData().catch(console.error);
-  }, [user]);
+  useFocusEffect(
+    useCallback(() => {
+      const fetchData = async () => {
+            if (user) {
+              const q = query(collection(db, "tasks"), 
+                where("userId", "==", user.uid),
+                where("year", "==", year));
+              const tasks = await getDocs(q);
+              const tasksData = tasks.docs.map(doc => ({id: doc.id, ...doc.data() }));
+              const tasksBySemester = groupBy(tasksData, 'semester');
+              // todo: need handling for if there are no tasks at all, plus network error handling
+              setTasks(tasksBySemester);
+              setLoadingTasks(false);
+            }
+          }
+      
+          fetchData().catch(console.error);
+    }, [user])
+  );
 
     return loadingTasks ? <Text>Loading</Text> :
       <View>
@@ -83,12 +86,13 @@ export const GradeLevelScreen = ({ navigation, route }) => {
                       <View key={semester}>
                         <Text style={{ fontSize: 16, fontWeight: '500' }}>{ semester }</Text>
                         { toSorted(tasks[semester], (a, b) => Number.parseInt(a.defaultTaskId) - Number.parseInt(b.defaultTaskId))
-                          .map(({ objective }) =>   
+                          .map(({ id, objective, complete }) =>   
                           <GradeLevelListItem 
                             key={objective}
                             title={objective}
+                            checked={complete}
                             onPress={() => {
-                              navigation.navigate('Task', { semester, objective })
+                              navigation.navigate('Task', { taskId: id, semester, objective, complete })
                             }}
                           />) }
                       </View>
@@ -100,13 +104,13 @@ export const GradeLevelScreen = ({ navigation, route }) => {
       </View>
   };
 
-  const GradeLevelListItem = ({ title, onPress }) => {
+  const GradeLevelListItem = ({ title, onPress, checked }) => {
     return (
         <ListItem
           key={title}
           title={title}
           onPress={onPress}
-          leading={<Icon size={24} name="checkbox-blank-circle-outline" color="#365a75"/>}
+          leading={<Icon size={24} name={ checked ? "checkbox-marked-circle" : "checkbox-blank-circle-outline" } color="#365a75"/>}
           trailing={<Icon size={24} name="chevron-right" color="#365a75"/>}
         />
     );
