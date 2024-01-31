@@ -9,20 +9,6 @@ import { useAuthentication } from '../utils/hooks/useAuthentication';
 import { getColorForYear, getGradeLevelNameForYear, getGradeLevelObjectiveForYear } from '../utils/style';
 import { useFocusEffect } from '@react-navigation/native';
 
-// seems Object.groupBy not available in my current version oops
-var groupBy = function(xs, key) {
-  return xs.reduce(function(rv, x) {
-    (rv[x[key]] = rv[x[key]] || []).push(x);
-    return rv;
-  }, {});
-};
-
-// I gotta get my version shit figured out lols
-var toSorted = function(xs, fn) {
-  xs.sort(fn);
-  return xs;
-}
-
 export const GradeLevelScreen = ({ navigation, route }) => {
   const { year } = route.params;
   const db = getFirestore();
@@ -52,7 +38,7 @@ export const GradeLevelScreen = ({ navigation, route }) => {
     }, [user])
   );
 
-    return loadingTasks ? <Text>Loading</Text> :
+    return (
       <View>
         <AppBar 
           contentContainerStyle={globalStyles.appBar}
@@ -81,30 +67,49 @@ export const GradeLevelScreen = ({ navigation, route }) => {
             </View>
           </View>
           <View>
-              {
-                ["Fall", "Spring", "Summer"]
-                  .map(semester => {
-                    return (
-                      <View key={semester}>
-                        <Text style={{ fontSize: 16, fontWeight: '500' }}>{ semester }</Text>
-                        { toSorted(tasks[semester], (a, b) => Number.parseInt(a.defaultTaskId) - Number.parseInt(b.defaultTaskId))
-                          .map(({ id, objective, complete }) =>   
-                          <GradeLevelListItem 
-                            key={objective}
-                            title={objective}
-                            checked={complete}
-                            onPress={() => {
-                              navigation.navigate('Task', { taskId: id, semester, objective, complete })
-                            }}
-                          />) }
-                      </View>
-                    );
-                  })
+            {/* todo: you know a better way to switch these displays without nested ternary's
+              .......but do it later lololololol
+            */}
+              { loadingTasks ? <Text>Loading...</Text> : 
+                hasTasks(tasks) ? <TaskList tasks={tasks} navigation={navigation} /> : <Text>No tasks - create some! or refresh</Text>
               }
           </View>
         </ScrollView>
       </View>
+    )
   };
+
+  //hmm something about either this or something else errored out -- need to revisit what to do
+  // when a user is first created. Maybe not even give them options to do things until
+  // tasks are created for them? hmm
+  const hasTasks = (tasks) => tasks && (tasks['Fall']?.length || tasks['Spring']?.length || tasks['Summer']?.length);
+
+  const TaskList = ({ tasks, navigation }) => {
+    return (
+    <>
+      {
+        ["Fall", "Spring", "Summer"]
+          .map(semester => {
+            return (
+              <View key={semester}>
+                <Text style={{ fontSize: 16, fontWeight: '500' }}>{ semester }</Text>
+                { toSorted(tasks[semester], (a, b) => Number.parseInt(a.defaultTaskId) - Number.parseInt(b.defaultTaskId))
+                  .map(({ id, objective, complete, year }) =>   
+                  <GradeLevelListItem 
+                    key={objective}
+                    title={objective}
+                    checked={complete}
+                    onPress={() => {
+                      navigation.navigate('Task', { taskId: id, semester, objective, complete, year })
+                    }}
+                  />) }
+              </View>
+            );
+          })
+      }
+    </>
+    );
+  }
 
   const GradeLevelListItem = ({ title, onPress, checked }) => {
     return (
@@ -117,6 +122,20 @@ export const GradeLevelScreen = ({ navigation, route }) => {
         />
     );
   }
+
+  // seems Object.groupBy not available in my current version oops
+const groupBy = function(xs, key) {
+  return xs.reduce(function(rv, x) {
+    (rv[x[key]] = rv[x[key]] || []).push(x);
+    return rv;
+  }, {});
+};
+
+// I gotta get my version shit figured out lols
+const toSorted = function(xs, fn) {
+  xs.sort(fn);
+  return xs;
+}
 
   const styles = StyleSheet.create({
     container: {

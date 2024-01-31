@@ -2,13 +2,15 @@ import { Button, TextInput } from "@react-native-material/core";
 import { doc, getFirestore, updateDoc } from "firebase/firestore";
 import { useState } from "react";
 import { ScrollView, StyleSheet, Text, View } from "react-native"
+import { Colors } from "../Colors";
 
 export const TaskScreen = ({ navigation, route }) => {
     const db = getFirestore();
-    const { taskId, objective, semester, complete } = route.params;
+    const { taskId, objective, semester, complete, year } = route.params;
     const [editMode, setEditMode] = useState(false);
     const [task, setTask] = useState({
         objective,
+        semester,
     });
 
     const toggleComplete = async () => {
@@ -26,12 +28,14 @@ export const TaskScreen = ({ navigation, route }) => {
     const ReadView = () => (
         <View>
             <Text>{ task.objective }</Text>
-            <Text>{ semester }</Text>
+            <Text>{ task.semester }</Text>
             <Button 
                 title="Edit"
+                color={Colors.background} tintColor={Colors.highlight2}
                 onPress={() => { setEditMode(true); }}
             />
             <Button 
+                color={Colors.highlight2} tintColor={Colors.background}
                 title={ complete ? "Mark as uncomplete" : "Mark as complete" }
                 onPress={() => toggleComplete().then(navigation.pop)}
             />
@@ -50,10 +54,12 @@ export const TaskScreen = ({ navigation, route }) => {
                 onChangeText={(objective) => setTask({ ...task, objective })}
             />
             <Button 
+                color={Colors.highlight2} tintColor={Colors.background}
                 title="Save"
                 onPress={() => updateTaskWithDatabase().then(() => setEditMode(false))}
             />
             <Button 
+                color={Colors.background} tintColor={Colors.highlight2}
                 title="Cancel"
                 onPress={() => { setEditMode(false); }}
             />

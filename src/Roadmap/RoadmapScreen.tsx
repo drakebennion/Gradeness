@@ -37,7 +37,7 @@ export const RoadmapScreen = ({ navigation }) => {
                 />
             )
         }
-        <Button title="IMPORT DATA DRAKE" onPress={doDataImport}/>
+        {/* <Button title="IMPORT DATA DRAKE" onPress={doDataImport}/> */}
       </View>
     );
   }
