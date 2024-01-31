@@ -63,7 +63,12 @@ export const GradeLevelScreen = ({ navigation, route }) => {
                 <Progress.Bar borderColor='#eee' unfilledColor='#eee' width={ null } progress={progress} />
             </View>
             <View>
-                <Button title="Add activity" color={Colors.highlight2} tintColor={Colors.background} />
+                <Button 
+                  title="Add activity" 
+                  color={Colors.highlight2} 
+                  tintColor={Colors.background} 
+                  onPress={() => navigation.navigate('CreateUpdateActivity')}
+                />
             </View>
           </View>
           <View>
