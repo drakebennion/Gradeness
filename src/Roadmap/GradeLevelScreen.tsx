@@ -13,24 +13,24 @@ export const GradeLevelScreen = ({ navigation, route }) => {
   const { year } = route.params;
   const db = getFirestore();
   const { user } = useAuthentication();
-  const [tasks, setTasks] = useState({});
-  const [loadingTasks, setLoadingTasks] = useState(true);
+  const [activities, setActivities] = useState({});
+  const [loadingActivities, setLoadingActivities] = useState(true);
   const [progress, setProgress] = useState(0.0);
 
   useFocusEffect(
     useCallback(() => {
       const fetchData = async () => {
             if (user) {
-              const q = query(collection(db, "tasks"), 
+              const q = query(collection(db, "activities"), 
                 where("userId", "==", user.uid),
                 where("year", "==", year));
-              const tasks = await getDocs(q);
-              const tasksData = tasks.docs.map(doc => ({id: doc.id, ...doc.data() }));
-              const tasksBySemester = groupBy(tasksData, 'semester');
-              // todo: need handling for if there are no tasks at all, plus network error handling
-              setProgress(tasksData.filter(taskData => taskData.complete).length / tasksData.length);
-              setTasks(tasksBySemester);
-              setLoadingTasks(false);
+              const activities = await getDocs(q);
+              const activitiesData = activities.docs.map(doc => ({id: doc.id, ...doc.data() }));
+              const activitiesBySemester = groupBy(activitiesData, 'semester');
+              // todo: need handling for if there are no activities at all, plus network error handling
+              setProgress(activitiesData.filter(activityData => activityData.complete).length / activitiesData.length);
+              setActivities(activitiesBySemester);
+              setLoadingActivities(false);
             }
           }
       
@@ -63,15 +63,15 @@ export const GradeLevelScreen = ({ navigation, route }) => {
                 <Progress.Bar borderColor='#eee' unfilledColor='#eee' width={ null } progress={progress} />
             </View>
             <View>
-                <Button title="Add task" color={Colors.highlight2} tintColor={Colors.background} />
+                <Button title="Add activity" color={Colors.highlight2} tintColor={Colors.background} />
             </View>
           </View>
           <View>
             {/* todo: you know a better way to switch these displays without nested ternary's
               .......but do it later lololololol
             */}
-              { loadingTasks ? <Text>Loading...</Text> : 
-                hasTasks(tasks) ? <TaskList tasks={tasks} navigation={navigation} /> : <Text>No tasks - create some! or refresh</Text>
+              { loadingActivities ? <Text>Loading...</Text> : 
+                hasActivities(activities) ? <ActivityList activities={activities} navigation={navigation} /> : <Text>No activities - create some! or refresh</Text>
               }
           </View>
         </ScrollView>
@@ -81,10 +81,10 @@ export const GradeLevelScreen = ({ navigation, route }) => {
 
   //hmm something about either this or something else errored out -- need to revisit what to do
   // when a user is first created. Maybe not even give them options to do things until
-  // tasks are created for them? hmm
-  const hasTasks = (tasks) => tasks && (tasks['Fall']?.length || tasks['Spring']?.length || tasks['Summer']?.length);
+  // activities are created for them? hmm
+  const hasActivities = (activities) => activities && (activities['Fall']?.length || activities['Spring']?.length || activities['Summer']?.length);
 
-  const TaskList = ({ tasks, navigation }) => {
+  const ActivityList = ({ activities, navigation }) => {
     return (
     <>
       {
@@ -93,14 +93,14 @@ export const GradeLevelScreen = ({ navigation, route }) => {
             return (
               <View key={semester}>
                 <Text style={{ fontSize: 16, fontWeight: '500' }}>{ semester }</Text>
-                { toSorted(tasks[semester], (a, b) => Number.parseInt(a.defaultTaskId) - Number.parseInt(b.defaultTaskId))
+                { toSorted(activities[semester], (a, b) => Number.parseInt(a.defaultActivityId) - Number.parseInt(b.defaultActivityId))
                   .map(({ id, objective, complete, year }) =>   
                   <GradeLevelListItem 
                     key={objective}
                     title={objective}
                     checked={complete}
                     onPress={() => {
-                      navigation.navigate('Task', { taskId: id, semester, objective, complete, year })
+                      navigation.navigate('Activity', { activityId: id, semester, objective, complete, year })
                     }}
                   />) }
               </View>
@@ -149,7 +149,7 @@ const toSorted = function(xs, fn) {
         marginVertical: 16,
     },
 
-    tasksHeader: {
+    activitiesHeader: {
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'space-between',

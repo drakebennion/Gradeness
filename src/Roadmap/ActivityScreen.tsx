@@ -4,31 +4,31 @@ import { useState } from "react";
 import { ScrollView, StyleSheet, Text, View } from "react-native"
 import { Colors } from "../Colors";
 
-export const TaskScreen = ({ navigation, route }) => {
+export const ActivityScreen = ({ navigation, route }) => {
     const db = getFirestore();
-    const { taskId, objective, semester, complete, year } = route.params;
+    const { activityId, objective, semester, complete, year } = route.params;
     const [editMode, setEditMode] = useState(false);
-    const [task, setTask] = useState({
+    const [activity, setActivity] = useState({
         objective,
         semester,
     });
 
     const toggleComplete = async () => {
-        const taskRef = doc(db, 'tasks', taskId);
-        await updateDoc(taskRef, { complete: !complete });
+        const activityRef = doc(db, 'activities', activityId);
+        await updateDoc(activityRef, { complete: !complete });
     };
 
-    const updateTaskWithDatabase = async () => {
+    const updateActivityWithDatabase = async () => {
         // todo: is there a better way of not duplicating this?
-        const taskRef = doc(db, 'tasks', taskId);
+        const activityRef = doc(db, 'activities', activityId);
 
-        await updateDoc(taskRef, task);
+        await updateDoc(activityRef, activity);
     }
 
     const ReadView = () => (
         <View>
-            <Text>{ task.objective }</Text>
-            <Text>{ task.semester }</Text>
+            <Text>{ activity.objective }</Text>
+            <Text>{ activity.semester }</Text>
             <Button 
                 title="Edit"
                 color={Colors.background} tintColor={Colors.highlight2}
@@ -49,14 +49,14 @@ export const TaskScreen = ({ navigation, route }) => {
     const EditView = () => (
         <View>
             <TextInput 
-                label="Task"
-                value={task.objective}
-                onChangeText={(objective) => setTask({ ...task, objective })}
+                label="Activity"
+                value={activity.objective}
+                onChangeText={(objective) => setActivity({ ...activity, objective })}
             />
             <Button 
                 color={Colors.highlight2} tintColor={Colors.background}
                 title="Save"
-                onPress={() => updateTaskWithDatabase().then(() => setEditMode(false))}
+                onPress={() => updateActivityWithDatabase().then(() => setEditMode(false))}
             />
             <Button 
                 color={Colors.background} tintColor={Colors.highlight2}
