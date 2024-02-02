@@ -105,7 +105,7 @@ export const GradeLevelScreen = ({ navigation, route }) => {
                     title={objective}
                     checked={complete}
                     onPress={() => {
-                      navigation.navigate('Activity', { activityId: id, semester, objective, complete, year })
+                      navigation.navigate('Activity', { activityId: id })
                     }}
                   />) }
               </View>

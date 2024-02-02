@@ -1,74 +1,62 @@
 import { Button, TextInput } from "@react-native-material/core";
-import { doc, getFirestore, updateDoc } from "firebase/firestore";
-import { useState } from "react";
+import { doc, getDoc, getFirestore, updateDoc } from "firebase/firestore";
+import { useCallback, useState } from "react";
 import { ScrollView, StyleSheet, Text, View } from "react-native"
 import { Colors } from "../Colors";
+import { useFocusEffect } from "@react-navigation/native";
+import { useAuthentication } from "../utils/hooks/useAuthentication";
+import { getGradeLevelNameForYear } from "../utils/style";
 
 export const ActivityScreen = ({ navigation, route }) => {
     const db = getFirestore();
-    const { activityId, objective, semester, complete, year } = route.params;
-    const [editMode, setEditMode] = useState(false);
-    const [activity, setActivity] = useState({
-        objective,
-        semester,
-    });
+    const { user } = useAuthentication();
+    const { activityId } = route.params;
+    const [activity, setActivity] = useState({ activityId });
+    const [loadingActivity, setLoadingActivity] = useState(true);
 
     const toggleComplete = async () => {
         const activityRef = doc(db, 'activities', activityId);
-        await updateDoc(activityRef, { complete: !complete });
+        await updateDoc(activityRef, { complete: !activity.complete });
     };
-
-    const updateActivityWithDatabase = async () => {
-        // todo: is there a better way of not duplicating this?
-        const activityRef = doc(db, 'activities', activityId);
-
-        await updateDoc(activityRef, activity);
-    }
-
-    const ReadView = () => (
-        <View>
-            <Text>{ activity.objective }</Text>
-            <Text>{ activity.semester }</Text>
-            <Button 
-                title="Edit"
-                color={Colors.background} tintColor={Colors.highlight2}
-                onPress={() => { setEditMode(true); }}
-            />
-            <Button 
-                color={Colors.highlight2} tintColor={Colors.background}
-                title={ complete ? "Mark as uncomplete" : "Mark as complete" }
-                onPress={() => toggleComplete().then(navigation.pop)}
-            />
-            <Button 
-                title="Go back"
-                onPress={() => navigation.pop()}
-            />
-        </View>
-    );
-
-    const EditView = () => (
-        <View>
-            <TextInput 
-                label="Activity"
-                value={activity.objective}
-                onChangeText={(objective) => setActivity({ ...activity, objective })}
-            />
-            <Button 
-                color={Colors.highlight2} tintColor={Colors.background}
-                title="Save"
-                onPress={() => updateActivityWithDatabase().then(() => setEditMode(false))}
-            />
-            <Button 
-                color={Colors.background} tintColor={Colors.highlight2}
-                title="Cancel"
-                onPress={() => { setEditMode(false); }}
-            />
-        </View>
-    );
+    
+    useFocusEffect(
+        useCallback(() => {
+          const fetchData = async () => {
+                if (activityId && user) {
+                  const activity = await getDoc(doc(db, "activities", activityId));
+                  // todo: need handling for if there are no activities at all, plus network error handling
+                  setActivity(activity.data());
+                  setLoadingActivity(false);
+                }
+              }
+          
+              fetchData().catch(console.error);
+        }, [activityId, user])
+      );
 
     return (
+        loadingActivity ? <Text>Loading</Text> : 
         <ScrollView contentContainerStyle={styles.container}>
-            { editMode ? EditView() : ReadView() }
+            <View>
+                <Text>{ activity.objective }</Text>
+                <Text>{ activity.semester }</Text>
+                <Text>{ getGradeLevelNameForYear(activity.year) }</Text>
+                <Text>{ activity.description }</Text>
+                <Button 
+                    title="Edit"
+                    color={Colors.background} tintColor={Colors.highlight2}
+                    onPress={() => navigation.navigate('CreateUpdateActivity', { activity: { activityId, objective: activity.objective, semester: activity.semester, year: activity.year, description: activity.description  } })}
+                />
+                <Button 
+                    color={Colors.highlight2} tintColor={Colors.background}
+                    title={ activity.complete ? "Mark as incomplete" : "Mark as complete" }
+                    onPress={() => toggleComplete().then(navigation.pop)}
+                />
+                <Button 
+                    title="Go back"
+                    onPress={() => navigation.goBack()}
+                />
+            </View>
         </ScrollView>
     )
 }

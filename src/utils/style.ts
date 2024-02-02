@@ -11,7 +11,13 @@ export const getColorForYear = (year: number) => {
 export const getGradeLevelNameForYear = (year: number) => {
     return GradeLevels
             .find(gradeLevel => gradeLevel.year === year)?.name
-             || 'Your grade level'
+             || 'Freshman'
+}
+
+export const getGradeLevelYearForName = (name: string) => {
+    return GradeLevels
+            .find(gradeLevel => gradeLevel.name === name)?.year
+             || 0
 }
 
 export const getGradeLevelObjectiveForYear = (year: number) => {
