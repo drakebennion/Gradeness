@@ -44,6 +44,7 @@ export const ActivityScreen = ({ navigation, route }) => {
                 <Text>{ activity.description }</Text>
                 <Button 
                     title="Edit"
+                    disabled={activity.defaultActivityId}
                     color={Colors.background} tintColor={Colors.highlight2}
                     onPress={() => navigation.navigate('CreateUpdateActivity', { activity: { activityId, objective: activity.objective, semester: activity.semester, year: activity.year, description: activity.description  } })}
                 />

@@ -5,11 +5,16 @@ import { View } from "react-native";
 import { Colors } from "../Colors";
 import { getGradeLevelNameForYear, getGradeLevelYearForName } from "../utils/style";
 import { useAuthentication } from "../utils/hooks/useAuthentication";
+import SelectDropdown from "react-native-select-dropdown";
+import { GradeLevels } from "./Repository";
+
+// todo: set up global for this
+const semesters = ["Fall", "Spring", "Summer"];
 
 export const CreateUpdateActivityScreen = ({ navigation, route }) => {
     const { user } = useAuthentication();
     const db = getFirestore();
-    const [activity, setActivity] = useState(route.params?.activity || { year: 10, });
+    const [activity, setActivity] = useState(route.params?.activity ?? {});
 
     const updateActivityWithDatabase = async () => {
         
@@ -48,17 +53,19 @@ export const CreateUpdateActivityScreen = ({ navigation, route }) => {
                 value={activity.objective}
                 onChangeText={(objective) => setActivity({ ...activity, objective })}
             />
-            {/* todo: make year and semester dropdowns, also handle discrepancy of year being a number but textinputs being strings y'know y'now */}
-            <TextInput 
-                label="Year"
-                value={getGradeLevelNameForYear(activity.year)}
-                // todo: change this back to number before save lol
-                onChangeText={(year) => setActivity({ ...activity, year: getGradeLevelYearForName(year)})}
+            <SelectDropdown 
+                data={GradeLevels}
+                onSelect={(gradeLevel) => setActivity({ ...activity, year: gradeLevel.year })}
+                rowTextForSelection={(gradeLevel) => gradeLevel.name}
+                buttonTextAfterSelection={(gradeLevel) => gradeLevel.name}
+                defaultValue={GradeLevels.find(gradeLevel => gradeLevel.year === activity.year)}
+                defaultButtonText="Choose a year"
             />
-            <TextInput 
-                label="Semester"
-                value={activity.semester}
-                onChangeText={(semester) => setActivity({ ...activity, semester })}
+            <SelectDropdown 
+                data={semesters}
+                onSelect={(semester) => setActivity({ ...activity, semester })}
+                defaultValue={activity.semester}
+                defaultButtonText="Choose a semester"
             />
             <TextInput 
                 label="Description"
@@ -68,6 +75,7 @@ export const CreateUpdateActivityScreen = ({ navigation, route }) => {
             <Button 
                 color={Colors.highlight2} tintColor={Colors.background}
                 title="Save"
+                disabled={!(activity.year && activity.semester && activity.description && activity.objective)}
                 onPress={() => updateActivityWithDatabase().then(() => navigation.goBack())}
             />
             <Button 
