@@ -22,8 +22,6 @@ export default function SignInScreen({ navigation }) {
     }
 
     signInWithEmailAndPassword(auth, signIn.email, signIn.password)
-      // should i even have this 'then'? this authenticates them and
-      // sends them right to the Roadmap so idk
       .then(() => navigation.navigate('Sign In'))
       .catch(error => setSignIn({ ...signIn, error: error.message }));
   }
@@ -55,9 +53,6 @@ export default function SignInScreen({ navigation }) {
 
 const styles = StyleSheet.create({
   container: {
-    //flex: 1,
     backgroundColor: '#fff',
-    //alignItems: 'center',
-    //justifyContent: 'center',
   },
 });
