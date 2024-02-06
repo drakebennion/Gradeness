@@ -1,29 +1,29 @@
-import { Button, TextInput } from '@react-native-material/core';
-import React, { useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
+import { Button, TextInput } from '@react-native-material/core'
+import React, { useState } from 'react'
+import { StyleSheet, Text, View } from 'react-native'
+import { getAuth, signInWithEmailAndPassword } from 'firebase/auth'
 
-export default function SignInScreen({ navigation }) {
-  const auth = getAuth();
+export default function SignInScreen ({ navigation }) {
+  const auth = getAuth()
 
   const [signIn, setSignIn] = useState({
     email: '',
     password: '',
-    error: '',
-  });
+    error: ''
+  })
 
-  function onSignIn() {
+  function onSignIn () {
     if (signIn.email === '' || signIn.password === '') {
       setSignIn({
         ...signIn,
         error: 'Email and password are required'
-      });
-      return;
+      })
+      return
     }
 
     signInWithEmailAndPassword(auth, signIn.email, signIn.password)
       .then(() => navigation.navigate('Sign In'))
-      .catch(error => setSignIn({ ...signIn, error: error.message }));
+      .catch(error => { setSignIn({ ...signIn, error: error.message }) })
   }
 
   return (
@@ -33,26 +33,26 @@ export default function SignInScreen({ navigation }) {
       { !!signIn.error && <View><Text>{signIn.error}</Text></View> }
 
       <View>
-        <TextInput 
+        <TextInput
           label='Email'
           value={signIn.email}
-          onChangeText={(email) => setSignIn({ ...signIn, email })}
+          onChangeText={(email) => { setSignIn({ ...signIn, email }) }}
         />
-        <TextInput 
+        <TextInput
           label='Password'
           value={signIn.password}
-          onChangeText={(password) => setSignIn({ ...signIn, password })}
+          onChangeText={(password) => { setSignIn({ ...signIn, password }) }}
           secureTextEntry
         />
 
         <Button title="Sign in" onPress={onSignIn} />
       </View>
     </View>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#fff',
-  },
-});
+    backgroundColor: '#fff'
+  }
+})

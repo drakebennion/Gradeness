@@ -1,13 +1,13 @@
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { NavigationContainer } from '@react-navigation/native'
+import { createNativeStackNavigator } from '@react-navigation/native-stack'
 
-import WelcomeScreen from '../Auth/Welcome';
-import SignInScreen from '../Auth/SignInScreen';
-import SignUpScreen from '../Auth/SignUpScreen';
+import WelcomeScreen from '../Auth/Welcome'
+import SignInScreen from '../Auth/SignInScreen'
+import SignUpScreen from '../Auth/SignUpScreen'
 
-const Stack = createNativeStackNavigator();
+const Stack = createNativeStackNavigator()
 
-export default function AuthStack() {
+export default function AuthStack () {
   return (
     <NavigationContainer>
       <Stack.Navigator>
@@ -16,5 +16,5 @@ export default function AuthStack() {
         <Stack.Screen name="Sign Up" component={SignUpScreen} />
       </Stack.Navigator>
     </NavigationContainer>
-  );
+  )
 }
