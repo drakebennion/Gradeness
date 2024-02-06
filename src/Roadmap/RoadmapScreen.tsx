@@ -1,16 +1,16 @@
 import { AppBar, Button, Icon, IconButton, ListItem } from '@react-native-material/core'
 import { Text, View } from 'react-native'
 import { styles } from '../styles'
-import { GradeLevels } from '../Constants'
+import { Colors, GradeLevels } from '../Constants'
 import { getAuth, signOut } from 'firebase/auth'
 import { doDataImport } from '../utils/init/db'
 import { getColorForYear, getGradeLevelNameForYear, getGradeLevelObjectiveForYear } from '../utils/style'
 import { type NativeStackScreenProps } from '@react-navigation/native-stack'
-import { type UserStackParamList } from '../navigation/userStackParams'
+import { type RoadmapStackParamList } from '../navigation/userStackParams'
 
 const roadmapGradeLevels = GradeLevels
 
-type Props = NativeStackScreenProps<UserStackParamList, 'Roadmap'>
+type Props = NativeStackScreenProps<RoadmapStackParamList, 'RoadmapHome'>
 export const RoadmapScreen = ({ navigation }: Props) => {
   const auth = getAuth()
 
@@ -41,7 +41,7 @@ export const RoadmapScreen = ({ navigation }: Props) => {
         )
       }
       {/* <Button title="IMPORT DATA DRAKE" onPress={doDataImport}/> */}
-    </View>
+    </View >
   )
 }
 

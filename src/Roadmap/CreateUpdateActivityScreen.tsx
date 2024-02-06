@@ -7,12 +7,12 @@ import { useAuthentication } from '../utils/hooks/useAuthentication'
 import SelectDropdown from 'react-native-select-dropdown'
 import { GradeLevels } from '../Constants'
 import { type NativeStackScreenProps } from '@react-navigation/native-stack'
-import { type UserStackParamList } from '../navigation/userStackParams'
+import { type RoadmapStackParamList } from '../navigation/userStackParams'
 
 // todo: set up global for this
 const semesters = ['Fall', 'Spring', 'Summer']
 
-type Props = NativeStackScreenProps<UserStackParamList, 'CreateUpdateActivity'>
+type Props = NativeStackScreenProps<RoadmapStackParamList, 'CreateUpdateActivity'>
 export const CreateUpdateActivityScreen = ({ navigation, route }: Props) => {
   const { user } = useAuthentication()
   const db = getFirestore()

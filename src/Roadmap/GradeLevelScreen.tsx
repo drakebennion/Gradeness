@@ -9,11 +9,11 @@ import { useAuthentication } from '../utils/hooks/useAuthentication'
 import { getColorForYear, getGradeLevelNameForYear, getGradeLevelObjectiveForYear } from '../utils/style'
 import { useFocusEffect } from '@react-navigation/native'
 import { type NativeStackScreenProps } from '@react-navigation/native-stack'
-import { type UserStackParamList } from '../navigation/userStackParams'
+import { type RoadmapStackParamList } from '../navigation/userStackParams'
 import { groupBy, toSorted } from '../utils/array'
 import { type Activity } from '../types/Activity'
 
-type Props = NativeStackScreenProps<UserStackParamList, 'GradeLevel'>
+type Props = NativeStackScreenProps<RoadmapStackParamList, 'GradeLevel'>
 export const GradeLevelScreen = ({ navigation, route }: Props) => {
   const { year } = route.params
   const db = getFirestore()
