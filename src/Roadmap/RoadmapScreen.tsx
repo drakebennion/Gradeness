@@ -5,10 +5,12 @@ import { GradeLevels } from "./Repository";
 import { getAuth, signOut } from "firebase/auth";
 import { doDataImport } from "../utils/init/db";
 import { getColorForYear, getGradeLevelNameForYear, getGradeLevelObjectiveForYear } from "../utils/style";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
 
 const roadmapGradeLevels = GradeLevels;
 
-export const RoadmapScreen = ({ navigation }) => {
+type Props = NativeStackScreenProps<UserStackParamList, 'Roadmap'>;
+export const RoadmapScreen = ({ navigation }: Props) => {
   const auth = getAuth();
 
     return (

@@ -6,8 +6,10 @@ import { Colors } from "../Colors";
 import { useFocusEffect } from "@react-navigation/native";
 import { useAuthentication } from "../utils/hooks/useAuthentication";
 import { getGradeLevelNameForYear } from "../utils/style";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
 
-export const ActivityScreen = ({ navigation, route }) => {
+type Props = NativeStackScreenProps<UserStackParamList, 'Activity'>;
+export const ActivityScreen = ({ navigation, route }: Props) => {
     const db = getFirestore();
     const { user } = useAuthentication();
     const { activityId } = route.params;

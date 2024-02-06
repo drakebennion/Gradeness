@@ -3,15 +3,16 @@ import { addDoc, collection, doc, getFirestore, setDoc, updateDoc } from "fireba
 import { useState } from "react";
 import { View } from "react-native";
 import { Colors } from "../Colors";
-import { getGradeLevelNameForYear, getGradeLevelYearForName } from "../utils/style";
 import { useAuthentication } from "../utils/hooks/useAuthentication";
 import SelectDropdown from "react-native-select-dropdown";
 import { GradeLevels } from "./Repository";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
 
 // todo: set up global for this
 const semesters = ["Fall", "Spring", "Summer"];
 
-export const CreateUpdateActivityScreen = ({ navigation, route }) => {
+type Props = NativeStackScreenProps<UserStackParamList, 'CreateUpdateActivity'>;
+export const CreateUpdateActivityScreen = ({ navigation, route }: Props) => {
     const { user } = useAuthentication();
     const db = getFirestore();
     const [activity, setActivity] = useState(route.params?.activity ?? {});

@@ -5,7 +5,7 @@ import { GradeLevelScreen } from '../Roadmap/GradeLevelScreen';
 import { ActivityScreen } from '../Roadmap/ActivityScreen';
 import { CreateUpdateActivityScreen } from '../Roadmap/CreateUpdateActivityScreen';
 
-const Stack = createNativeStackNavigator();
+const Stack = createNativeStackNavigator<UserStackParamList>();
 
 export default function UserStack() {
     return (

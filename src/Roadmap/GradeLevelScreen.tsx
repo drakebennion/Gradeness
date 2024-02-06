@@ -8,8 +8,10 @@ import { collection, getDocs, getFirestore, query, where } from 'firebase/firest
 import { useAuthentication } from '../utils/hooks/useAuthentication';
 import { getColorForYear, getGradeLevelNameForYear, getGradeLevelObjectiveForYear } from '../utils/style';
 import { useFocusEffect } from '@react-navigation/native';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
 
-export const GradeLevelScreen = ({ navigation, route }) => {
+type Props = NativeStackScreenProps<UserStackParamList, 'GradeLevel'>;
+export const GradeLevelScreen = ({ navigation, route }: Props) => {
   const { year } = route.params;
   const db = getFirestore();
   const { user } = useAuthentication();
