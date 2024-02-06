@@ -43,45 +43,45 @@ export const CreateUpdateActivityScreen = ({ navigation, route }: Props) => {
   }
 
   return (
-        <View>
-            <Text>Create or Update an activity</Text>
-            <View>
-            <TextInput
-                label="Name"
-                value={activity?.objective}
-                onChangeText={(objective) => { setActivity({ ...activity, objective }) }}
-            />
-            <SelectDropdown
-                data={GradeLevels}
-                onSelect={(gradeLevel) => { setActivity({ ...activity, year: gradeLevel.year }) }}
-                rowTextForSelection={(gradeLevel) => gradeLevel.name}
-                buttonTextAfterSelection={(gradeLevel) => gradeLevel.name}
-                defaultValue={GradeLevels.find(gradeLevel => gradeLevel.year === activity?.year)}
-                defaultButtonText="Choose a year"
-            />
-            <SelectDropdown
-                data={semesters}
-                onSelect={(semester) => { setActivity({ ...activity, semester }) }}
-                defaultValue={activity?.semester}
-                defaultButtonText="Choose a semester"
-            />
-            <TextInput
-                label="Description"
-                value={activity?.description}
-                onChangeText={(description) => { setActivity({ ...activity, description }) }}
-            />
-            <Button
-                color={Colors.highlight2} tintColor={Colors.background}
-                title="Save"
-                disabled={!(activity && activity.year && activity.semester && activity.description && activity.objective)}
-                onPress={async () => { await updateActivityWithDatabase().then(() => { navigation.goBack() }) }}
-            />
-            <Button
-                color={Colors.background} tintColor={Colors.highlight2}
-                title="Cancel"
-            />
-        </View>
-            <Button title="Close" onPress={ () => { navigation.goBack() } }/>
-        </View>
+    <View>
+      <Text>Create or Update an activity</Text>
+      <View>
+        <TextInput
+          label="Name"
+          value={activity?.objective}
+          onChangeText={(objective) => { setActivity({ ...activity, objective }) }}
+        />
+        <SelectDropdown
+          data={GradeLevels}
+          onSelect={(gradeLevel) => { setActivity({ ...activity, year: gradeLevel.year }) }}
+          rowTextForSelection={(gradeLevel) => gradeLevel.name}
+          buttonTextAfterSelection={(gradeLevel) => gradeLevel.name}
+          defaultValue={GradeLevels.find(gradeLevel => gradeLevel.year === activity?.year)}
+          defaultButtonText="Choose a year"
+        />
+        <SelectDropdown
+          data={semesters}
+          onSelect={(semester) => { setActivity({ ...activity, semester }) }}
+          defaultValue={activity?.semester}
+          defaultButtonText="Choose a semester"
+        />
+        <TextInput
+          label="Description"
+          value={activity?.description}
+          onChangeText={(description) => { setActivity({ ...activity, description }) }}
+        />
+        <Button
+          color={Colors.highlight2} tintColor={Colors.background}
+          title="Save"
+          disabled={!(activity && activity.year && activity.semester && activity.description && activity.objective)}
+          onPress={async () => { await updateActivityWithDatabase().then(() => { navigation.goBack() }) }}
+        />
+        <Button
+          color={Colors.background} tintColor={Colors.highlight2}
+          title="Cancel"
+        />
+      </View>
+      <Button title="Close" onPress={() => { navigation.goBack() }} />
+    </View>
   )
 }

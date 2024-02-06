@@ -30,7 +30,8 @@ export const GradeLevelScreen = ({ navigation, route }: Props) => {
             where('userId', '==', user.uid),
             where('year', '==', year))
           const activities = await getDocs(q)
-          const activitiesData = activities.docs.map(doc => ({ id: doc.id, ...doc.data() }))
+          // todo: still handle firestore typing!
+          const activitiesData = activities.docs.map(doc => ({ id: doc.id, complete: doc.data().complete, ...doc.data() }))
           const activitiesBySemester = groupBy(activitiesData, 'semester')
           // todo: need handling for if there are no activities at all, plus network error handling
           setProgress(activitiesData.filter(activityData => activityData.complete).length / activitiesData.length)
@@ -44,49 +45,49 @@ export const GradeLevelScreen = ({ navigation, route }: Props) => {
   )
 
   return (
-      <View>
-        <AppBar
-          contentContainerStyle={globalStyles.appBar}
-          centerTitle
-          title={getGradeLevelNameForYear(year)}
-          color="#1C222E"
-          titleStyle={{ color: getColorForYear(year) }}
-          leading={props => (
-            <IconButton
-              onPress={() => { navigation.pop() }}
-              icon={<Icon name="arrow-left" {...props} />}
-            />
-          )}
-        />
-        <ScrollView contentContainerStyle={styles.container}>
-          <View style={{ backgroundColor: '#1C222E', borderBottomLeftRadius: 8, borderBottomRightRadius: 8 }}>
-            <View>
-                <Text style={{ color: '#fff' }}>{getGradeLevelObjectiveForYear(year)}</Text>
-            </View>
-            <View style={styles.progressContainer}>
-                <Text style={{ fontWeight: '400', marginBottom: 8, color: '#fff' }}>Progress</Text>
-                <Progress.Bar borderColor='#eee' unfilledColor='#eee' width={ null } progress={progress} />
-            </View>
-            <View>
-                <Button
-                  title="Add activity"
-                  color={Colors.highlight2}
-                  tintColor={Colors.background}
-                  onPress={() => { navigation.navigate('CreateUpdateActivity') }}
-                />
-            </View>
+    <View>
+      <AppBar
+        contentContainerStyle={globalStyles.appBar}
+        centerTitle
+        title={getGradeLevelNameForYear(year)}
+        color="#1C222E"
+        titleStyle={{ color: getColorForYear(year) }}
+        leading={props => (
+          <IconButton
+            onPress={() => { navigation.pop() }}
+            icon={<Icon name="arrow-left" {...props} />}
+          />
+        )}
+      />
+      <ScrollView contentContainerStyle={styles.container}>
+        <View style={{ backgroundColor: '#1C222E', borderBottomLeftRadius: 8, borderBottomRightRadius: 8 }}>
+          <View>
+            <Text style={{ color: '#fff' }}>{getGradeLevelObjectiveForYear(year)}</Text>
+          </View>
+          <View style={styles.progressContainer}>
+            <Text style={{ fontWeight: '400', marginBottom: 8, color: '#fff' }}>Progress</Text>
+            <Progress.Bar borderColor='#eee' unfilledColor='#eee' width={null} progress={progress} />
           </View>
           <View>
-            {/* todo: you know a better way to switch these displays without nested ternary's
+            <Button
+              title="Add activity"
+              color={Colors.highlight2}
+              tintColor={Colors.background}
+              onPress={() => { navigation.navigate('CreateUpdateActivity') }}
+            />
+          </View>
+        </View>
+        <View>
+          {/* todo: you know a better way to switch these displays without nested ternary's
               .......but do it later lololololol
             */}
-              { loadingActivities
-                ? <Text>Loading...</Text>
-                : hasActivities(activities) ? <ActivityList activities={activities} navigation={navigation} /> : <Text>No activities - create some! or refresh</Text>
-              }
-          </View>
-        </ScrollView>
-      </View>
+          {loadingActivities
+            ? <Text>Loading...</Text>
+            : hasActivities(activities) ? <ActivityList activities={activities} navigation={navigation} /> : <Text>No activities - create some! or refresh</Text>
+          }
+        </View>
+      </ScrollView>
+    </View>
   )
 }
 
@@ -103,17 +104,17 @@ const ActivityList = ({ activities, navigation }) => {
           .map(semester => {
             return (
               <View key={semester}>
-                <Text style={{ fontSize: 16, fontWeight: '500' }}>{ semester }</Text>
-                { toSorted(activities[semester], (a: Activity, b: Activity) => Number.parseInt(a.defaultActivityId) - Number.parseInt(b.defaultActivityId))
+                <Text style={{ fontSize: 16, fontWeight: '500' }}>{semester}</Text>
+                {toSorted(activities[semester], (a: Activity, b: Activity) => Number.parseInt(a.defaultActivityId) - Number.parseInt(b.defaultActivityId))
                   .map(({ id, objective, complete, year }) =>
-                  <GradeLevelListItem
-                    key={objective}
-                    title={objective}
-                    checked={complete}
-                    onPress={() => {
-                      navigation.navigate('Activity', { activityId: id })
-                    }}
-                  />) }
+                    <GradeLevelListItem
+                      key={objective}
+                      title={objective}
+                      checked={complete}
+                      onPress={() => {
+                        navigation.navigate('Activity', { activityId: id })
+                      }}
+                    />)}
               </View>
             )
           })
@@ -124,13 +125,13 @@ const ActivityList = ({ activities, navigation }) => {
 
 const GradeLevelListItem = ({ title, checked, onPress }) => {
   return (
-        <ListItem
-          key={title}
-          title={title}
-          onPress={onPress}
-          leading={<Icon size={24} name={ checked ? 'checkbox-marked-circle' : 'checkbox-blank-circle-outline' } color="#365a75"/>}
-          trailing={<Icon size={24} name="chevron-right" color="#365a75"/>}
-        />
+    <ListItem
+      key={title}
+      title={title}
+      onPress={onPress}
+      leading={<Icon size={24} name={checked ? 'checkbox-marked-circle' : 'checkbox-blank-circle-outline'} color="#365a75" />}
+      trailing={<Icon size={24} name="chevron-right" color="#365a75" />}
+    />
   )
 }
 
