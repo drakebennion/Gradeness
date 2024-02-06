@@ -1,12 +1,15 @@
 import { Button, Text } from '@react-native-material/core'
 import React from 'react'
-import { StyleSheet, View } from 'react-native'
+import { Image, StyleSheet, View } from 'react-native'
 import { Colors } from '../Constants'
 
 export default function HomeScreen({ navigation }) {
   return (
     <View style={styles.container}>
-      <Text color={Colors.text} style={styles.header}>Gradeness</Text>
+      <View style={styles.header}>
+        <Image style={styles.header.image} source={require('../../assets/Owl.png')} />
+        <Text style={styles.header.text} color={Colors.text}>Gradeness</Text>
+      </View>
       <View style={styles.buttons}>
         <Button title="Get started" color={Colors.highlight2} style={styles.button} onPress={() => navigation.navigate('Sign Up')} />
         <Button title="Sign In" color={Colors.text} style={styles.button} onPress={() => navigation.navigate('Sign In')} />
@@ -26,7 +29,14 @@ const styles = StyleSheet.create({
   header: {
     alignSelf: 'center',
     marginTop: '50%',
-    fontSize: 46,
+
+    image: {
+      alignSelf: 'center',
+    },
+
+    text: {
+      fontSize: 46,
+    }
   },
   buttons: {
     marginBottom: 24,
