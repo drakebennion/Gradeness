@@ -10,6 +10,8 @@ import { getColorForYear, getGradeLevelNameForYear, getGradeLevelObjectiveForYea
 import { useFocusEffect } from '@react-navigation/native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { UserStackParamList } from '../navigation/userStackParams';
+import { groupBy, toSorted } from '../utils/array';
+import { Activity } from '../types/Activity';
 
 type Props = NativeStackScreenProps<UserStackParamList, 'GradeLevel'>;
 export const GradeLevelScreen = ({ navigation, route }: Props) => {
@@ -101,7 +103,7 @@ export const GradeLevelScreen = ({ navigation, route }: Props) => {
             return (
               <View key={semester}>
                 <Text style={{ fontSize: 16, fontWeight: '500' }}>{ semester }</Text>
-                { toSorted(activities[semester], (a, b) => Number.parseInt(a.defaultActivityId) - Number.parseInt(b.defaultActivityId))
+                { toSorted(activities[semester], (a: Activity, b: Activity) => Number.parseInt(a.defaultActivityId) - Number.parseInt(b.defaultActivityId))
                   .map(({ id, objective, complete, year }) =>   
                   <GradeLevelListItem 
                     key={objective}
@@ -119,7 +121,7 @@ export const GradeLevelScreen = ({ navigation, route }: Props) => {
     );
   }
 
-  const GradeLevelListItem = ({ title, onPress, checked }) => {
+  const GradeLevelListItem = ({ title, checked, onPress, }) => {
     return (
         <ListItem
           key={title}
@@ -130,20 +132,6 @@ export const GradeLevelScreen = ({ navigation, route }: Props) => {
         />
     );
   }
-
-  // seems Object.groupBy not available in my current version oops
-const groupBy = function(xs, key) {
-  return xs.reduce(function(rv, x) {
-    (rv[x[key]] = rv[x[key]] || []).push(x);
-    return rv;
-  }, {});
-};
-
-// I gotta get my version shit figured out lols
-const toSorted = function(xs, fn) {
-  xs.sort(fn);
-  return xs;
-}
 
   const styles = StyleSheet.create({
     container: {
