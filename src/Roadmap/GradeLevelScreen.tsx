@@ -2,7 +2,7 @@ import { ScrollView, StyleSheet, Text, View } from 'react-native'
 import { AppBar, Button, Icon, IconButton, ListItem } from '@react-native-material/core'
 import * as Progress from 'react-native-progress'
 import { styles as globalStyles } from '../styles'
-import { Colors } from '../Colors'
+import { Colors } from "../Constants"
 import { useCallback, useState } from 'react'
 import { collection, getDocs, getFirestore, query, where } from 'firebase/firestore'
 import { useAuthentication } from '../utils/hooks/useAuthentication'

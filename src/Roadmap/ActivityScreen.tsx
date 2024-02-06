@@ -2,7 +2,7 @@ import { Button, TextInput } from '@react-native-material/core'
 import { doc, getDoc, getFirestore, updateDoc } from 'firebase/firestore'
 import { useCallback, useState } from 'react'
 import { ScrollView, StyleSheet, Text, View } from 'react-native'
-import { Colors } from '../Colors'
+import { Colors } from "../Constants"
 import { useFocusEffect } from '@react-navigation/native'
 import { useAuthentication } from '../utils/hooks/useAuthentication'
 import { getGradeLevelNameForYear } from '../utils/style'
@@ -42,28 +42,28 @@ export const ActivityScreen = ({ navigation, route }: Props) => {
     loadingActivity
       ? <Text>Loading</Text>
       : <ScrollView contentContainerStyle={styles.container}>
-            <View>
-                <Text>{ activity.objective }</Text>
-                <Text>{ activity.semester }</Text>
-                <Text>{ getGradeLevelNameForYear(activity.year) }</Text>
-                <Text>{ activity.description }</Text>
-                <Button
-                    title="Edit"
-                    disabled={!!activity.defaultActivityId}
-                    color={Colors.background} tintColor={Colors.highlight2}
-                    onPress={() => { navigation.navigate('CreateUpdateActivity', { activity: { activityId, objective: activity.objective, semester: activity.semester, year: activity.year, description: activity.description } }) }}
-                />
-                <Button
-                    color={Colors.highlight2} tintColor={Colors.background}
-                    title={ activity.complete ? 'Mark as incomplete' : 'Mark as complete' }
-                    onPress={async () => { await toggleComplete().then(() => { navigation.pop() }) }}
-                />
-                <Button
-                    title="Go back"
-                    onPress={() => { navigation.goBack() }}
-                />
-            </View>
-        </ScrollView>
+        <View>
+          <Text>{activity.objective}</Text>
+          <Text>{activity.semester}</Text>
+          <Text>{getGradeLevelNameForYear(activity.year)}</Text>
+          <Text>{activity.description}</Text>
+          <Button
+            title="Edit"
+            disabled={!!activity.defaultActivityId}
+            color={Colors.background} tintColor={Colors.highlight2}
+            onPress={() => { navigation.navigate('CreateUpdateActivity', { activity: { activityId, objective: activity.objective, semester: activity.semester, year: activity.year, description: activity.description } }) }}
+          />
+          <Button
+            color={Colors.highlight2} tintColor={Colors.background}
+            title={activity.complete ? 'Mark as incomplete' : 'Mark as complete'}
+            onPress={async () => { await toggleComplete().then(() => { navigation.pop() }) }}
+          />
+          <Button
+            title="Go back"
+            onPress={() => { navigation.goBack() }}
+          />
+        </View>
+      </ScrollView>
   )
 }
 

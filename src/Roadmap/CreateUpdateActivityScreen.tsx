@@ -2,10 +2,10 @@ import { Button, Text, TextInput } from '@react-native-material/core'
 import { addDoc, collection, doc, getFirestore, setDoc, updateDoc } from 'firebase/firestore'
 import { useState } from 'react'
 import { View } from 'react-native'
-import { Colors } from '../Colors'
+import { Colors } from "../Constants"
 import { useAuthentication } from '../utils/hooks/useAuthentication'
 import SelectDropdown from 'react-native-select-dropdown'
-import { GradeLevels } from './Repository'
+import { GradeLevels } from '../Constants'
 import { type NativeStackScreenProps } from '@react-navigation/native-stack'
 import { type UserStackParamList } from '../navigation/userStackParams'
 

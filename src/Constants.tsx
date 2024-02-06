@@ -4,3 +4,13 @@ export const GradeLevels = [
   { year: 11, name: 'Junior', objective: 'Refine your story' },
   { year: 12, name: 'Senior', objective: 'Tell your story' }
 ]
+
+export const Colors = {
+  freshman: '#4AF466',
+  sophomore: '#F6629D',
+  junior: '#3CD0F5',
+  senior: '#FCD411',
+  highlight2: '#3CD0F5',
+  background: '#1C222E',
+  text: '#FFF'
+};
