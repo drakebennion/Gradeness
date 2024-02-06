@@ -9,6 +9,7 @@ import { useAuthentication } from '../utils/hooks/useAuthentication';
 import { getColorForYear, getGradeLevelNameForYear, getGradeLevelObjectiveForYear } from '../utils/style';
 import { useFocusEffect } from '@react-navigation/native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { UserStackParamList } from '../navigation/userStackParams';
 
 type Props = NativeStackScreenProps<UserStackParamList, 'GradeLevel'>;
 export const GradeLevelScreen = ({ navigation, route }: Props) => {

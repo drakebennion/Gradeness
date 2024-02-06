@@ -6,6 +6,7 @@ import { getAuth, signOut } from "firebase/auth";
 import { doDataImport } from "../utils/init/db";
 import { getColorForYear, getGradeLevelNameForYear, getGradeLevelObjectiveForYear } from "../utils/style";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { UserStackParamList } from "../navigation/userStackParams";
 
 const roadmapGradeLevels = GradeLevels;
 

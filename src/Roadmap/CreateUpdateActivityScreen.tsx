@@ -7,6 +7,7 @@ import { useAuthentication } from "../utils/hooks/useAuthentication";
 import SelectDropdown from "react-native-select-dropdown";
 import { GradeLevels } from "./Repository";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { UserStackParamList } from "../navigation/userStackParams";
 
 // todo: set up global for this
 const semesters = ["Fall", "Spring", "Summer"];
@@ -15,10 +16,9 @@ type Props = NativeStackScreenProps<UserStackParamList, 'CreateUpdateActivity'>;
 export const CreateUpdateActivityScreen = ({ navigation, route }: Props) => {
     const { user } = useAuthentication();
     const db = getFirestore();
-    const [activity, setActivity] = useState(route.params?.activity ?? {});
+    const [activity, setActivity] = useState(route.params?.activity);
 
     const updateActivityWithDatabase = async () => {
-        
         // todo: also need to do some validation - need to make sure all fields are filled
         if (activity.activityId) {
             const activityRef = doc(db, 'activities', activity.activityId);
@@ -29,7 +29,7 @@ export const CreateUpdateActivityScreen = ({ navigation, route }: Props) => {
             };
             await setDoc(activityRef, activityEntity, { merge: true }).catch(console.error);
         } else {
-            // todo: need to get the 'order' this task should be in!!! heavens me
+            // todo: need to get the 'order' this activity should be in!!! heavens me
             const activityEntity = {
                 ...activity, 
                 userId: user.uid,
@@ -38,7 +38,6 @@ export const CreateUpdateActivityScreen = ({ navigation, route }: Props) => {
                 updatedAt: Date.now(),
                 updatedBy: user.uid,
             };
-            console.log(activityEntity)
             await addDoc(collection(db, 'activities'), activityEntity).catch(console.error);
         }
         
@@ -47,11 +46,11 @@ export const CreateUpdateActivityScreen = ({ navigation, route }: Props) => {
     
     return (
         <View>
-            <Text>Create or Update an activity :) </Text>
+            <Text>Create or Update an activity</Text>
             <View>
             <TextInput 
                 label="Name"
-                value={activity.objective}
+                value={activity?.objective}
                 onChangeText={(objective) => setActivity({ ...activity, objective })}
             />
             <SelectDropdown 
@@ -59,24 +58,24 @@ export const CreateUpdateActivityScreen = ({ navigation, route }: Props) => {
                 onSelect={(gradeLevel) => setActivity({ ...activity, year: gradeLevel.year })}
                 rowTextForSelection={(gradeLevel) => gradeLevel.name}
                 buttonTextAfterSelection={(gradeLevel) => gradeLevel.name}
-                defaultValue={GradeLevels.find(gradeLevel => gradeLevel.year === activity.year)}
+                defaultValue={GradeLevels.find(gradeLevel => gradeLevel.year === activity?.year)}
                 defaultButtonText="Choose a year"
             />
             <SelectDropdown 
                 data={semesters}
                 onSelect={(semester) => setActivity({ ...activity, semester })}
-                defaultValue={activity.semester}
+                defaultValue={activity?.semester}
                 defaultButtonText="Choose a semester"
             />
             <TextInput 
                 label="Description"
-                value={activity.description}
+                value={activity?.description}
                 onChangeText={(description) => setActivity({ ...activity, description })}
             />
             <Button 
                 color={Colors.highlight2} tintColor={Colors.background}
                 title="Save"
-                disabled={!(activity.year && activity.semester && activity.description && activity.objective)}
+                disabled={!(activity && activity.year && activity.semester && activity.description && activity.objective)}
                 onPress={() => updateActivityWithDatabase().then(() => navigation.goBack())}
             />
             <Button 

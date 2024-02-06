@@ -7,13 +7,14 @@ import { useFocusEffect } from "@react-navigation/native";
 import { useAuthentication } from "../utils/hooks/useAuthentication";
 import { getGradeLevelNameForYear } from "../utils/style";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { Activity } from "../types/Activity";
 
 type Props = NativeStackScreenProps<UserStackParamList, 'Activity'>;
 export const ActivityScreen = ({ navigation, route }: Props) => {
     const db = getFirestore();
     const { user } = useAuthentication();
     const { activityId } = route.params;
-    const [activity, setActivity] = useState({ activityId });
+    const [activity, setActivity] = useState<Activity | undefined>();
     const [loadingActivity, setLoadingActivity] = useState(true);
 
     const toggleComplete = async () => {
@@ -27,6 +28,7 @@ export const ActivityScreen = ({ navigation, route }: Props) => {
                 if (activityId && user) {
                   const activity = await getDoc(doc(db, "activities", activityId));
                   // todo: need handling for if there are no activities at all, plus network error handling
+                  // todo: mapper for firestore data to Activity
                   setActivity(activity.data());
                   setLoadingActivity(false);
                 }
@@ -46,14 +48,14 @@ export const ActivityScreen = ({ navigation, route }: Props) => {
                 <Text>{ activity.description }</Text>
                 <Button 
                     title="Edit"
-                    disabled={activity.defaultActivityId}
+                    disabled={!!activity.defaultActivityId}
                     color={Colors.background} tintColor={Colors.highlight2}
                     onPress={() => navigation.navigate('CreateUpdateActivity', { activity: { activityId, objective: activity.objective, semester: activity.semester, year: activity.year, description: activity.description  } })}
                 />
                 <Button 
                     color={Colors.highlight2} tintColor={Colors.background}
                     title={ activity.complete ? "Mark as incomplete" : "Mark as complete" }
-                    onPress={() => toggleComplete().then(navigation.pop)}
+                    onPress={() => toggleComplete().then(() => navigation.pop())}
                 />
                 <Button 
                     title="Go back"

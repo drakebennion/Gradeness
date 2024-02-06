@@ -1,7 +1,8 @@
-type UserStackParamList = {
+import { Activity } from "../types/Activity";
+
+export type UserStackParamList = {
     Roadmap: undefined;
     GradeLevel: { year: number };
     Activity: { activityId: string };
-    // todo: create Activity type
-    CreateUpdateActivity: { activity: any };
+    CreateUpdateActivity: { activity?: Activity };
 };

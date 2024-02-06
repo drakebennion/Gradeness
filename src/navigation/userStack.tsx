@@ -4,6 +4,7 @@ import { RoadmapScreen } from '../Roadmap/RoadmapScreen';
 import { GradeLevelScreen } from '../Roadmap/GradeLevelScreen';
 import { ActivityScreen } from '../Roadmap/ActivityScreen';
 import { CreateUpdateActivityScreen } from '../Roadmap/CreateUpdateActivityScreen';
+import { UserStackParamList } from './userStackParams';
 
 const Stack = createNativeStackNavigator<UserStackParamList>();
 
