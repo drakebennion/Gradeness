@@ -6,6 +6,7 @@ import { doDataImport } from '../utils/init/db'
 import { getColorForYear, getGradeLevelNameForYear, getGradeLevelObjectiveForYear } from '../utils/style'
 import { type NativeStackScreenProps } from '@react-navigation/native-stack'
 import { type RoadmapStackParamList } from '../navigation/userStackParams'
+import { LinearGradient } from 'expo-linear-gradient';
 
 const roadmapGradeLevels = GradeLevels
 
@@ -26,19 +27,22 @@ export const RoadmapScreen = ({ navigation }: Props) => {
           roadmapGradeLevels.map(({ year, objective }) =>
             <Pressable key={year}
               pressEffect='ripple'
-              style={{
-                borderRadius: 8,
-                width: 172,
-                height: 160,
-                backgroundColor: getColorForYear(year),
-                marginVertical: 8,
-                marginRight: 8,
-                marginLeft: 4
-              }}
               onPress={() => { navigation.navigate('GradeLevel', { year }) }}
             >
-              <Text style={{ color: Colors.text }}>{getGradeLevelNameForYear(year)}</Text>
-              <Text style={{ color: Colors.text }}>{getGradeLevelObjectiveForYear(year)}</Text>
+              <LinearGradient
+                key={year}
+                colors={[getColorForYear(year, true), getColorForYear(year)]}
+                style={{
+                  borderRadius: 8,
+                  width: 172,
+                  height: 160,
+                  marginVertical: 8,
+                  marginRight: 8,
+                  marginLeft: 4
+                }}>
+                <Text style={{ color: Colors.text }}>{getGradeLevelNameForYear(year)}</Text>
+                <Text style={{ color: Colors.text }}>{getGradeLevelObjectiveForYear(year)}</Text>
+              </LinearGradient>
             </Pressable>
           )
         }

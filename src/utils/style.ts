@@ -1,8 +1,8 @@
 import { Colors, GradeLevels } from '../Constants'
 
-export const getColorForYear = (year: number) => {
-  const gradeLevelName = getGradeLevelNameForYear(year);
-  return Colors[gradeLevelName.toLowerCase()];
+export const getColorForYear = (year: number, dark?: boolean) => {
+  let gradeLevelName = getGradeLevelNameForYear(year).toLowerCase();
+  return Colors[gradeLevelName += dark ? 'Dark' : ''];
 }
 
 export const getGradeLevelNameForYear = (year: number) => {
