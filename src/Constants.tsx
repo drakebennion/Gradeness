@@ -7,9 +7,13 @@ export const GradeLevels = [
 
 export const Colors = {
   freshman: '#4AF466',
+  freshmanDark: '#37BD4D',
   sophomore: '#F6629D',
+  sophomoreDark: '#F6629D',
   junior: '#3CD0F5',
+  juniorDark: '#3CD0F5',
   senior: '#FCD411',
+  seniorDark: '#FCD411',
   highlight2: '#3CD0F5',
   background: '#1C222E',
   text: '#FFF'

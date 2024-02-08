@@ -1,4 +1,4 @@
-import { NavigationContainer } from '@react-navigation/native'
+import { DefaultTheme, NavigationContainer } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import { RoadmapScreen } from '../Roadmap/RoadmapScreen'
 import { GradeLevelScreen } from '../Roadmap/GradeLevelScreen'
@@ -7,6 +7,7 @@ import { CreateUpdateActivityScreen } from '../Roadmap/CreateUpdateActivityScree
 import { type RoadmapStackParamList } from './userStackParams'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { AccomplishmentScreen } from '../Accomplishment/AccomplishmentScreen'
+import { Colors } from '../Constants'
 
 const RoadmapStack = createNativeStackNavigator<RoadmapStackParamList>()
 const Tab = createBottomTabNavigator()
@@ -34,6 +35,14 @@ function AccomplishmentsScreen() {
     )
 }
 
+const Theme = {
+    ...DefaultTheme,
+    colors: {
+        ...DefaultTheme.colors,
+        background: Colors.background,
+    },
+};
+
 function RoadmapScreens() {
     return (
         <RoadmapStack.Navigator screenOptions={{ headerShown: false }}>
@@ -51,19 +60,19 @@ function RoadmapScreens() {
                     component={ActivityScreen}
                 />
             </RoadmapStack.Group>
-            <RoadmapStack.Group>
+            <RoadmapStack.Group screenOptions={{ presentation: 'modal' }}>
                 <RoadmapStack.Screen
                     name="CreateUpdateActivity"
                     component={CreateUpdateActivityScreen}
                 />
             </RoadmapStack.Group>
-        </RoadmapStack.Navigator>
+        </ RoadmapStack.Navigator>
     )
 }
 
 export default function UserStack() {
     return (
-        <NavigationContainer>
+        <NavigationContainer theme={Theme}>
             <Overview />
         </NavigationContainer>
     )

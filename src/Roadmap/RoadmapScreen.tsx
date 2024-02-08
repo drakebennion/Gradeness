@@ -1,6 +1,5 @@
-import { AppBar, Button, Icon, IconButton, ListItem } from '@react-native-material/core'
+import { Pressable } from '@react-native-material/core'
 import { Text, View } from 'react-native'
-import { styles } from '../styles'
 import { Colors, GradeLevels } from '../Constants'
 import { getAuth, signOut } from 'firebase/auth'
 import { doDataImport } from '../utils/init/db'
@@ -15,52 +14,37 @@ export const RoadmapScreen = ({ navigation }: Props) => {
   const auth = getAuth()
 
   return (
-    <View style={styles.container}>
-      <AppBar
-        contentContainerStyle={styles.appBar}
-        centerTitle
-        title="Roadmap"
-        color="#1C222E"
-        leading={props => (
-          <IconButton icon={props => <Icon name="menu" {...props} />} {...props} />
-        )}
-        trailing={props => (
-          <Button title="Log out" onPress={async () => { await signOut(auth) }} {...props} />
-        )}
-      />
-      {
-        roadmapGradeLevels.map(({ year, objective }) =>
-          <ListItem
-            key={year}
-            title={getGradeLevelNameForYear(year)}
-            secondaryText={getGradeLevelObjectiveForYear(year)}
-            leading={makeIcon(year)}
-            trailing={<Icon size={24} name="chevron-right" />}
-            onPress={() => { navigation.navigate('GradeLevel', { year }) }}
-          />
-        )
-      }
+    <View style={{ backgroundColor: Colors.background }}>
+      <Text style={{ color: Colors.text, marginTop: 32, fontSize: 36 }}>Welcome</Text>
+      <Text style={{ color: Colors.text, marginTop: 8 }}>
+        Gradeness is designed to simplify the high school process by providing a
+        roadmap of time sensitive activities to prepare you for your future and a
+        place to capture your accomplishments.
+      </Text>
+      <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', marginTop: 32, flexWrap: 'wrap' }}>
+        {
+          roadmapGradeLevels.map(({ year, objective }) =>
+            <Pressable key={year}
+              pressEffect='ripple'
+              style={{
+                borderRadius: 8,
+                width: 172,
+                height: 160,
+                backgroundColor: getColorForYear(year),
+                marginVertical: 8,
+                marginRight: 8,
+                marginLeft: 4
+              }}
+              onPress={() => { navigation.navigate('GradeLevel', { year }) }}
+            >
+              <Text style={{ color: Colors.text }}>{getGradeLevelNameForYear(year)}</Text>
+              <Text style={{ color: Colors.text }}>{getGradeLevelObjectiveForYear(year)}</Text>
+            </Pressable>
+          )
+        }
+      </View>
+
       {/* <Button title="IMPORT DATA DRAKE" onPress={doDataImport}/> */}
     </View >
-  )
-}
-
-const makeIcon = (year) => {
-  return (
-    <View style={{
-      alignItems: 'center',
-      backgroundColor: '#1C222E',
-      display: 'flex',
-      height: 48,
-      justifyContent: 'center',
-      width: 48
-    }}>
-      <Text
-        style={{
-          color: getColorForYear(year),
-          fontSize: 36
-        }}>{year}
-      </Text>
-    </View>
   )
 }
