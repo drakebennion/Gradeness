@@ -2,15 +2,12 @@ import { Button, Text, TextInput } from '@react-native-material/core'
 import { addDoc, collection, doc, getFirestore, setDoc, updateDoc } from 'firebase/firestore'
 import { useState } from 'react'
 import { View } from 'react-native'
-import { Colors } from "../Constants"
+import { Colors, semesters } from "../Constants"
 import { useAuthentication } from '../utils/hooks/useAuthentication'
 import SelectDropdown from 'react-native-select-dropdown'
 import { GradeLevels } from '../Constants'
 import { type NativeStackScreenProps } from '@react-navigation/native-stack'
 import { type RoadmapStackParamList } from '../navigation/userStackParams'
-
-// todo: set up global for this
-const semesters = ['Fall', 'Spring', 'Summer']
 
 type Props = NativeStackScreenProps<RoadmapStackParamList, 'CreateUpdateActivity'>
 export const CreateUpdateActivityScreen = ({ navigation, route }: Props) => {

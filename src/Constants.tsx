@@ -5,6 +5,8 @@ export const GradeLevels = [
   { year: 12, name: 'Senior', objective: 'Tell your story' }
 ]
 
+export const semesters = ['Fall', 'Spring', 'Summer'];
+
 export const Colors = {
   freshman: '#4AF466',
   freshmanDark: '#37BD4D',
