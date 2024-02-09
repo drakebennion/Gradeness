@@ -8,6 +8,7 @@ import { type RoadmapStackParamList } from './userStackParams'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { AccomplishmentScreen } from '../Accomplishment/AccomplishmentScreen'
 import { Colors } from '../Constants'
+import { Icon } from '@react-native-material/core'
 
 const RoadmapStack = createNativeStackNavigator<RoadmapStackParamList>()
 const Tab = createBottomTabNavigator()
@@ -15,12 +16,27 @@ const AccomplishmentsStack = createNativeStackNavigator()
 
 function Overview() {
     return (
-        <Tab.Navigator screenOptions={{ headerShown: false }}>
+        <Tab.Navigator
+            screenOptions={({ route }) => ({
+                headerShown: false,
+                tabBarActiveTintColor: Colors.highlight2,
+                tabBarInactiveTintColor: Colors.text,
+                tabBarActiveBackgroundColor: Colors.background,
+                tabBarInactiveBackgroundColor: Colors.background,
+                tabBarStyle: { borderTopWidth: 0 },
+                tabBarLabelStyle: { marginBottom: 8 },
+                tabBarIcon: ({ color }) => {
+                    let iconName = route.name === 'Roadmap' ? 'map-outline' : 'checkbox-marked-circle-outline';
+                    return <Icon size={32} name={iconName} color={color} />;
+                },
+
+            })}
+        >
             {/* <Tab.Screen name="Home" component={Home} /> */}
-            <Tab.Screen name="Roadmap" component={RoadmapScreens} />
+            < Tab.Screen name="Roadmap" component={RoadmapScreens} />
             <Tab.Screen name="Accomplishments" component={AccomplishmentsScreen} />
             {/* <Tab.Screen name="Goals" component={Goals} /> */}
-        </Tab.Navigator>
+        </Tab.Navigator >
     )
 }
 
