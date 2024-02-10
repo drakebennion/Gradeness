@@ -31,7 +31,6 @@ export const AccomplishmentScreen = ({ navigation }) => {
                     setAccomplishments(accomplishmentsByYear)
                     setLoadingAccomplishments(false)
                     setShouldRefetch(false)
-                    console.log('fetched')
                 }
             }
 

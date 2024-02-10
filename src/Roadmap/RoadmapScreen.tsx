@@ -2,8 +2,7 @@ import { Button, Pressable } from '@react-native-material/core'
 import { Text, View } from 'react-native'
 import { Colors, GradeLevels } from '../Constants'
 import { getAuth, signOut } from 'firebase/auth'
-import { doDataImport } from '../utils/init/db'
-import { getColorForYear, getGradeLevelNameForYear, getGradeLevelObjectiveForYear } from '../utils/style'
+import { getColorForYear } from '../utils/style'
 import { type NativeStackScreenProps } from '@react-navigation/native-stack'
 import { type RoadmapStackParamList } from '../navigation/userStackParams'
 import { LinearGradient } from 'expo-linear-gradient';
@@ -27,7 +26,7 @@ export const RoadmapScreen = ({ navigation }: Props) => {
       </Text>
       <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', marginTop: 16, flexWrap: 'wrap' }}>
         {
-          roadmapGradeLevels.map(({ year, objective }) =>
+          roadmapGradeLevels.map(({ year, name, objective }) =>
             <Pressable key={year}
               pressEffect='ripple'
               onPress={() => { navigation.navigate('GradeLevel', { year }) }}
@@ -43,15 +42,14 @@ export const RoadmapScreen = ({ navigation }: Props) => {
                   marginRight: 8,
                   marginLeft: 4
                 }}>
-                <Text style={{ color: Colors.text }}>{getGradeLevelNameForYear(year)}</Text>
-                <Text style={{ color: Colors.text }}>{getGradeLevelObjectiveForYear(year)}</Text>
+                <Text style={{ color: Colors.text }}>{name}</Text>
+                <Text style={{ color: Colors.text }}>{objective}</Text>
+                <Text style={{ color: Colors.text }}>{year}</Text>
               </LinearGradient>
             </Pressable>
           )
         }
       </View>
-
-      {/* <Button title="IMPORT DATA DRAKE" onPress={doDataImport}/> */}
     </View >
   )
 }

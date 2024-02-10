@@ -105,11 +105,11 @@ const ActivityList = ({ activities, navigation }) => {
             return (
               <View key={semester}>
                 <Text style={{ fontSize: 16, fontWeight: '500' }}>{semester}</Text>
-                {toSorted(activities[semester], (a: Activity, b: Activity) => Number.parseInt(a.defaultActivityId) - Number.parseInt(b.defaultActivityId))
-                  .map(({ id, objective, complete, year }) =>
+                {toSorted(activities[semester], (a: Activity, b: Activity) => a.order - b.order)
+                  .map(({ id, name, complete, year }) =>
                     <GradeLevelListItem
-                      key={objective}
-                      title={objective}
+                      key={name}
+                      title={name}
                       checked={complete}
                       onPress={() => {
                         navigation.navigate('Activity', { activityId: id })

@@ -7,29 +7,34 @@ initializeApp();
 exports.createUserActivities = auth.user().onCreate(async (user) => {
   logger.log("creating activities for user: ", user.uid);
 
-  const defaultActivities = await getFirestore()
-      .collection("defaultActivities")
+  const testActivities = await getFirestore()
+      .collection("testActivities")
       .get();
 
   Promise.all(
-      defaultActivities.docs.map(createDefaultActivityForUser(user)),
+      testActivities.docs.map(createTestActivityForUser(user)),
   )
       .catch(logger.error);
 });
 
-const createDefaultActivityForUser = (user) => async (defaultActivity) => {
-  const {year, semester, objective, id, order} = defaultActivity.data();
+const createTestActivityForUser = (user) => async (testActivity) => {
+  const {year, semester, name, id, order, overview, description} =
+    testActivity.data();
   await getFirestore()
       .collection("activities")
       .add({
         userId: user.uid,
         createdAt: Date.now(),
+        createdBy: -1,
         updatedAt: Date.now(),
+        updatedBy: -1,
         complete: false,
-        defaultActivityId: id,
+        testActivityId: id,
         order,
         year,
         semester,
-        objective,
+        name,
+        overview,
+        description,
       });
 };

@@ -45,8 +45,8 @@ export const CreateUpdateActivityScreen = ({ navigation, route }: Props) => {
       <View>
         <TextInput
           label="Name"
-          value={activity?.objective}
-          onChangeText={(objective) => { setActivity({ ...activity, objective }) }}
+          value={activity?.name}
+          onChangeText={(name) => { setActivity({ ...activity, name }) }}
         />
         <SelectDropdown
           data={GradeLevels}
@@ -70,7 +70,7 @@ export const CreateUpdateActivityScreen = ({ navigation, route }: Props) => {
         <Button
           color={Colors.highlight2} tintColor={Colors.background}
           title="Save"
-          disabled={!(activity && activity.year && activity.semester && activity.description && activity.objective)}
+          disabled={!(activity && activity.year && activity.semester && activity.description && activity.name)}
           onPress={async () => { await updateActivityWithDatabase().then(() => { navigation.goBack() }) }}
         />
         <Button

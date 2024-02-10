@@ -43,15 +43,26 @@ export const ActivityScreen = ({ navigation, route }: Props) => {
       ? <Text>Loading</Text>
       : <ScrollView contentContainerStyle={styles.container}>
         <View>
-          <Text>{activity.objective}</Text>
+          <Text>{activity.name}</Text>
           <Text>{activity.semester}</Text>
           <Text>{getGradeLevelNameForYear(activity.year)}</Text>
-          <Text>{activity.description}</Text>
+          <Text>{activity.overview.header}</Text>
+          {
+            activity.overview.items.map(item =>
+              <Text>-- {item}</Text>
+            )
+          }
+          <Text>{activity.description.header}</Text>
+          {
+            activity.description.items.map(item =>
+              <Text>-- {item}</Text>
+            )
+          }
           <Button
             title="Edit"
             disabled={!!activity.defaultActivityId}
             color={Colors.background} tintColor={Colors.highlight2}
-            onPress={() => { navigation.navigate('CreateUpdateActivity', { activity: { activityId, objective: activity.objective, semester: activity.semester, year: activity.year, description: activity.description } }) }}
+            onPress={() => { navigation.navigate('CreateUpdateActivity', { activity: { activityId, name: activity.name, semester: activity.semester, year: activity.year, description: activity.description } }) }}
           />
           <Button
             color={Colors.highlight2} tintColor={Colors.background}
