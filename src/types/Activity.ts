@@ -3,10 +3,11 @@ export interface Activity {
   complete: boolean
   createdAt: Date
   defaultActivityId?: string
+  testActivityId?: string
   description: {
     header: string,
     items: string[],
-  }
+  } | string,
   name: string
   order: number
   // todo: make an enum
@@ -14,7 +15,7 @@ export interface Activity {
   updatedAt: Date
   userId: string
   year: number,
-  overview: {
+  overview?: {
     header: string,
     items: string[],
   },

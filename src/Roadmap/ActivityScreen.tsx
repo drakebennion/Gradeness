@@ -1,4 +1,4 @@
-import { Button, TextInput } from '@react-native-material/core'
+import { Button, Icon, IconButton, TextInput } from '@react-native-material/core'
 import { doc, getDoc, getFirestore, updateDoc } from 'firebase/firestore'
 import { useCallback, useState } from 'react'
 import { ScrollView, StyleSheet, Text, View } from 'react-native'
@@ -41,40 +41,58 @@ export const ActivityScreen = ({ navigation, route }: Props) => {
   return (
     loadingActivity
       ? <Text>Loading</Text>
-      : <ScrollView contentContainerStyle={styles.container}>
-        <View>
-          <Text>{activity.name}</Text>
-          <Text>{activity.semester}</Text>
-          <Text>{getGradeLevelNameForYear(activity.year)}</Text>
-          <Text>{activity.overview.header}</Text>
-          {
-            activity.overview.items.map(item =>
-              <Text>-- {item}</Text>
-            )
-          }
-          <Text>{activity.description.header}</Text>
-          {
-            activity.description.items.map(item =>
-              <Text>-- {item}</Text>
-            )
-          }
-          <Button
-            title="Edit"
-            disabled={!!activity.defaultActivityId}
-            color={Colors.background} tintColor={Colors.highlight2}
-            onPress={() => { navigation.navigate('CreateUpdateActivity', { activity: { activityId, name: activity.name, semester: activity.semester, year: activity.year, description: activity.description } }) }}
-          />
-          <Button
-            color={Colors.highlight2} tintColor={Colors.background}
-            title={activity.complete ? 'Mark as incomplete' : 'Mark as complete'}
-            onPress={async () => { await toggleComplete().then(() => { navigation.pop() }) }}
-          />
-          <Button
-            title="Go back"
-            onPress={() => { navigation.goBack() }}
-          />
+      :
+      <View>
+        <View style={{ marginTop: 32 }}>
+          <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
+            <IconButton
+              onPress={() => { navigation.pop() }}
+              icon={<Icon size={24} color={Colors.text} name="arrow-left" />}
+            />
+            <IconButton
+              onPress={() => { navigation.navigate('CreateUpdateActivity', { activity: { activityId, name: activity.name, semester: activity.semester, year: activity.year, description: activity.description } }) }}
+              // todo: need disabled styling...or hide when not enabled hmm
+              disabled={!!activity.testActivityId}
+              icon={<Icon size={24} color={Colors.text} name="square-edit-outline" />}
+            />
+          </View>
+          <Text style={{ color: Colors.text, fontSize: 24, marginTop: 8, marginLeft: 16 }}>
+            {activity.name}
+          </Text>
         </View>
-      </ScrollView>
+        <ScrollView contentContainerStyle={styles.container}>
+          <View>
+            {/* todo: make semester and year tags */}
+            <Text>{activity.semester}</Text>
+            <Text>{getGradeLevelNameForYear(activity.year)}</Text>
+            {activity.testActivityId ?
+              <><Text>{activity.overview.header}</Text>
+                {
+                  activity.overview.items.map(item =>
+                    <Text key={item}>-- {item}</Text>
+                  )
+                }</> : <></>
+            }
+            <Button
+              color={Colors.highlight2} tintColor={Colors.background}
+              title={activity.complete ? 'Mark as incomplete' : 'Mark as complete'}
+              onPress={async () => { await toggleComplete().then(() => { navigation.pop() }) }}
+            />
+
+            {
+              typeof activity.description === "string" ?
+                <Text>{activity.description}</Text>
+                : <>
+                  <Text>{activity.description.header}</Text>
+                  {
+                    activity.description.items.map(item =>
+                      <Text key={item}>-- {item}</Text>
+                    )
+                  }</>
+            }
+          </View>
+        </ScrollView>
+      </View>
   )
 }
 
@@ -84,7 +102,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     justifyContent: 'space-between',
     marginVertical: 32,
-    paddingBottom: 32,
+    paddingBottom: 128,
     padding: 8,
     paddingRight: 16
   }

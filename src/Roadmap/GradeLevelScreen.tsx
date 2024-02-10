@@ -2,7 +2,7 @@ import { ScrollView, StyleSheet, Text, View } from 'react-native'
 import { AppBar, Button, Icon, IconButton, ListItem } from '@react-native-material/core'
 import * as Progress from 'react-native-progress'
 import { styles as globalStyles } from '../styles'
-import { Colors } from "../Constants"
+import { Colors, GradeLevels } from "../Constants"
 import { useCallback, useState } from 'react'
 import { collection, getDocs, getFirestore, query, where } from 'firebase/firestore'
 import { useAuthentication } from '../utils/hooks/useAuthentication'
@@ -44,25 +44,24 @@ export const GradeLevelScreen = ({ navigation, route }: Props) => {
     }, [user])
   )
 
+  const gradeLevel = GradeLevels.find(gradeLevel => gradeLevel.year === year);
+
   return (
     <View>
-      <AppBar
-        contentContainerStyle={globalStyles.appBar}
-        centerTitle
-        title={getGradeLevelNameForYear(year)}
-        color="#1C222E"
-        titleStyle={{ color: getColorForYear(year) }}
-        leading={props => (
-          <IconButton
-            onPress={() => { navigation.pop() }}
-            icon={<Icon name="arrow-left" {...props} />}
-          />
-        )}
-      />
+      <View style={{ marginTop: 32, display: 'flex', flexDirection: 'row' }}>
+        <IconButton
+          onPress={() => { navigation.pop() }}
+          icon={<Icon size={16} color='white' name="arrow-left" />}
+        />
+        <Text style={{ color: getColorForYear(year), fontSize: 24, marginTop: 8 }}>
+          {gradeLevel.name}
+        </Text>
+      </View>
       <ScrollView contentContainerStyle={styles.container}>
-        <View style={{ backgroundColor: '#1C222E', borderBottomLeftRadius: 8, borderBottomRightRadius: 8 }}>
+        <View style={{ backgroundColor: '#1C222E', padding: 16, borderBottomLeftRadius: 8, borderBottomRightRadius: 8 }}>
           <View>
-            <Text style={{ color: '#fff' }}>{getGradeLevelObjectiveForYear(year)}</Text>
+            <Text style={{ color: '#fff' }}>{gradeLevel.objective}</Text>
+            <Text style={{ color: '#fff' }}>{gradeLevel.details}</Text>
           </View>
           <View style={styles.progressContainer}>
             <Text style={{ fontWeight: '400', marginBottom: 8, color: '#fff' }}>Progress</Text>
@@ -70,6 +69,7 @@ export const GradeLevelScreen = ({ navigation, route }: Props) => {
           </View>
           <View>
             <Button
+              style={{ alignSelf: 'flex-end', marginBottom: 16, marginRight: 16 }}
               title="Add activity"
               color={Colors.highlight2}
               tintColor={Colors.background}
