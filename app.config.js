@@ -9,9 +9,10 @@ export default {
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
     "splash": {
+      // todo: get splash image screen
       "image": "./assets/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#1C222E",
     },
     "assetBundlePatterns": [
       "**/*"

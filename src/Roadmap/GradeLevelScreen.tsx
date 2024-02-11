@@ -1,7 +1,6 @@
 import { ScrollView, StyleSheet, Text, View } from 'react-native'
-import { AppBar, Button, Icon, IconButton, ListItem } from '@react-native-material/core'
+import { Button, Icon, IconButton, ListItem } from '@react-native-material/core'
 import * as Progress from 'react-native-progress'
-import { styles as globalStyles } from '../styles'
 import { Colors, GradeLevels } from "../Constants"
 import { useCallback, useState } from 'react'
 import { collection, getDocs, getFirestore, query, where } from 'firebase/firestore'
@@ -33,8 +32,10 @@ export const GradeLevelScreen = ({ navigation, route }: Props) => {
           // todo: still handle firestore typing!
           const activitiesData = activities.docs.map(doc => ({ id: doc.id, complete: doc.data().complete, ...doc.data() }))
           const activitiesBySemester = groupBy(activitiesData, 'semester')
+          const numberOfCompletedActivities = activitiesData.filter(activityData => activityData.complete).length ?? 0
+          const totalCountOfActivities = activitiesData.length || 1;
           // todo: need handling for if there are no activities at all, plus network error handling
-          setProgress(activitiesData.filter(activityData => activityData.complete).length / activitiesData.length)
+          setProgress(numberOfCompletedActivities / totalCountOfActivities)
           setActivities(activitiesBySemester)
           setLoadingActivities(false)
         }
@@ -65,7 +66,7 @@ export const GradeLevelScreen = ({ navigation, route }: Props) => {
           </View>
           <View style={styles.progressContainer}>
             <Text style={{ fontWeight: '400', marginBottom: 8, color: '#fff' }}>Progress</Text>
-            <Progress.Bar borderColor='#eee' unfilledColor='#eee' width={null} progress={progress} />
+            <Progress.Bar color={Colors.highlight2} borderColor={Colors.background} unfilledColor='#E6E0E9' width={null} progress={progress} />
           </View>
           <View>
             <Button
@@ -78,9 +79,6 @@ export const GradeLevelScreen = ({ navigation, route }: Props) => {
           </View>
         </View>
         <View>
-          {/* todo: you know a better way to switch these displays without nested ternary's
-              .......but do it later lololololol
-            */}
           {loadingActivities
             ? <Text>Loading...</Text>
             : hasActivities(activities) ? <ActivityList activities={activities} navigation={navigation} /> : <Text>No activities - create some! or refresh</Text>
@@ -91,9 +89,6 @@ export const GradeLevelScreen = ({ navigation, route }: Props) => {
   )
 }
 
-// hmm something about either this or something else errored out -- need to revisit what to do
-// when a user is first created. Maybe not even give them options to do things until
-// activities are created for them? hmm
 const hasActivities = (activities) => activities && (activities.Fall?.length || activities.Spring?.length || activities.Summer?.length)
 
 const ActivityList = ({ activities, navigation }) => {
@@ -129,7 +124,7 @@ const GradeLevelListItem = ({ title, checked, onPress }) => {
       key={title}
       title={title}
       onPress={onPress}
-      leading={<Icon size={24} name={checked ? 'checkbox-marked-circle' : 'checkbox-blank-circle-outline'} color="#365a75" />}
+      leading={<Icon size={24} name={checked ? 'checkbox-marked-circle' : 'checkbox-blank-circle-outline'} color={Colors.highlight2} />}
       trailing={<Icon size={24} name="chevron-right" color="#365a75" />}
     />
   )

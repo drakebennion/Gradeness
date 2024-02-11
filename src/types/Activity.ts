@@ -7,6 +7,7 @@ export interface Activity {
   description: {
     header: string,
     items: string[],
+    footer: string,
   } | string,
   name: string
   order: number

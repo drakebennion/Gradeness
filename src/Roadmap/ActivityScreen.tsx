@@ -53,18 +53,24 @@ export const ActivityScreen = ({ navigation, route }: Props) => {
               onPress={() => { navigation.navigate('CreateUpdateActivity', { activity: { activityId, name: activity.name, semester: activity.semester, year: activity.year, description: activity.description } }) }}
               // todo: need disabled styling...or hide when not enabled hmm
               disabled={!!activity.testActivityId}
-              icon={<Icon size={24} color={Colors.text} name="square-edit-outline" />}
+              icon={<Icon size={24} color={!!activity.testActivityId ? '#66a' : Colors.text} name="square-edit-outline" />}
             />
           </View>
           <Text style={{ color: Colors.text, fontSize: 24, marginTop: 8, marginLeft: 16 }}>
             {activity.name}
           </Text>
+          <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'flex-end', paddingRight: 12, marginTop: 16 }}>
+            {/* todo: pull this into a Badge component */}
+            <View style={{ backgroundColor: Colors.text, padding: 8, borderRadius: 8, margin: 4 }}>
+              <Text>{activity.semester}</Text>
+            </View>
+            <View style={{ backgroundColor: Colors.text, padding: 8, borderRadius: 8, margin: 4 }}>
+              <Text>{getGradeLevelNameForYear(activity.year)}</Text>
+            </View>
+          </View>
         </View>
         <ScrollView contentContainerStyle={styles.container}>
           <View>
-            {/* todo: make semester and year tags */}
-            <Text>{activity.semester}</Text>
-            <Text>{getGradeLevelNameForYear(activity.year)}</Text>
             {activity.testActivityId ?
               <><Text>{activity.overview.header}</Text>
                 {
@@ -88,7 +94,9 @@ export const ActivityScreen = ({ navigation, route }: Props) => {
                     activity.description.items.map(item =>
                       <Text key={item}>-- {item}</Text>
                     )
-                  }</>
+                  }
+                  <Text>{activity.description.footer}</Text>
+                </>
             }
           </View>
         </ScrollView>
@@ -102,7 +110,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     justifyContent: 'space-between',
     marginVertical: 32,
-    paddingBottom: 128,
+    paddingBottom: 168,
     padding: 8,
     paddingRight: 16
   }
