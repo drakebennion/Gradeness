@@ -54,18 +54,18 @@ export const GradeLevelScreen = ({ navigation, route }: Props) => {
           onPress={() => { navigation.pop() }}
           icon={<Icon size={16} color='white' name="arrow-left" />}
         />
-        <Text style={{ color: getColorForYear(year), fontSize: 24, marginTop: 8 }}>
+        <Text style={{ fontFamily: 'Roboto_400Regular', color: getColorForYear(year), fontSize: 24, marginTop: 8 }}>
           {gradeLevel.name}
         </Text>
       </View>
       <ScrollView contentContainerStyle={styles.container}>
         <View style={{ backgroundColor: '#1C222E', padding: 16, borderBottomLeftRadius: 8, borderBottomRightRadius: 8 }}>
           <View>
-            <Text style={{ color: '#fff' }}>{gradeLevel.objective}</Text>
-            <Text style={{ color: '#fff' }}>{gradeLevel.details}</Text>
+            <Text style={{ fontFamily: 'Roboto_400Regular', color: '#fff' }}>{gradeLevel.objective}</Text>
+            <Text style={{ fontFamily: 'Roboto_400Regular', color: '#fff' }}>{gradeLevel.details}</Text>
           </View>
           <View style={styles.progressContainer}>
-            <Text style={{ fontWeight: '400', marginBottom: 8, color: '#fff' }}>Progress</Text>
+            <Text style={{ fontFamily: 'Roboto_400Regular', fontWeight: '400', marginBottom: 8, color: '#fff' }}>Progress</Text>
             <Progress.Bar color={Colors.highlight2} borderColor={Colors.background} unfilledColor='#E6E0E9' width={null} progress={progress} />
           </View>
           <View>
@@ -80,8 +80,8 @@ export const GradeLevelScreen = ({ navigation, route }: Props) => {
         </View>
         <View>
           {loadingActivities
-            ? <Text>Loading...</Text>
-            : hasActivities(activities) ? <ActivityList activities={activities} navigation={navigation} /> : <Text>No activities - create some! or refresh</Text>
+            ? <Text style={{ fontFamily: 'Roboto_400Regular' }}>Loading...</Text>
+            : hasActivities(activities) ? <ActivityList activities={activities} navigation={navigation} /> : <Text style={{ fontFamily: 'Roboto_400Regular' }}>No activities - create some! or refresh</Text>
           }
         </View>
       </ScrollView>
@@ -99,7 +99,7 @@ const ActivityList = ({ activities, navigation }) => {
           .map(semester => {
             return (
               <View key={semester}>
-                <Text style={{ fontSize: 16, fontWeight: '500' }}>{semester}</Text>
+                <Text style={{ fontFamily: 'Roboto_400Regular', fontSize: 16, fontWeight: '500' }}>{semester}</Text>
                 {toSorted(activities[semester], (a: Activity, b: Activity) => a.order - b.order)
                   .map(({ id, name, complete, year }) =>
                     <GradeLevelListItem

@@ -40,7 +40,7 @@ export const ActivityScreen = ({ navigation, route }: Props) => {
 
   return (
     loadingActivity
-      ? <Text>Loading</Text>
+      ? <Text style={{ fontFamily: 'Roboto_400Regular' }}>Loading</Text>
       :
       <View>
         <View style={{ marginTop: 32 }}>
@@ -56,23 +56,23 @@ export const ActivityScreen = ({ navigation, route }: Props) => {
               icon={<Icon size={24} color={!!activity.testActivityId ? '#66a' : Colors.text} name="square-edit-outline" />}
             />
           </View>
-          <Text style={{ color: Colors.text, fontSize: 24, marginTop: 8, marginLeft: 16 }}>
+          <Text style={{ fontFamily: 'Roboto_400Regular', color: Colors.text, fontSize: 24, marginTop: 8, marginLeft: 16 }}>
             {activity.name}
           </Text>
           <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'flex-end', paddingRight: 12, marginTop: 16 }}>
             {/* todo: pull this into a Badge component */}
             <View style={{ backgroundColor: Colors.text, padding: 8, borderRadius: 8, margin: 4 }}>
-              <Text>{activity.semester}</Text>
+              <Text style={{ fontFamily: 'Roboto_400Regular' }}>{activity.semester}</Text>
             </View>
             <View style={{ backgroundColor: Colors.text, padding: 8, borderRadius: 8, margin: 4 }}>
-              <Text>{getGradeLevelNameForYear(activity.year)}</Text>
+              <Text style={{ fontFamily: 'Roboto_400Regular' }}>{getGradeLevelNameForYear(activity.year)}</Text>
             </View>
           </View>
         </View>
         <ScrollView contentContainerStyle={styles.container}>
           <View>
             {activity.testActivityId ?
-              <><Text>{activity.overview.header}</Text>
+              <><Text style={{ fontFamily: 'Roboto_400Regular' }}>{activity.overview.header}</Text>
                 {
                   activity.overview.items.map(item =>
                     <Text key={item}>-- {item}</Text>
@@ -87,15 +87,15 @@ export const ActivityScreen = ({ navigation, route }: Props) => {
 
             {
               typeof activity.description === "string" ?
-                <Text>{activity.description}</Text>
+                <Text style={{ fontFamily: 'Roboto_400Regular' }}>{activity.description}</Text>
                 : <>
-                  <Text>{activity.description.header}</Text>
+                  <Text style={{ fontFamily: 'Roboto_400Regular' }}>{activity.description.header}</Text>
                   {
                     activity.description.items.map(item =>
                       <Text key={item}>-- {item}</Text>
                     )
                   }
-                  <Text>{activity.description.footer}</Text>
+                  <Text style={{ fontFamily: 'Roboto_400Regular' }}>{activity.description.footer}</Text>
                 </>
             }
           </View>

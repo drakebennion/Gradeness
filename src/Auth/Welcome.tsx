@@ -35,6 +35,7 @@ const styles = StyleSheet.create({
     },
 
     text: {
+      fontFamily: 'Roboto_400Regular',
       fontSize: 46,
     }
   },

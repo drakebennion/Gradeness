@@ -59,7 +59,7 @@ export const AccomplishmentScreen = ({ navigation }) => {
     return (
         <View>
             {/* todo: add badges at top and make filtering happen! */}
-            <Text style={{ color: Colors.text, marginTop: 32, fontSize: 36 }}>Accomplishments</Text>
+            <Text style={{ fontFamily: 'Roboto_400Regular', color: Colors.text, marginTop: 32, fontSize: 36 }}>Accomplishments</Text>
             <ScrollView contentContainerStyle={
                 {
                     backgroundColor: '#fff',
@@ -71,14 +71,14 @@ export const AccomplishmentScreen = ({ navigation }) => {
                 {
                     GradeLevels.map(gradeLevel =>
                         loadingAccomplishments ?
-                            <Text key={gradeLevel.year}>Loading...</Text> :
+                            <Text style={{ fontFamily: 'Roboto_400Regular' }} key={gradeLevel.year}>Loading...</Text> :
                             <View key={gradeLevel.year} style={{ borderWidth: 0.5, borderColor: '#ccc', borderRadius: 8, marginVertical: 32, marginHorizontal: 16, padding: 8, paddingVertical: 16 }}>
-                                <Text>{gradeLevel.name} year</Text>
-                                <Text>During your {gradeLevel.name.toLowerCase()} year, you:</Text>
+                                <Text style={{ fontFamily: 'Roboto_400Regular' }}>{gradeLevel.name} year</Text>
+                                <Text style={{ fontFamily: 'Roboto_400Regular' }}>During your {gradeLevel.name.toLowerCase()} year, you:</Text>
                                 {
                                     // todo: how do we actually want to sort them?
                                     toSorted(accomplishments?.[gradeLevel.year], (a, b) => a.createdAt - b.createdAt)?.map(({ id, accomplishment }) =>
-                                        <Text key={id}>{accomplishment}</Text>
+                                        <Text style={{ fontFamily: 'Roboto_400Regular' }} key={id}>{accomplishment}</Text>
                                     )
                                 }
                                 <TextInput

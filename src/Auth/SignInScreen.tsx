@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth'
 
-export default function SignInScreen ({ navigation }) {
+export default function SignInScreen({ navigation }) {
   const auth = getAuth()
 
   const [signIn, setSignIn] = useState({
@@ -12,7 +12,7 @@ export default function SignInScreen ({ navigation }) {
     error: ''
   })
 
-  function onSignIn () {
+  function onSignIn() {
     if (signIn.email === '' || signIn.password === '') {
       setSignIn({
         ...signIn,
@@ -28,9 +28,9 @@ export default function SignInScreen ({ navigation }) {
 
   return (
     <View style={styles.container}>
-      <Text>Sign In</Text>
+      <Text style={{ fontFamily: 'Roboto_400Regular' }}>Sign In</Text>
 
-      { !!signIn.error && <View><Text>{signIn.error}</Text></View> }
+      {!!signIn.error && <View><Text style={{ fontFamily: 'Roboto_400Regular' }}>{signIn.error}</Text></View>}
 
       <View>
         <TextInput

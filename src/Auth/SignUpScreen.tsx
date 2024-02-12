@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth'
 
-export default function SignUpScreen ({ navigation }) {
+export default function SignUpScreen({ navigation }) {
   const auth = getAuth()
 
   const [signUp, setSignUp] = useState({
@@ -12,7 +12,7 @@ export default function SignUpScreen ({ navigation }) {
     error: ''
   })
 
-  function onSignUp () {
+  function onSignUp() {
     if (signUp.email === '' || signUp.password === '') {
       setSignUp({
         ...signUp,
@@ -30,9 +30,9 @@ export default function SignUpScreen ({ navigation }) {
 
   return (
     <View style={styles.container}>
-      <Text>Sign Up</Text>
+      <Text style={{ fontFamily: 'Roboto_400Regular' }}>Sign Up</Text>
 
-      { !!signUp.error && <View><Text>{signUp.error}</Text></View> }
+      {!!signUp.error && <View><Text style={{ fontFamily: 'Roboto_400Regular' }}>{signUp.error}</Text></View>}
 
       <View>
         <TextInput

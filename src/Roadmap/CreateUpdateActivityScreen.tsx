@@ -41,7 +41,7 @@ export const CreateUpdateActivityScreen = ({ navigation, route }: Props) => {
 
   return (
     <View>
-      <Text>Create or Update an activity</Text>
+      <Text style={{ fontFamily: 'Roboto_400Regular' }}>Create or Update an activity</Text>
       <View>
         <TextInput
           label="Name"

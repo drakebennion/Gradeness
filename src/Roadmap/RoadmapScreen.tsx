@@ -1,7 +1,7 @@
 import { Button, Pressable } from '@react-native-material/core'
 import { Text, View } from 'react-native'
 import { Colors, GradeLevels } from '../Constants'
-import { getAuth, signOut } from 'firebase/auth'
+import { getAuth } from 'firebase/auth'
 import { getColorForYear } from '../utils/style'
 import { type NativeStackScreenProps } from '@react-navigation/native-stack'
 import { type RoadmapStackParamList } from '../navigation/userStackParams'
@@ -18,8 +18,8 @@ export const RoadmapScreen = ({ navigation }: Props) => {
     <View>
       <StatusBar style="light" />
       <Button style={{ marginTop: 32 }} onPress={() => auth.signOut()} title='Log out' />
-      <Text style={{ color: Colors.text, marginTop: 16, fontSize: 36 }}>Welcome</Text>
-      <Text style={{ color: Colors.text, marginTop: 8 }}>
+      <Text style={{ fontFamily: 'Roboto_400Regular', color: Colors.text, marginTop: 16, fontSize: 36 }}>Welcome</Text>
+      <Text style={{ fontFamily: 'Roboto_400Regular', color: Colors.text, marginTop: 8 }}>
         Gradeness is designed to simplify the high school process by providing a
         roadmap of time sensitive activities to prepare you for your future and a
         place to capture your accomplishments.
@@ -42,9 +42,9 @@ export const RoadmapScreen = ({ navigation }: Props) => {
                   marginRight: 8,
                   marginLeft: 4
                 }}>
-                <Text style={{ color: Colors.text }}>{name}</Text>
-                <Text style={{ color: Colors.text }}>{objective}</Text>
-                <Text style={{ color: Colors.text }}>{year}</Text>
+                <Text style={{ fontFamily: 'Roboto_400Regular', color: Colors.text }}>{name}</Text>
+                <Text style={{ fontFamily: 'Roboto_400Regular', color: Colors.text }}>{objective}</Text>
+                <Text style={{ fontFamily: 'Roboto_400Regular', color: Colors.text }}>{year}</Text>
               </LinearGradient>
             </Pressable>
           )
