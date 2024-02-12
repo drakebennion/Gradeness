@@ -2,6 +2,7 @@ import { Button, TextInput } from '@react-native-material/core'
 import React, { useState } from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth'
+import { Colors } from '../Constants'
 
 export default function SignUpScreen({ navigation }) {
   const auth = getAuth()
@@ -30,24 +31,32 @@ export default function SignUpScreen({ navigation }) {
 
   return (
     <View style={styles.container}>
-      <Text style={{ fontFamily: 'Roboto_400Regular' }}>Sign Up</Text>
+      <Text style={{ fontFamily: 'Roboto_400Regular', fontSize: 24, marginBottom: 16 }}>Sign Up</Text>
 
       {!!signUp.error && <View><Text style={{ fontFamily: 'Roboto_400Regular' }}>{signUp.error}</Text></View>}
 
       <View>
         <TextInput
           label='Email'
+          variant='outlined'
           value={signUp.email}
           onChangeText={(email) => { setSignUp({ ...signUp, email }) }}
+          style={{ marginBottom: 12 }}
         />
         <TextInput
           label='Password'
+          variant='outlined'
           value={signUp.password}
           onChangeText={(password) => { setSignUp({ ...signUp, password }) }}
+          style={{ marginBottom: 12 }}
           secureTextEntry
         />
 
-        <Button title="Sign up" onPress={onSignUp} />
+        {/* todo: replace all react-native-material shit, this is silly. */}
+        <Button color={Colors.highlight2} title="Sign up" onPress={onSignUp} />
+        <Text style={{ marginTop: 24, alignSelf: 'center' }}>Already have an account?
+          <Text onPress={() => navigation.navigate("Sign In")} style={{ textDecorationLine: 'underline' }}> Sign in</Text>
+        </Text>
       </View>
     </View>
   )
@@ -55,9 +64,8 @@ export default function SignUpScreen({ navigation }) {
 
 const styles = StyleSheet.create({
   container: {
-    // flex: 1,
-    backgroundColor: '#fff'
-    // alignItems: 'center',
-    // justifyContent: 'center',
+    backgroundColor: '#fff',
+    marginTop: 96,
+    padding: 16
   }
 })

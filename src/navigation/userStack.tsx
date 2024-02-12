@@ -23,8 +23,8 @@ function Overview() {
                 tabBarInactiveTintColor: Colors.text,
                 tabBarActiveBackgroundColor: Colors.background,
                 tabBarInactiveBackgroundColor: Colors.background,
-                tabBarStyle: { borderTopWidth: 0 },
-                tabBarLabelStyle: { marginBottom: 8 },
+                tabBarStyle: { borderTopWidth: 0, height: 72 },
+                tabBarLabelStyle: { marginBottom: 12 },
                 tabBarIcon: ({ color }) => {
                     let iconName = route.name === 'Roadmap' ? 'map-outline' : 'checkbox-marked-circle-outline';
                     return <Icon size={32} name={iconName} color={color} />;

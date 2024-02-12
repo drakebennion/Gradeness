@@ -43,7 +43,7 @@ export const ActivityScreen = ({ navigation, route }: Props) => {
       ? <Text style={{ fontFamily: 'Roboto_400Regular' }}>Loading</Text>
       :
       <View>
-        <View style={{ marginTop: 32 }}>
+        <View style={{ marginTop: 32, marginBottom: 16 }}>
           <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
             <IconButton
               onPress={() => { navigation.pop() }}
@@ -110,7 +110,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     justifyContent: 'space-between',
     marginVertical: 32,
-    paddingBottom: 168,
+    paddingBottom: 256,
     padding: 8,
     paddingRight: 16
   }

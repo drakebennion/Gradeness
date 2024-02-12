@@ -5,7 +5,7 @@ import { Colors, GradeLevels } from "../Constants"
 import { useCallback, useState } from 'react'
 import { collection, getDocs, getFirestore, query, where } from 'firebase/firestore'
 import { useAuthentication } from '../utils/hooks/useAuthentication'
-import { getColorForYear, getGradeLevelNameForYear, getGradeLevelObjectiveForYear } from '../utils/style'
+import { getColorForYear } from '../utils/style'
 import { useFocusEffect } from '@react-navigation/native'
 import { type NativeStackScreenProps } from '@react-navigation/native-stack'
 import { type RoadmapStackParamList } from '../navigation/userStackParams'
@@ -52,7 +52,7 @@ export const GradeLevelScreen = ({ navigation, route }: Props) => {
       <View style={{ marginTop: 32, display: 'flex', flexDirection: 'row' }}>
         <IconButton
           onPress={() => { navigation.pop() }}
-          icon={<Icon size={16} color='white' name="arrow-left" />}
+          icon={<Icon size={24} color='white' name="arrow-left" />}
         />
         <Text style={{ fontFamily: 'Roboto_400Regular', color: getColorForYear(year), fontSize: 24, marginTop: 8 }}>
           {gradeLevel.name}
