@@ -1,4 +1,4 @@
-import { Button, Text, TextInput } from '@react-native-material/core'
+import { Button, Icon, IconButton, Text, TextInput } from '@react-native-material/core'
 import { addDoc, collection, doc, getFirestore, setDoc, updateDoc } from 'firebase/firestore'
 import { useState } from 'react'
 import { View } from 'react-native'
@@ -40,45 +40,66 @@ export const CreateUpdateActivityScreen = ({ navigation, route }: Props) => {
   }
 
   return (
-    <View>
-      <Text style={{ fontFamily: 'Roboto_400Regular' }}>Create or Update an activity</Text>
+    <View style={{ backgroundColor: Colors.text, height: '100%', marginVertical: 64, paddingVertical: 24, paddingHorizontal: 16 }}>
+      <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', marginBottom: 24 }}>
+        <Text style={{ fontFamily: 'Roboto_400Regular', fontSize: 22 }}>{activity?.activityId ? 'Edit' : 'Add'} activity</Text>
+        <IconButton
+          style={{ marginTop: -8, marginRight: -16 }}
+          onPress={() => { navigation.pop() }}
+          icon={<Icon size={22} name="close" />}
+        />
+      </View>
       <View>
         <TextInput
           label="Name"
+          variant='outlined'
+          style={{ marginBottom: 8 }}
           value={activity?.name}
           onChangeText={(name) => { setActivity({ ...activity, name }) }}
         />
+
+        <Text style={{ fontFamily: 'Roboto_400Regular', fontSize: 14, marginVertical: 8 }}>Choose the school year you would like to add the activity?</Text>
         <SelectDropdown
           data={GradeLevels}
           onSelect={(gradeLevel) => { setActivity({ ...activity, year: gradeLevel.year }) }}
           rowTextForSelection={(gradeLevel) => gradeLevel.name}
           buttonTextAfterSelection={(gradeLevel) => gradeLevel.name}
           defaultValue={GradeLevels.find(gradeLevel => gradeLevel.year === activity?.year)}
-          defaultButtonText="Choose a year"
+          defaultButtonText="Year"
+          buttonStyle={{ width: '100%' }}
         />
+
+        <Text style={{ fontFamily: 'Roboto_400Regular', fontSize: 14, marginTop: 16, marginBottom: 8 }}>What semester or time of year do you want to complete this activity?</Text>
         <SelectDropdown
           data={semesters}
           onSelect={(semester) => { setActivity({ ...activity, semester }) }}
           defaultValue={activity?.semester}
-          defaultButtonText="Choose a semester"
+          defaultButtonText="Semester"
+          buttonStyle={{ width: '100%' }}
         />
+
         <TextInput
           label="Description"
+          variant='outlined'
           value={activity?.description}
           onChangeText={(description) => { setActivity({ ...activity, description }) }}
+          style={{ marginVertical: 24 }}
         />
-        <Button
-          color={Colors.highlight2} tintColor={Colors.background}
-          title="Save"
-          disabled={!(activity && activity.year && activity.semester && activity.description && activity.name)}
-          onPress={async () => { await updateActivityWithDatabase().then(() => { navigation.goBack() }) }}
-        />
-        <Button
-          color={Colors.background} tintColor={Colors.highlight2}
-          title="Cancel"
-        />
+        <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'flex-end' }}>
+          <Button
+            color={Colors.background} tintColor={Colors.highlight2}
+            title="Cancel"
+            style={{ marginRight: 8 }}
+            onPress={() => { navigation.pop() }}
+          />
+          <Button
+            color={Colors.highlight2} tintColor={Colors.background}
+            title="Save"
+            disabled={!(activity && activity.year && activity.semester && activity.description && activity.name)}
+            onPress={async () => { await updateActivityWithDatabase().then(() => { navigation.goBack() }) }}
+          />
+        </View>
       </View>
-      <Button title="Close" onPress={() => { navigation.goBack() }} />
     </View>
   )
 }
