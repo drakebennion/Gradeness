@@ -43,18 +43,18 @@ export const ActivityScreen = ({ navigation, route }: Props) => {
       ? <Text style={{ fontFamily: 'Roboto_400Regular' }}>Loading</Text>
       :
       <View>
-        <View style={{ marginTop: 32, marginBottom: 16 }}>
+        <View style={{ marginTop: 48, marginBottom: 16 }}>
           <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
             <IconButton
               onPress={() => { navigation.pop() }}
               icon={<Icon size={24} color={Colors.text} name="arrow-left" />}
             />
-            <IconButton
-              onPress={() => { navigation.navigate('CreateUpdateActivity', { activity: { activityId, name: activity.name, semester: activity.semester, year: activity.year, description: activity.description } }) }}
-              // todo: need disabled styling...or hide when not enabled hmm
-              disabled={!!activity.testActivityId}
-              icon={<Icon size={24} color={!!activity.testActivityId ? '#66a' : Colors.text} name="square-edit-outline" />}
-            />
+            {!!activity.testActivityId ? <></> :
+              <IconButton
+                onPress={() => { navigation.navigate('CreateUpdateActivity', { activity: { activityId, name: activity.name, semester: activity.semester, year: activity.year, description: activity.description } }) }}
+                icon={<Icon size={24} color={Colors.text} name="square-edit-outline" />}
+              />
+            }
           </View>
           <Text style={{ fontFamily: 'Roboto_400Regular', color: Colors.text, fontSize: 24, marginTop: 8, marginLeft: 16 }}>
             {activity.name}
@@ -72,31 +72,39 @@ export const ActivityScreen = ({ navigation, route }: Props) => {
         <ScrollView contentContainerStyle={styles.container}>
           <View>
             {activity.testActivityId ?
-              <><Text style={{ fontFamily: 'Roboto_400Regular' }}>{activity.overview.header}</Text>
+              <View style={{ marginBottom: 16 }}>
+                <Text style={{ fontFamily: 'Roboto_400Regular', fontSize: 16, marginBottom: 12 }}>{activity.overview.header}</Text>
                 {
                   activity.overview.items.map(item =>
-                    <Text key={item}>-- {item}</Text>
+                    <Text key={item} style={{ marginLeft: 16 }}>{item}</Text>
                   )
-                }</> : <></>
+                }
+              </View> : <></>
             }
             <Button
-              color={Colors.highlight2} tintColor={Colors.background}
-              title={activity.complete ? 'Mark as incomplete' : 'Mark as complete'}
+              color={activity.complete ? Colors.background : Colors.highlight2}
+              tintColor={activity.complete ? Colors.highlight2 : Colors.background}
+              title={activity.complete ? 'Mark incomplete' : 'Mark complete'}
               onPress={async () => { await toggleComplete().then(() => { navigation.pop() }) }}
+              style={{ marginBottom: 24 }}
             />
 
+            {/* <Text style={{ fontFamily: 'Roboto_400Regular', fontSize: 16, marginBottom: 12 }}>Description</Text> */}
             {
               typeof activity.description === "string" ?
                 <Text style={{ fontFamily: 'Roboto_400Regular' }}>{activity.description}</Text>
-                : <>
+                :
+                <View>
                   <Text style={{ fontFamily: 'Roboto_400Regular' }}>{activity.description.header}</Text>
-                  {
-                    activity.description.items.map(item =>
-                      <Text key={item}>-- {item}</Text>
-                    )
-                  }
+                  <View style={{ margin: 12 }}>
+                    {
+                      activity.description.items.map(item =>
+                        <Text key={item} style={{ marginBottom: 8 }}>{item}</Text>
+                      )
+                    }
+                  </View>
                   <Text style={{ fontFamily: 'Roboto_400Regular' }}>{activity.description.footer}</Text>
-                </>
+                </View>
             }
           </View>
         </ScrollView>
@@ -110,8 +118,8 @@ const styles = StyleSheet.create({
     display: 'flex',
     justifyContent: 'space-between',
     marginVertical: 32,
+    paddingHorizontal: 24,
+    paddingTop: 16,
     paddingBottom: 256,
-    padding: 8,
-    paddingRight: 16
   }
 })

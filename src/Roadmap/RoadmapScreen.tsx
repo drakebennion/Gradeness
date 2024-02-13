@@ -1,5 +1,4 @@
-import { Button, Pressable } from '@react-native-material/core'
-import { Text, View } from 'react-native'
+import { Dimensions, FlatList, Pressable, Text, View } from 'react-native'
 import { Colors, GradeLevels } from '../Constants'
 import { getAuth } from 'firebase/auth'
 import { getColorForYear } from '../utils/style'
@@ -14,42 +13,38 @@ type Props = NativeStackScreenProps<RoadmapStackParamList, 'RoadmapHome'>
 export const RoadmapScreen = ({ navigation }: Props) => {
   const auth = getAuth()
 
+  const cardMargin = 16;
+  const cardWidth = (Dimensions.get('window').width - cardMargin * 3) / 2;
+
   return (
-    <View>
+    <View style={{ marginHorizontal: 16, marginVertical: 32 }}>
       <StatusBar style="light" />
-      <Button style={{ marginTop: 32 }} onPress={() => auth.signOut()} title='Log out' />
-      <Text style={{ fontFamily: 'Roboto_400Regular', color: Colors.text, marginTop: 16, fontSize: 36 }}>Welcome</Text>
-      <Text style={{ fontFamily: 'Roboto_400Regular', color: Colors.text, marginTop: 8 }}>
+      {/* <Button style={{ marginTop: 32 }} onPress={() => auth.signOut()} title='Log out' /> */}
+      <Text style={{ fontFamily: 'Roboto_400Regular', color: Colors.text, marginTop: 16, fontSize: 28 }}>Welcome</Text>
+      <Text style={{ fontFamily: 'Roboto_400Regular', color: Colors.text, marginTop: 8, fontSize: 16 }}>
         Gradeness is designed to simplify the high school process by providing a
         roadmap of time sensitive activities to prepare you for your future and a
         place to capture your accomplishments.
       </Text>
-      <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', marginTop: 16, flexWrap: 'wrap' }}>
-        {
-          roadmapGradeLevels.map(({ year, name, objective }) =>
-            <Pressable key={year}
-              pressEffect='ripple'
-              onPress={() => { navigation.navigate('GradeLevel', { year }) }}
+      <FlatList
+        data={roadmapGradeLevels}
+        renderItem={({ item: { year, name, objective } }) => (
+          <Pressable
+            onPress={() => { navigation.navigate('GradeLevel', { year }) }}
+          >
+            <LinearGradient
+              colors={[getColorForYear(year, true), getColorForYear(year)]}
+              style={{ width: cardWidth, height: 160, margin: 4, borderRadius: 8 }}
             >
-              <LinearGradient
-                key={year}
-                colors={[getColorForYear(year, true), getColorForYear(year)]}
-                style={{
-                  borderRadius: 8,
-                  width: 172,
-                  height: 160,
-                  marginVertical: 8,
-                  marginRight: 8,
-                  marginLeft: 4
-                }}>
-                <Text style={{ fontFamily: 'Roboto_400Regular', color: Colors.text }}>{name}</Text>
-                <Text style={{ fontFamily: 'Roboto_400Regular', color: Colors.text }}>{objective}</Text>
-                <Text style={{ fontFamily: 'Roboto_400Regular', color: Colors.text }}>{year}</Text>
-              </LinearGradient>
-            </Pressable>
-          )
-        }
-      </View>
+              <Text style={{ fontFamily: 'Roboto_400Regular', color: Colors.text }}>{name}</Text>
+              <Text style={{ fontFamily: 'Roboto_400Regular', color: Colors.text }}>{objective}</Text>
+              <Text style={{ fontFamily: 'Roboto_400Regular', color: Colors.text }}>{year}</Text>
+            </LinearGradient>
+          </Pressable>
+        )}
+        numColumns={2}
+        style={{ marginTop: 24, alignSelf: 'center' }}
+      />
     </View >
   )
 }

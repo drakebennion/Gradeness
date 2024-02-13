@@ -49,7 +49,7 @@ export const GradeLevelScreen = ({ navigation, route }: Props) => {
 
   return (
     <View>
-      <View style={{ marginTop: 32, display: 'flex', flexDirection: 'row' }}>
+      <View style={{ marginTop: 48, display: 'flex', flexDirection: 'row' }}>
         <IconButton
           onPress={() => { navigation.pop() }}
           icon={<Icon size={24} color='white' name="arrow-left" />}
