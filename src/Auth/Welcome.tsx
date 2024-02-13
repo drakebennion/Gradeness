@@ -7,8 +7,7 @@ export default function HomeScreen({ navigation }) {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Image style={styles.header.image} source={require('../../assets/Owl.png')} />
-        <Text style={styles.header.text} color={Colors.text}>Gradeness</Text>
+        <Image source={require('../../assets/logo.png')} />
       </View>
       <View style={styles.buttons}>
         <Button title="Get started" color={Colors.highlight2} style={styles.button} onPress={() => navigation.navigate('Sign Up')} />

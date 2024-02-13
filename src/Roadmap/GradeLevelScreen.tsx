@@ -1,7 +1,7 @@
 import { ScrollView, StyleSheet, Text, View } from 'react-native'
 import { Button, Icon, IconButton, ListItem } from '@react-native-material/core'
 import * as Progress from 'react-native-progress'
-import { Colors, GradeLevels } from "../Constants"
+import { Colors, GradeLevels, semesters } from "../Constants"
 import { useCallback, useState } from 'react'
 import { collection, getDocs, getFirestore, query, where } from 'firebase/firestore'
 import { useAuthentication } from '../utils/hooks/useAuthentication'
@@ -54,18 +54,18 @@ export const GradeLevelScreen = ({ navigation, route }: Props) => {
           onPress={() => { navigation.pop() }}
           icon={<Icon size={24} color='white' name="arrow-left" />}
         />
-        <Text style={{ fontFamily: 'Roboto_400Regular', color: getColorForYear(year), fontSize: 24, marginTop: 8 }}>
+        <Text style={{ fontFamily: 'Roboto_400Regular', color: getColorForYear(year), fontSize: 28, marginTop: 8 }}>
           {gradeLevel.name}
         </Text>
       </View>
       <ScrollView contentContainerStyle={styles.container}>
-        <View style={{ backgroundColor: '#1C222E', padding: 16, borderBottomLeftRadius: 8, borderBottomRightRadius: 8 }}>
-          <View>
-            <Text style={{ fontFamily: 'Roboto_400Regular', color: '#fff' }}>{gradeLevel.objective}</Text>
-            <Text style={{ fontFamily: 'Roboto_400Regular', color: '#fff' }}>{gradeLevel.details}</Text>
+        <View style={{ backgroundColor: Colors.background, padding: 16, borderBottomLeftRadius: 8, borderBottomRightRadius: 8 }}>
+          <View style={{ marginBottom: 16 }}>
+            <Text style={{ fontFamily: 'Roboto_400Regular', fontSize: 16, color: Colors.text, marginBottom: 8 }}>{gradeLevel.objective}</Text>
+            <Text style={{ fontFamily: 'Roboto_400Regular', color: Colors.text, lineHeight: 20, letterSpacing: 0.25 }}>{gradeLevel.details}</Text>
           </View>
           <View style={styles.progressContainer}>
-            <Text style={{ fontFamily: 'Roboto_400Regular', fontWeight: '400', marginBottom: 8, color: '#fff' }}>Progress</Text>
+            <Text style={{ fontFamily: 'Roboto_400Regular', fontWeight: '400', marginBottom: 8, color: Colors.text }}>Progress</Text>
             <Progress.Bar color={Colors.highlight2} borderColor={Colors.background} unfilledColor='#E6E0E9' width={null} progress={progress} />
           </View>
           <View>
@@ -95,13 +95,13 @@ const ActivityList = ({ activities, navigation }) => {
   return (
     <>
       {
-        ['Fall', 'Spring', 'Summer']
+        semesters
           .map(semester => {
             return (
-              <View key={semester}>
-                <Text style={{ fontFamily: 'Roboto_400Regular', fontSize: 16, fontWeight: '500' }}>{semester}</Text>
+              <View key={semester} style={{ marginTop: 16, marginHorizontal: 16 }} >
+                <Text style={{ fontFamily: 'Roboto_400Regular', fontSize: 16, fontWeight: '500', marginBottom: 8 }}>{semester}</Text>
                 {toSorted(activities[semester], (a: Activity, b: Activity) => a.order - b.order)
-                  .map(({ id, name, complete, year }) =>
+                  .map(({ id, name, complete }) =>
                     <GradeLevelListItem
                       key={name}
                       title={name}
@@ -120,19 +120,21 @@ const ActivityList = ({ activities, navigation }) => {
 
 const GradeLevelListItem = ({ title, checked, onPress }) => {
   return (
+    // todo: get rid this / anythnig react-native-material lol
     <ListItem
       key={title}
       title={title}
       onPress={onPress}
+      leadingMode='icon'
       leading={<Icon size={24} name={checked ? 'checkbox-marked-circle' : 'checkbox-blank-circle-outline'} color={Colors.highlight2} />}
-      trailing={<Icon size={24} name="chevron-right" color="#365a75" />}
+      trailing={< Icon size={24} name="chevron-right" color="#365a75" />}
     />
   )
 }
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#fff',
+    backgroundColor: Colors.text,
     display: 'flex',
     justifyContent: 'space-between',
     paddingBottom: 128

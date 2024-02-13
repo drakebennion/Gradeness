@@ -12,6 +12,7 @@ export default function App() {
   });
 
   if (!fontsLoaded && !fontError) {
+    // todo: show splash screen
     return null;
   }
 

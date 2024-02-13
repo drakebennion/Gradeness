@@ -114,12 +114,12 @@ export const ActivityScreen = ({ navigation, route }: Props) => {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#fff',
+    backgroundColor: Colors.text,
     display: 'flex',
     justifyContent: 'space-between',
     marginVertical: 32,
     paddingHorizontal: 24,
     paddingTop: 16,
-    paddingBottom: 256,
+    paddingBottom: 360,
   }
 })

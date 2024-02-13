@@ -5,8 +5,8 @@ const groupBy = function (xs: any[], key: string) {
   }, {})
 }
 
-const toSorted = function (xs: any[], fn?: (a: any, b: any) => number): any[] {
-  xs?.sort(fn)
+const toSorted = function (xs: any[] = [], fn?: (a: any, b: any) => number): any[] {
+  xs.sort(fn)
   return xs
 }
 
