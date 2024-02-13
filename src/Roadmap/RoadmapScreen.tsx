@@ -36,9 +36,25 @@ export const RoadmapScreen = ({ navigation }: Props) => {
               colors={[getColorForYear(year, true), getColorForYear(year)]}
               style={{ width: cardWidth, height: 160, margin: 4, borderRadius: 8 }}
             >
-              <Text style={{ fontFamily: 'Roboto_400Regular', color: Colors.text }}>{name}</Text>
-              <Text style={{ fontFamily: 'Roboto_400Regular', color: Colors.text }}>{objective}</Text>
-              <Text style={{ fontFamily: 'Roboto_400Regular', color: Colors.text }}>{year}</Text>
+              <View style={{ display: 'flex', margin: 16, height: '88%', justifyContent: 'space-between' }}>
+                <View>
+                  <Text style={{ fontFamily: 'Roboto_500Medium', fontSize: 16, color: Colors.text }}>{name}</Text>
+                  <Text style={{ fontFamily: 'Roboto_400Regular', fontSize: 14, color: Colors.text, marginTop: 8 }}>{objective}</Text>
+                </View>
+                <Text
+                  style={
+                    {
+                      fontFamily: 'Roboto_300Light',
+                      color: Colors.text,
+                      fontSize: 32,
+                      alignSelf: 'flex-end',
+                      opacity: 0.7,
+                    }
+                  }
+                >
+                  {year}
+                </Text>
+              </View>
             </LinearGradient>
           </Pressable>
         )}
