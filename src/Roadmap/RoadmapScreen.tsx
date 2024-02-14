@@ -20,7 +20,7 @@ export const RoadmapScreen = ({ navigation }: Props) => {
   return (
     <View style={{ marginHorizontal: 16, marginVertical: 32 }}>
       <StatusBar style="light" />
-      {/* <Button style={{ marginTop: 32 }} onPress={() => auth.signOut()} title='Log out' /> */}
+      <Button style={{ marginTop: 32 }} onPress={() => auth.signOut()} title='Log out' />
       <Text style={{ fontFamily: 'Roboto_400Regular', color: Colors.text, marginTop: 16, fontSize: 28 }}>Welcome</Text>
       <Text style={{ fontFamily: 'Roboto_400Regular', color: Colors.text, marginTop: 8, fontSize: 16 }}>
         Gradeness is designed to simplify the high school process by providing a

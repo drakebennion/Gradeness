@@ -42,6 +42,10 @@ export default function SignUpScreen({ navigation }) {
           value={signUp.email}
           onChangeText={(email) => { setSignUp({ ...signUp, email }) }}
           style={{ marginBottom: 12 }}
+          autoComplete='email'
+          inputMode='email'
+          autoCapitalize='none'
+          color={Colors.background}
         />
         <TextInput
           label='Password'
@@ -50,6 +54,8 @@ export default function SignUpScreen({ navigation }) {
           onChangeText={(password) => { setSignUp({ ...signUp, password }) }}
           style={{ marginBottom: 12 }}
           secureTextEntry
+          autoComplete='new-password'
+          color={Colors.background}
         />
 
         {/* todo: replace all react-native-material shit, this is silly. */}

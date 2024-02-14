@@ -1,4 +1,4 @@
-import { Button, Icon, IconButton, TextInput } from '@react-native-material/core'
+import { Button, Icon, IconButton } from '@react-native-material/core'
 import { doc, getDoc, getFirestore, updateDoc } from 'firebase/firestore'
 import { useCallback, useState } from 'react'
 import { ScrollView, StyleSheet, Text, View } from 'react-native'
@@ -71,16 +71,19 @@ export const ActivityScreen = ({ navigation, route }: Props) => {
         </View>
         <ScrollView contentContainerStyle={styles.container}>
           <View>
+            {/* todo: could def handle this better - if no overview show nothing, if overview is string display it, otherwise show header and items */}
             {typeof activity.overview === "string" ?
               <Text style={{ fontFamily: 'Roboto_400Regular', fontSize: 16, marginBottom: 12 }}>{activity.overview}</Text> :
-              <View style={{ marginBottom: 16 }}>
-                <Text style={{ fontFamily: 'Roboto_400Regular', fontSize: 16, marginBottom: 12 }}>{activity.overview.header}</Text>
-                {
-                  activity.overview.items.map(item =>
-                    <Text key={item} style={{ marginLeft: 16 }}>{item}</Text>
-                  )
-                }
-              </View>
+
+              activity.overview ?
+                <View style={{ marginBottom: 16 }}>
+                  <Text style={{ fontFamily: 'Roboto_400Regular', fontSize: 16, marginBottom: 12 }}>{activity.overview.header}</Text>
+                  {
+                    activity.overview.items.map(item =>
+                      <Text key={item} style={{ marginLeft: 16 }}>{item}</Text>
+                    )
+                  }
+                </View> : <></>
             }
             <Button
               color={activity.complete ? Colors.background : Colors.highlight2}

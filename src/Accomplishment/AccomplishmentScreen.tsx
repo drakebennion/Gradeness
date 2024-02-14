@@ -100,6 +100,7 @@ export const AccomplishmentScreen = ({ navigation }) => {
                                                 setAddAccomplishments({ ...addAccomplishments, [gradeLevel.year]: gradeLevelAccomplishment })
                                             }}
                                             style={{ marginTop: 12 }}
+                                            color={Colors.background}
                                         />
                                         <Button disabled={!addAccomplishments[gradeLevel.year]} color={Colors.highlight2} style={{ alignSelf: 'flex-end', marginTop: 8 }} title="Save" onPress={() => saveAccomplishmentForYear(gradeLevel.year).then(() => setShouldRefetch(true))} />
                                     </View>

@@ -63,6 +63,7 @@ export const CreateUpdateActivityScreen = ({ navigation, route }: Props) => {
             style={{ marginBottom: 8 }}
             value={activity?.name}
             onChangeText={(name) => { setActivity({ ...activity, name }) }}
+            color={Colors.background}
           />
 
           <Text style={{ fontFamily: 'Roboto_400Regular', fontSize: 14, marginVertical: 8 }}>Choose the school year you would like to add the activity?</Text>
@@ -91,6 +92,7 @@ export const CreateUpdateActivityScreen = ({ navigation, route }: Props) => {
             value={activity?.description}
             onChangeText={(description) => { setActivity({ ...activity, description }) }}
             style={{ marginVertical: 24 }}
+            color={Colors.background}
           />
           <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'flex-end' }}>
             <Button
