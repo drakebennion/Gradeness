@@ -78,9 +78,9 @@ export const AccomplishmentScreen = ({ navigation }) => {
                     }
                 }>
                     {
-                        GradeLevels.map(gradeLevel =>
-                            loadingAccomplishments ?
-                                <Progress.Circle size={40} indeterminate={true} color={Colors.background} borderWidth={3} style={{ alignSelf: 'center', marginTop: '66%' }} /> :
+                        loadingAccomplishments ?
+                            <Progress.Circle size={40} indeterminate={true} color={Colors.background} borderWidth={3} style={{ alignSelf: 'center', marginTop: '66%' }} /> :
+                            GradeLevels.map(gradeLevel =>
                                 <View key={gradeLevel.year} style={{ borderWidth: 0.5, borderColor: '#1D1B20', borderRadius: 8, marginVertical: 32, marginHorizontal: 16, padding: 8, paddingVertical: 16 }}>
                                     <View style={{ padding: 8 }}>
                                         <Text style={{ fontFamily: 'Roboto_400Regular', fontSize: 16, letterSpacing: 0.5, marginBottom: 8 }}>{gradeLevel.name} year</Text>
