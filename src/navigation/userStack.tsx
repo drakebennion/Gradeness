@@ -9,6 +9,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { AccomplishmentScreen } from '../Accomplishment/AccomplishmentScreen'
 import { Colors } from '../Constants'
 import { Icon } from '@react-native-material/core'
+import { Platform } from 'react-native'
 
 const RoadmapStack = createNativeStackNavigator<RoadmapStackParamList>()
 const Tab = createBottomTabNavigator()
@@ -25,6 +26,7 @@ function Overview() {
                 tabBarInactiveBackgroundColor: Colors.background,
                 tabBarStyle: { borderTopWidth: 0, height: 72 },
                 tabBarLabelStyle: { marginBottom: 12 },
+                tabBarHideOnKeyboard: Platform.OS !== 'ios',
                 tabBarIcon: ({ color }) => {
                     let iconName = route.name === 'Roadmap' ? 'map-outline' : 'checkbox-marked-circle-outline';
                     return <Icon size={32} name={iconName} color={color} />;
@@ -76,7 +78,7 @@ function RoadmapScreens() {
                     component={ActivityScreen}
                 />
             </RoadmapStack.Group>
-            <RoadmapStack.Group screenOptions={{ presentation: 'modal' }}>
+            <RoadmapStack.Group>
                 <RoadmapStack.Screen
                     name="CreateUpdateActivity"
                     component={CreateUpdateActivityScreen}

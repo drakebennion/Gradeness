@@ -71,7 +71,8 @@ export const ActivityScreen = ({ navigation, route }: Props) => {
         </View>
         <ScrollView contentContainerStyle={styles.container}>
           <View>
-            {activity.testActivityId ?
+            {typeof activity.overview === "string" ?
+              <Text style={{ fontFamily: 'Roboto_400Regular', fontSize: 16, marginBottom: 12 }}>{activity.overview}</Text> :
               <View style={{ marginBottom: 16 }}>
                 <Text style={{ fontFamily: 'Roboto_400Regular', fontSize: 16, marginBottom: 12 }}>{activity.overview.header}</Text>
                 {
@@ -79,7 +80,7 @@ export const ActivityScreen = ({ navigation, route }: Props) => {
                     <Text key={item} style={{ marginLeft: 16 }}>{item}</Text>
                   )
                 }
-              </View> : <></>
+              </View>
             }
             <Button
               color={activity.complete ? Colors.background : Colors.highlight2}
@@ -89,7 +90,6 @@ export const ActivityScreen = ({ navigation, route }: Props) => {
               style={{ marginBottom: 24 }}
             />
 
-            {/* <Text style={{ fontFamily: 'Roboto_400Regular', fontSize: 16, marginBottom: 12 }}>Description</Text> */}
             {
               typeof activity.description === "string" ?
                 <Text style={{ fontFamily: 'Roboto_400Regular' }}>{activity.description}</Text>

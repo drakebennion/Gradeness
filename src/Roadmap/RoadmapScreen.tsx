@@ -1,4 +1,4 @@
-import { Dimensions, FlatList, Pressable, Text, View } from 'react-native'
+import { Button, Dimensions, FlatList, Pressable, Text, View } from 'react-native'
 import { Colors, GradeLevels } from '../Constants'
 import { getAuth } from 'firebase/auth'
 import { getColorForYear } from '../utils/style'
@@ -15,6 +15,7 @@ export const RoadmapScreen = ({ navigation }: Props) => {
 
   const cardMargin = 16;
   const cardWidth = (Dimensions.get('window').width - cardMargin * 3) / 2;
+  const cardHeight = Dimensions.get('window').height / 4.5;
 
   return (
     <View style={{ marginHorizontal: 16, marginVertical: 32 }}>
@@ -34,7 +35,7 @@ export const RoadmapScreen = ({ navigation }: Props) => {
           >
             <LinearGradient
               colors={[getColorForYear(year, true), getColorForYear(year)]}
-              style={{ width: cardWidth, height: 160, margin: 4, borderRadius: 8 }}
+              style={{ width: cardWidth, height: cardHeight, margin: 4, borderRadius: 8 }}
             >
               <View style={{ display: 'flex', margin: 16, height: '88%', justifyContent: 'space-between' }}>
                 <View>

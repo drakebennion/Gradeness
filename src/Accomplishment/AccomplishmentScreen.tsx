@@ -1,17 +1,19 @@
 import { Button, Text, TextInput } from "@react-native-material/core"
-import { ScrollView, View } from "react-native"
+import { KeyboardAvoidingView, Platform, ScrollView, View } from "react-native"
 import { Colors, GradeLevels } from "../Constants"
 import { useFocusEffect } from "@react-navigation/native"
 import { useCallback, useState } from "react"
 import { addDoc, collection, getDocs, getFirestore, query, where } from "firebase/firestore"
 import { useAuthentication } from "../utils/hooks/useAuthentication"
 import { groupBy, toSorted } from "../utils/array"
+import { useHeaderHeight } from "@react-navigation/elements"
 
 export const AccomplishmentScreen = ({ navigation }) => {
     const db = getFirestore()
     const { user } = useAuthentication()
     const [accomplishments, setAccomplishments] = useState({})
     const [loadingAccomplishments, setLoadingAccomplishments] = useState(true)
+    const headerHeight = useHeaderHeight();
 
     // todo: pull addaccomplishments into its own component
     const [addAccomplishments, setAddAccomplishments] = useState({});
@@ -58,47 +60,53 @@ export const AccomplishmentScreen = ({ navigation }) => {
     // TODO; actually want to split this into different components so they can each handle
     // refresh individually :p 
     return (
-        <View>
+        <View style={{ height: '100%' }}>
             {/* todo: add badges at top and make filtering happen! */}
             <Text style={{ fontFamily: 'Roboto_400Regular', color: Colors.text, marginTop: 64, marginBottom: 32, marginLeft: 16, fontSize: 28 }}>Accomplishments</Text>
-            <ScrollView contentContainerStyle={
-                {
-                    backgroundColor: '#fff',
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    paddingBottom: 128
-                }
-            }>
-                {
-                    GradeLevels.map(gradeLevel =>
-                        loadingAccomplishments ?
-                            <Text style={{ fontFamily: 'Roboto_400Regular' }} key={gradeLevel.year}>Loading...</Text> :
-                            <View key={gradeLevel.year} style={{ borderWidth: 0.5, borderColor: '#1D1B20', borderRadius: 8, marginVertical: 32, marginHorizontal: 16, padding: 8, paddingVertical: 16 }}>
-                                <View style={{ padding: 8 }}>
-                                    <Text style={{ fontFamily: 'Roboto_400Regular', fontSize: 16, letterSpacing: 0.5, marginBottom: 8 }}>{gradeLevel.name} year</Text>
-                                    <Text style={{ fontFamily: 'Roboto_300Light', marginBottom: 24 }}>During your {gradeLevel.name.toLowerCase()} year, you:</Text>
-                                    {
-                                        // todo: how do we actually want to sort them?
-                                        // todo: empty list = show message to add accomplishments
-                                        toSorted(accomplishments?.[gradeLevel.year], (a, b) => a.createdAt - b.createdAt)?.map(({ id, accomplishment }) =>
-                                            <Text style={{ fontFamily: 'Roboto_300Light', marginBottom: 16 }} key={id}>{accomplishment}</Text>
-                                        )
-                                    }
-                                    <Text style={{ marginTop: 16 }}>Capture your accomplishments</Text>
-                                    <TextInput
-                                        label="Accomplishments"
-                                        variant="outlined"
-                                        value={addAccomplishments[gradeLevel.year]}
-                                        onChangeText={(gradeLevelAccomplishment) => {
-                                            setAddAccomplishments({ ...addAccomplishments, [gradeLevel.year]: gradeLevelAccomplishment })
-                                        }}
-                                        style={{ marginTop: 12 }}
-                                    />
-                                    <Button disabled={!addAccomplishments[gradeLevel.year]} color={Colors.highlight2} style={{ alignSelf: 'flex-end', marginTop: 8 }} title="Save" onPress={() => saveAccomplishmentForYear(gradeLevel.year).then(() => setShouldRefetch(true))} />
-                                </View>
-                            </View>)
-                }
-            </ScrollView>
+            <KeyboardAvoidingView
+                style={{ flex: 1 }}
+                behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+                keyboardVerticalOffset={headerHeight}
+            >
+                <ScrollView contentContainerStyle={
+                    {
+                        backgroundColor: '#fff',
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        paddingBottom: 128,
+                    }
+                }>
+                    {
+                        GradeLevels.map(gradeLevel =>
+                            loadingAccomplishments ?
+                                <Text style={{ fontFamily: 'Roboto_400Regular' }} key={gradeLevel.year}>Loading...</Text> :
+                                <View key={gradeLevel.year} style={{ borderWidth: 0.5, borderColor: '#1D1B20', borderRadius: 8, marginVertical: 32, marginHorizontal: 16, padding: 8, paddingVertical: 16 }}>
+                                    <View style={{ padding: 8 }}>
+                                        <Text style={{ fontFamily: 'Roboto_400Regular', fontSize: 16, letterSpacing: 0.5, marginBottom: 8 }}>{gradeLevel.name} year</Text>
+                                        <Text style={{ fontFamily: 'Roboto_300Light', marginBottom: 24 }}>During your {gradeLevel.name.toLowerCase()} year, you:</Text>
+                                        {
+                                            // todo: how do we actually want to sort them?
+                                            // todo: empty list = show message to add accomplishments
+                                            toSorted(accomplishments?.[gradeLevel.year], (a, b) => a.createdAt - b.createdAt)?.map(({ id, accomplishment }) =>
+                                                <Text style={{ fontFamily: 'Roboto_300Light', marginBottom: 16 }} key={id}>{accomplishment}</Text>
+                                            )
+                                        }
+                                        <Text style={{ marginTop: 16 }}>Capture your accomplishments</Text>
+                                        <TextInput
+                                            label="Accomplishments"
+                                            variant="outlined"
+                                            value={addAccomplishments[gradeLevel.year]}
+                                            onChangeText={(gradeLevelAccomplishment) => {
+                                                setAddAccomplishments({ ...addAccomplishments, [gradeLevel.year]: gradeLevelAccomplishment })
+                                            }}
+                                            style={{ marginTop: 12 }}
+                                        />
+                                        <Button disabled={!addAccomplishments[gradeLevel.year]} color={Colors.highlight2} style={{ alignSelf: 'flex-end', marginTop: 8 }} title="Save" onPress={() => saveAccomplishmentForYear(gradeLevel.year).then(() => setShouldRefetch(true))} />
+                                    </View>
+                                </View>)
+                    }
+                </ScrollView>
+            </KeyboardAvoidingView>
         </View>
     )
 }

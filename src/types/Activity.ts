@@ -19,5 +19,5 @@ export interface Activity {
   overview?: {
     header: string,
     items: string[],
-  },
+  } | string,
 }

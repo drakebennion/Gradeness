@@ -20,6 +20,7 @@ export const GradeLevelScreen = ({ navigation, route }: Props) => {
   const [activities, setActivities] = useState({})
   const [loadingActivities, setLoadingActivities] = useState(true)
   const [progress, setProgress] = useState(0.0)
+  const highlightColor = getColorForYear(year);
 
   useFocusEffect(
     useCallback(() => {
@@ -66,13 +67,13 @@ export const GradeLevelScreen = ({ navigation, route }: Props) => {
           </View>
           <View style={styles.progressContainer}>
             <Text style={{ fontFamily: 'Roboto_400Regular', fontWeight: '400', marginBottom: 8, color: Colors.text }}>Progress</Text>
-            <Progress.Bar color={Colors.highlight2} borderColor={Colors.background} unfilledColor='#E6E0E9' width={null} progress={progress} />
+            <Progress.Bar color={highlightColor} borderColor={Colors.background} unfilledColor='#E6E0E9' width={null} progress={progress} />
           </View>
           <View>
             <Button
               style={{ alignSelf: 'flex-end', marginBottom: 16, marginRight: 16 }}
               title="Add activity"
-              color={Colors.highlight2}
+              color={highlightColor}
               tintColor={Colors.background}
               onPress={() => { navigation.navigate('CreateUpdateActivity') }}
             />
@@ -81,7 +82,7 @@ export const GradeLevelScreen = ({ navigation, route }: Props) => {
         <View>
           {loadingActivities
             ? <Text style={{ fontFamily: 'Roboto_400Regular' }}>Loading...</Text>
-            : hasActivities(activities) ? <ActivityList activities={activities} navigation={navigation} /> : <Text style={{ fontFamily: 'Roboto_400Regular' }}>No activities - create some! or refresh</Text>
+            : hasActivities(activities) ? <ActivityList activities={activities} navigation={navigation} highlightColor={Colors.highlight2} /> : <Text style={{ fontFamily: 'Roboto_400Regular' }}>No activities - create some! or refresh</Text>
           }
         </View>
       </ScrollView>
@@ -91,7 +92,7 @@ export const GradeLevelScreen = ({ navigation, route }: Props) => {
 
 const hasActivities = (activities) => activities && (activities.Fall?.length || activities.Spring?.length || activities.Summer?.length)
 
-const ActivityList = ({ activities, navigation }) => {
+const ActivityList = ({ activities, navigation, highlightColor }) => {
   return (
     <>
       {
@@ -106,6 +107,7 @@ const ActivityList = ({ activities, navigation }) => {
                       key={name}
                       title={name}
                       checked={complete}
+                      highlightColor={highlightColor}
                       onPress={() => {
                         navigation.navigate('Activity', { activityId: id })
                       }}
@@ -118,7 +120,7 @@ const ActivityList = ({ activities, navigation }) => {
   )
 }
 
-const GradeLevelListItem = ({ title, checked, onPress }) => {
+const GradeLevelListItem = ({ title, checked, onPress, highlightColor }) => {
   return (
     // todo: get rid this / anythnig react-native-material lol
     <ListItem
@@ -126,7 +128,7 @@ const GradeLevelListItem = ({ title, checked, onPress }) => {
       title={title}
       onPress={onPress}
       leadingMode='icon'
-      leading={<Icon size={24} name={checked ? 'checkbox-marked-circle' : 'checkbox-blank-circle-outline'} color={Colors.highlight2} />}
+      leading={<Icon size={24} name={checked ? 'checkbox-marked-circle' : 'checkbox-blank-circle-outline'} color={highlightColor} />}
       trailing={< Icon size={24} name="chevron-right" color="#365a75" />}
     />
   )
