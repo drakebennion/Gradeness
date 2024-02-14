@@ -8,6 +8,7 @@ import { useAuthentication } from '../utils/hooks/useAuthentication'
 import { getGradeLevelNameForYear } from '../utils/style'
 import { type NativeStackScreenProps } from '@react-navigation/native-stack'
 import { type Activity } from '../types/Activity'
+import * as Progress from 'react-native-progress'
 
 type Props = NativeStackScreenProps<UserStackParamList, 'Activity'>
 export const ActivityScreen = ({ navigation, route }: Props) => {
@@ -40,7 +41,7 @@ export const ActivityScreen = ({ navigation, route }: Props) => {
 
   return (
     loadingActivity
-      ? <Text style={{ fontFamily: 'Roboto_400Regular' }}>Loading</Text>
+      ? <Progress.Circle size={40} indeterminate={true} color={Colors.highlight2} borderWidth={3} style={{ alignSelf: 'center', marginTop: '66%' }} />
       :
       <View>
         <View style={{ marginTop: 48, marginBottom: 16 }}>

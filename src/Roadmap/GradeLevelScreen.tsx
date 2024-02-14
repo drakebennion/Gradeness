@@ -81,7 +81,7 @@ export const GradeLevelScreen = ({ navigation, route }: Props) => {
         </View>
         <View>
           {loadingActivities
-            ? <Text style={{ fontFamily: 'Roboto_400Regular' }}>Loading...</Text>
+            ? <Progress.Circle size={40} indeterminate={true} color={Colors.background} borderWidth={3} style={{ alignSelf: 'center', marginTop: 32 }} />
             : hasActivities(activities) ? <ActivityList activities={activities} navigation={navigation} highlightColor={Colors.highlight2} /> : <Text style={{ fontFamily: 'Roboto_400Regular' }}>No activities - create some! or refresh</Text>
           }
         </View>
