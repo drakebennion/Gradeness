@@ -35,7 +35,7 @@ function Overview() {
             })}
         >
             {/* <Tab.Screen name="Home" component={Home} /> */}
-            < Tab.Screen name="Roadmap" component={RoadmapScreens} />
+            <Tab.Screen name="Roadmap" component={RoadmapScreens} />
             <Tab.Screen name="Accomplishments" component={AccomplishmentsScreen} />
             {/* <Tab.Screen name="Goals" component={Goals} /> */}
         </Tab.Navigator >

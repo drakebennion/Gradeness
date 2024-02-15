@@ -1,5 +1,5 @@
-import { Button, Icon, IconButton } from '@react-native-material/core'
-import { doc, getDoc, getFirestore, updateDoc } from 'firebase/firestore'
+import { Button, Icon, IconButton, TextInput } from '@react-native-material/core'
+import { addDoc, collection, doc, getDoc, getDocs, getFirestore, query, setDoc, updateDoc, where } from 'firebase/firestore'
 import { useCallback, useState } from 'react'
 import { ScrollView, StyleSheet, Text, View } from 'react-native'
 import { Colors } from "../Constants"
@@ -16,11 +16,36 @@ export const ActivityScreen = ({ navigation, route }: Props) => {
   const { user } = useAuthentication()
   const { activityId } = route.params
   const [activity, setActivity] = useState<Activity | undefined>()
+  const [accomplishment, setAccomplishment] = useState({ id: null, content: '' });
   const [loadingActivity, setLoadingActivity] = useState(true)
 
   const toggleComplete = async () => {
     const activityRef = doc(db, 'activities', activityId)
     await updateDoc(activityRef, { complete: !activity.complete })
+  }
+
+  const saveAccomplishment = async () => {
+    if (accomplishment.id) {
+      const accomplishmentRef = doc(db, 'accomplishments', accomplishment.id)
+      const accomplishmentEntity = {
+        ...accomplishment,
+        updatedAt: Date.now(),
+        updatedBy: user.uid
+      }
+      await setDoc(accomplishmentRef, accomplishmentEntity, { merge: true }).catch(console.error)
+    } else {
+      const accomplishmentEntity = {
+        ...accomplishment,
+        activityId,
+        year: activity?.year,
+        userId: user.uid,
+        createdAt: Date.now(),
+        createdBy: user.uid,
+        updatedAt: Date.now(),
+        updatedBy: user.uid
+      }
+      await addDoc(collection(db, 'accomplishments'), accomplishmentEntity).catch(console.error)
+    }
   }
 
   useFocusEffect(
@@ -32,6 +57,16 @@ export const ActivityScreen = ({ navigation, route }: Props) => {
           // todo: mapper for firestore data to Activity
           setActivity(activity.data())
           setLoadingActivity(false)
+
+          const q = query(collection(db, 'accomplishments'),
+            where('userId', '==', user.uid),
+            where('activityId', '==', activityId))
+          const accomplishment = await getDocs(q);
+          const accomplishmentData = accomplishment.docs.map(doc => ({ id: doc.id, content: doc.data().content, ...doc.data() }))
+
+          if (accomplishmentData?.length) {
+            setAccomplishment(accomplishmentData[0])
+          }
         }
       }
 
@@ -87,12 +122,28 @@ export const ActivityScreen = ({ navigation, route }: Props) => {
                 </View> : <></>
             }
             <Button
-              color={activity.complete ? Colors.background : Colors.highlight2}
-              tintColor={activity.complete ? Colors.highlight2 : Colors.background}
-              title={activity.complete ? 'Mark incomplete' : 'Mark complete'}
+              color={activity.complete ? Colors.text : Colors.highlight2}
+              tintColor={Colors.background}
+              leading={activity.complete ? <Icon name='check' size={16} /> : <></>}
+              title={activity.complete ? 'Complete' : 'Mark complete'}
               onPress={async () => { await toggleComplete().then(() => { navigation.pop() }) }}
               style={{ marginBottom: 24 }}
             />
+
+            <View style={{ marginBottom: 24 }}>
+              <Text style={{ marginTop: 16 }}>Capture your accomplishments</Text>
+              <TextInput
+                label="Accomplishments"
+                variant="outlined"
+                value={accomplishment.content}
+                onChangeText={(content) => {
+                  setAccomplishment({ ...accomplishment, content })
+                }}
+                style={{ marginTop: 16 }}
+                color={Colors.background}
+              />
+              <Button disabled={!accomplishment} color={Colors.background} style={{ alignSelf: 'flex-end', marginTop: 8 }} title="Save" onPress={() => saveAccomplishment()} />
+            </View>
 
             {
               typeof activity.description === "string" ?

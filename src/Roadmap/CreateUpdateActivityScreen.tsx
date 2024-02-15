@@ -96,13 +96,13 @@ export const CreateUpdateActivityScreen = ({ navigation, route }: Props) => {
           />
           <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'flex-end' }}>
             <Button
-              color={Colors.background} tintColor={Colors.highlight2}
+              color={Colors.text} tintColor={Colors.background}
               title="Cancel"
               style={{ marginRight: 8 }}
               onPress={() => { navigation.pop() }}
             />
             <Button
-              color={Colors.highlight2} tintColor={Colors.background}
+              color={Colors.background} tintColor={Colors.text}
               title="Save"
               disabled={!(activity && activity.year && activity.semester && activity.description && activity.name)}
               onPress={async () => { await updateActivityWithDatabase().then(() => { navigation.goBack() }) }}

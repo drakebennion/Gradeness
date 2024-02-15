@@ -45,7 +45,7 @@ export const AccomplishmentScreen = ({ navigation }) => {
         if (!addAccomplishments[year]) return;
         const accomplishmentToAdd = addAccomplishments[year];
         const accomplishmentEntity = {
-            accomplishment: accomplishmentToAdd,
+            content: accomplishmentToAdd,
             year,
             userId: user.uid,
             createdAt: Date.now(),
@@ -88,8 +88,8 @@ export const AccomplishmentScreen = ({ navigation }) => {
                                         {
                                             // todo: how do we actually want to sort them?
                                             // todo: empty list = show message to add accomplishments
-                                            toSorted(accomplishments?.[gradeLevel.year], (a, b) => a.createdAt - b.createdAt)?.map(({ id, accomplishment }) =>
-                                                <Text style={{ fontFamily: 'Roboto_300Light', marginBottom: 16 }} key={id}>{accomplishment}</Text>
+                                            toSorted(accomplishments?.[gradeLevel.year], (a, b) => a.createdAt - b.createdAt)?.map(({ id, content }) =>
+                                                <Text style={{ fontFamily: 'Roboto_300Light', marginBottom: 16 }} key={id}>{content}</Text>
                                             )
                                         }
                                         <Text style={{ marginTop: 16 }}>Capture your accomplishments</Text>
