@@ -93,6 +93,15 @@ export const GradeLevelScreen = ({ navigation, route }: Props) => {
 const hasActivities = (activities) => activities && (activities.Fall?.length || activities.Spring?.length || activities.Summer?.length)
 
 const ActivityList = ({ activities, navigation, highlightColor }) => {
+  const activitySort = (a: Activity, b: Activity) => {
+    if ((a.testActivityId && b.testActivityId) || (!a.testActivityId && !b.testActivityId)) {
+      return a.order - b.order;
+    } else if (a.testActivityId) {
+      return 1;
+    } else {
+      return -1;
+    }
+  }
   return (
     <>
       {
@@ -101,7 +110,7 @@ const ActivityList = ({ activities, navigation, highlightColor }) => {
             return (
               <View key={semester} style={{ marginTop: 16, marginHorizontal: 16 }} >
                 <Text style={{ fontFamily: 'Roboto_400Regular', fontSize: 16, fontWeight: '500', marginBottom: 8 }}>{semester}</Text>
-                {toSorted(activities[semester], (a: Activity, b: Activity) => a.order - b.order)
+                {toSorted(activities[semester], activitySort)
                   .map(({ id, name, complete }) =>
                     <GradeLevelListItem
                       key={name}

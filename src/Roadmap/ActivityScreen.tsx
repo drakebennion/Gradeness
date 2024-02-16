@@ -1,7 +1,7 @@
 import { Button, Icon, IconButton, TextInput } from '@react-native-material/core'
 import { addDoc, collection, doc, getDoc, getDocs, getFirestore, query, setDoc, updateDoc, where } from 'firebase/firestore'
 import { useCallback, useState } from 'react'
-import { ScrollView, StyleSheet, Text, View } from 'react-native'
+import { ImageBackground, ScrollView, StyleSheet, Text, View } from 'react-native'
 import { Colors } from "../Constants"
 import { useFocusEffect } from '@react-navigation/native'
 import { useAuthentication } from '../utils/hooks/useAuthentication'
@@ -95,18 +95,20 @@ export const ActivityScreen = ({ navigation, route }: Props) => {
           <Text style={{ fontFamily: 'Roboto_400Regular', color: Colors.text, fontSize: 24, marginTop: 8, marginLeft: 16 }}>
             {activity.name}
           </Text>
-          <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'flex-end', paddingRight: 12, marginTop: 16 }}>
-            {/* todo: pull this into a Badge component */}
-            <View style={{ backgroundColor: Colors.text, padding: 8, borderRadius: 8, margin: 4 }}>
-              <Text style={{ fontFamily: 'Roboto_400Regular' }}>{activity.semester}</Text>
-            </View>
-            <View style={{ backgroundColor: Colors.text, padding: 8, borderRadius: 8, margin: 4 }}>
-              <Text style={{ fontFamily: 'Roboto_400Regular' }}>{getGradeLevelNameForYear(activity.year)}</Text>
-            </View>
-          </View>
         </View>
         <ScrollView contentContainerStyle={styles.container}>
           <View>
+            <ImageBackground source={require('../../assets/activities/orientation.png')} style={{ display: 'flex', flexDirection: 'row', justifyContent: 'flex-end', paddingRight: 12, height: 160 }}>
+              {/* todo: pull this into a Badge component */}
+              <View style={{ backgroundColor: Colors.text, padding: 8, borderRadius: 8, margin: 8, alignSelf: 'flex-end' }}>
+                <Text style={{ fontFamily: 'Roboto_400Regular' }}>{activity.semester}</Text>
+              </View>
+              <View style={{ backgroundColor: Colors.text, padding: 8, borderRadius: 8, margin: 8, alignSelf: 'flex-end' }}>
+                <Text style={{ fontFamily: 'Roboto_400Regular' }}>{getGradeLevelNameForYear(activity.year)}</Text>
+              </View>
+            </ImageBackground>
+          </View>
+          <View style={{ paddingHorizontal: 24, marginTop: 16 }}>
             {/* todo: could def handle this better - if no overview show nothing, if overview is string display it, otherwise show header and items */}
             {typeof activity.overview === "string" ?
               <Text style={{ fontFamily: 'Roboto_400Regular', fontSize: 16, marginBottom: 12 }}>{activity.overview}</Text> :
@@ -172,9 +174,6 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.text,
     display: 'flex',
     justifyContent: 'space-between',
-    marginVertical: 32,
-    paddingHorizontal: 24,
-    paddingTop: 16,
-    paddingBottom: 360,
+    paddingBottom: 240,
   }
 })
