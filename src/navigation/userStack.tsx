@@ -9,13 +9,15 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { AccomplishmentScreen } from '../Accomplishment/AccomplishmentScreen'
 import { Colors } from '../Constants'
 import { Icon } from '@react-native-material/core'
-import { Platform } from 'react-native'
+import { Dimensions, Platform } from 'react-native'
 
 const RoadmapStack = createNativeStackNavigator<RoadmapStackParamList>()
 const Tab = createBottomTabNavigator()
 const AccomplishmentsStack = createNativeStackNavigator()
 
 function Overview() {
+    const windowHeight = Dimensions.get('window').height;
+
     return (
         <Tab.Navigator
             screenOptions={({ route }) => ({
@@ -24,8 +26,8 @@ function Overview() {
                 tabBarInactiveTintColor: Colors.text,
                 tabBarActiveBackgroundColor: Colors.background,
                 tabBarInactiveBackgroundColor: Colors.background,
-                tabBarStyle: { borderTopWidth: 0, height: 72 },
-                tabBarLabelStyle: { marginBottom: 12 },
+                tabBarStyle: { borderTopWidth: 0, height: windowHeight / 9, },
+                tabBarLabelStyle: { marginBottom: 12, marginTop: -8 },
                 tabBarHideOnKeyboard: Platform.OS !== 'ios',
                 tabBarIcon: ({ color }) => {
                     let iconName = route.name === 'Roadmap' ? 'map-outline' : 'checkbox-marked-circle-outline';
@@ -53,14 +55,6 @@ function AccomplishmentsScreen() {
     )
 }
 
-const Theme = {
-    ...DefaultTheme,
-    colors: {
-        ...DefaultTheme.colors,
-        background: Colors.background,
-    },
-};
-
 function RoadmapScreens() {
     return (
         <RoadmapStack.Navigator screenOptions={{ headerShown: false }}>
@@ -87,6 +81,14 @@ function RoadmapScreens() {
         </ RoadmapStack.Navigator>
     )
 }
+
+const Theme = {
+    ...DefaultTheme,
+    colors: {
+        ...DefaultTheme.colors,
+        background: Colors.background,
+    },
+};
 
 export default function UserStack() {
     return (
