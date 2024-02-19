@@ -1,5 +1,5 @@
 import { Button, Icon, IconButton, TextInput } from '@react-native-material/core'
-import { addDoc, collection, doc, getDoc, getDocs, getFirestore, query, setDoc, updateDoc, where } from 'firebase/firestore'
+import { collection, doc, getDoc, getDocs, getFirestore, query, setDoc, updateDoc, where } from 'firebase/firestore'
 import { useCallback, useState } from 'react'
 import { ImageBackground, ScrollView, StyleSheet, Text, View } from 'react-native'
 import { Colors } from "../Constants"
@@ -16,7 +16,8 @@ export const ActivityScreen = ({ navigation, route }: Props) => {
   const { user } = useAuthentication()
   const { activityId } = route.params
   const [activity, setActivity] = useState<Activity | undefined>()
-  const [accomplishment, setAccomplishment] = useState({ id: null, content: '' });
+  const [accomplishment, setAccomplishment] = useState({ id: null, content: {} });
+  const [addAccomplishment, setAddAccomplishment] = useState('')
   const [loadingActivity, setLoadingActivity] = useState(true)
 
   const toggleComplete = async () => {
@@ -25,27 +26,19 @@ export const ActivityScreen = ({ navigation, route }: Props) => {
   }
 
   const saveAccomplishment = async () => {
-    if (accomplishment.id) {
-      const accomplishmentRef = doc(db, 'accomplishments', accomplishment.id)
-      const accomplishmentEntity = {
-        ...accomplishment,
-        updatedAt: Date.now(),
-        updatedBy: user.uid
-      }
-      await setDoc(accomplishmentRef, accomplishmentEntity, { merge: true }).catch(console.error)
-    } else {
-      const accomplishmentEntity = {
-        ...accomplishment,
-        activityId,
-        year: activity?.year,
-        userId: user.uid,
-        createdAt: Date.now(),
-        createdBy: user.uid,
-        updatedAt: Date.now(),
-        updatedBy: user.uid
-      }
-      await addDoc(collection(db, 'accomplishments'), accomplishmentEntity).catch(console.error)
+    const accomplishmentRef = doc(db, 'accomplishments', accomplishment.id)
+
+    const accomplishmentsForYear = accomplishment.content[activity.year]
+    const accomplishmentEntity = {
+      content: {
+        ...accomplishment.content,
+        // todo: only add newline if this isn't the first accomplishment being added!
+        [activity.year]: `${accomplishmentsForYear + '\n' + addAccomplishment}`
+      },
+      updatedAt: Date.now(),
+      updatedBy: user.uid
     }
+    await setDoc(accomplishmentRef, accomplishmentEntity, { merge: true }).catch(console.error)
   }
 
   useFocusEffect(
@@ -59,14 +52,11 @@ export const ActivityScreen = ({ navigation, route }: Props) => {
           setLoadingActivity(false)
 
           const q = query(collection(db, 'accomplishments'),
-            where('userId', '==', user.uid),
-            where('activityId', '==', activityId))
+            where('userId', '==', user.uid))
           const accomplishment = await getDocs(q);
           const accomplishmentData = accomplishment.docs.map(doc => ({ id: doc.id, content: doc.data().content, ...doc.data() }))
 
-          if (accomplishmentData?.length) {
-            setAccomplishment(accomplishmentData[0])
-          }
+          setAccomplishment(accomplishmentData[0])
         }
       }
 
@@ -92,7 +82,7 @@ export const ActivityScreen = ({ navigation, route }: Props) => {
               />
             }
           </View>
-          <Text style={{ fontFamily: 'Roboto_400Regular', color: Colors.text, fontSize: 24, marginTop: 8, marginLeft: 16 }}>
+          <Text style={{ fontFamily: 'Roboto_400Regular', color: Colors.text, fontSize: 24, marginTop: 8, marginLeft: 16, marginRight: 8 }}>
             {activity.name}
           </Text>
         </View>
@@ -136,15 +126,18 @@ export const ActivityScreen = ({ navigation, route }: Props) => {
               <Text style={{ marginTop: 16 }}>Capture your accomplishments</Text>
               <TextInput
                 label="Accomplishments"
+                multiline
                 variant="outlined"
-                value={accomplishment.content}
+                value={addAccomplishment}
                 onChangeText={(content) => {
-                  setAccomplishment({ ...accomplishment, content })
+                  setAddAccomplishment(content)
                 }}
-                style={{ marginTop: 16 }}
+                style={{ marginTop: 16, }}
+                inputStyle={{ margin: 8 }}
                 color={Colors.background}
               />
-              <Button disabled={!accomplishment} color={Colors.background} style={{ alignSelf: 'flex-end', marginTop: 8 }} title="Save" onPress={() => saveAccomplishment()} />
+              <Button disabled={!accomplishment} color={Colors.background} style={{ alignSelf: 'flex-end', marginTop: 8 }} title="Save" onPress={() => saveAccomplishment().then(() => setAddAccomplishment(''))} />
+              {/* todo: pop toast when accomplishment saved */}
             </View>
 
             {

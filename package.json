@@ -7,7 +7,8 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
-    "ts:check": "tsc"
+    "ts:check": "tsc",
+    "start:tunnel": "expo start --tunnel"
   },
   "dependencies": {
     "@expo-google-fonts/roboto": "^0.2.3",

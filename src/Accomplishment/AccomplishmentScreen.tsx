@@ -1,23 +1,23 @@
-import { Button, Text, TextInput } from "@react-native-material/core"
-import { KeyboardAvoidingView, Platform, ScrollView, View } from "react-native"
+import { Button, Icon, IconButton, TextInput } from "@react-native-material/core"
+import { Text, KeyboardAvoidingView, Platform, ScrollView, View } from "react-native"
 import { Colors, GradeLevels } from "../Constants"
 import { useFocusEffect } from "@react-navigation/native"
 import { useCallback, useState } from "react"
-import { addDoc, collection, getDocs, getFirestore, query, where } from "firebase/firestore"
+import { collection, doc, getDocs, getFirestore, query, setDoc, where } from "firebase/firestore"
 import { useAuthentication } from "../utils/hooks/useAuthentication"
-import { groupBy, toSorted } from "../utils/array"
 import { useHeaderHeight } from "@react-navigation/elements"
 import * as Progress from 'react-native-progress'
 
 export const AccomplishmentScreen = ({ navigation }) => {
     const db = getFirestore()
     const { user } = useAuthentication()
-    const [accomplishments, setAccomplishments] = useState({})
-    const [loadingAccomplishments, setLoadingAccomplishments] = useState(true)
+    const [accomplishment, setAccomplishment] = useState({ id: '', content: {} })
+    const [loadingAccomplishment, setLoadingAccomplishment] = useState(true)
     const headerHeight = useHeaderHeight();
 
     // todo: pull addaccomplishments into its own component
-    const [addAccomplishments, setAddAccomplishments] = useState({});
+    const [yearAccomplishmentContent, setYearAccomplishmentContent] = useState('');
+    const [editYear, setEditYear] = useState(0);
     const [shouldRefetch, setShouldRefetch] = useState(true);
 
     useFocusEffect(
@@ -26,13 +26,12 @@ export const AccomplishmentScreen = ({ navigation }) => {
                 if (user && shouldRefetch) {
                     const q = query(collection(db, 'accomplishments'),
                         where('userId', '==', user.uid));
-                    const accomplishments = await getDocs(q)
+                    const accomplishment = await getDocs(q)
                     // todo: still handle firestore typing!
-                    const accomplishmentsData = accomplishments.docs.map(doc => ({ id: doc.id, ...doc.data() }))
-                    const accomplishmentsByYear = groupBy(accomplishmentsData, 'year')
+                    const accomplishmentData = accomplishment.docs.map(doc => ({ id: doc.id, ...doc.data() }))[0]
                     // todo: need handling for if there are no accomplishments at all, plus network error handling
-                    setAccomplishments(accomplishmentsByYear)
-                    setLoadingAccomplishments(false)
+                    setAccomplishment(accomplishmentData)
+                    setLoadingAccomplishment(false)
                     setShouldRefetch(false)
                 }
             }
@@ -41,25 +40,35 @@ export const AccomplishmentScreen = ({ navigation }) => {
         }, [user, shouldRefetch])
     )
 
-    const saveAccomplishmentForYear = async (year: number) => {
-        if (!addAccomplishments[year]) return;
-        const accomplishmentToAdd = addAccomplishments[year];
-        const accomplishmentEntity = {
-            content: accomplishmentToAdd,
-            year,
-            userId: user.uid,
-            createdAt: Date.now(),
-            createdBy: user.uid,
-            updatedAt: Date.now(),
-            updatedBy: user.uid
-        }
-        await addDoc(collection(db, 'accomplishments'), accomplishmentEntity).catch(console.error)
+    const saveAccomplishment = async () => {
+        if (!yearAccomplishmentContent || editYear === 0) return;
 
-        setAddAccomplishments({ ...addAccomplishments, [year]: '' });
+        const accomplishmentRef = doc(db, 'accomplishments', accomplishment.id)
+
+        const accomplishmentEntity = {
+            ...accomplishment,
+            updatedAt: Date.now(),
+            updatedBy: user.uid,
+            content: {
+                ...accomplishment.content,
+                [editYear]: yearAccomplishmentContent
+            }
+        };
+
+        await setDoc(accomplishmentRef, accomplishmentEntity, { merge: true }).catch(console.error)
     }
 
-    // TODO; actually want to split this into different components so they can each handle
-    // refresh individually :p 
+    const toggleEditing = (year: number) => {
+        if (year === 0) {
+            setEditYear(0);
+            setYearAccomplishmentContent('');
+            setShouldRefetch(true)
+        } else {
+            setEditYear(year);
+            setYearAccomplishmentContent(accomplishment.content[year]);
+        }
+    }
+
     return (
         <View style={{ height: '100%' }}>
             {/* todo: add badges at top and make filtering happen! */}
@@ -78,32 +87,56 @@ export const AccomplishmentScreen = ({ navigation }) => {
                     }
                 }>
                     {
-                        loadingAccomplishments ?
+                        loadingAccomplishment ?
                             <Progress.Circle size={40} indeterminate={true} color={Colors.background} borderWidth={3} style={{ alignSelf: 'center', marginTop: '66%' }} /> :
                             GradeLevels.map(gradeLevel =>
                                 <View key={gradeLevel.year} style={{ borderWidth: 0.5, borderColor: '#1D1B20', borderRadius: 8, marginVertical: 32, marginHorizontal: 16, padding: 8, paddingVertical: 16 }}>
                                     <View style={{ padding: 8 }}>
-                                        <Text style={{ fontFamily: 'Roboto_400Regular', fontSize: 16, letterSpacing: 0.5, marginBottom: 8 }}>{gradeLevel.name} year</Text>
+                                        <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
+                                            <Text style={{ fontFamily: 'Roboto_400Regular', fontSize: 16, letterSpacing: 0.5, marginBottom: 8 }}>{gradeLevel.name} year</Text>
+                                            {
+                                                editYear !== gradeLevel.year &&
+                                                <IconButton
+                                                    style={{ marginTop: -12 }}
+                                                    onPress={() => { toggleEditing(gradeLevel.year) }}
+                                                    icon={<Icon size={24} color={Colors.background} name="square-edit-outline" />}
+                                                />
+                                            }
+                                        </View>
                                         <Text style={{ fontFamily: 'Roboto_300Light', marginBottom: 24 }}>During your {gradeLevel.name.toLowerCase()} year, you:</Text>
                                         {
-                                            // todo: how do we actually want to sort them?
-                                            // todo: empty list = show message to add accomplishments
-                                            toSorted(accomplishments?.[gradeLevel.year], (a, b) => a.createdAt - b.createdAt)?.map(({ id, content }) =>
-                                                <Text style={{ fontFamily: 'Roboto_300Light', marginBottom: 16 }} key={id}>{content}</Text>
-                                            )
+                                            editYear === gradeLevel.year ?
+                                                <View>
+                                                    <TextInput
+                                                        multiline
+                                                        //label="Accomplishments"
+                                                        variant="outlined"
+                                                        value={yearAccomplishmentContent}
+                                                        onChangeText={(content) => {
+                                                            setYearAccomplishmentContent(content)
+                                                        }}
+                                                        style={{ marginTop: 16 }}
+                                                        // todo: give inner text some top padding, this ain't doing it :(
+                                                        inputStyle={{ margin: 8 }}
+                                                        color={Colors.background}
+                                                    />
+                                                    <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'flex-end' }}>
+                                                        <Button
+                                                            color={Colors.text} tintColor={Colors.background}
+                                                            title="Cancel"
+                                                            style={{ marginRight: 8 }}
+                                                            onPress={() => { toggleEditing(0) }}
+                                                        />
+                                                        <Button
+                                                            color={Colors.background} tintColor={Colors.text}
+                                                            title="Save"
+                                                            disabled={!yearAccomplishmentContent}
+                                                            onPress={async () => { await saveAccomplishment().then(() => toggleEditing(0)) }}
+                                                        />
+                                                    </View>
+                                                </View> :
+                                                <Text style={{ fontFamily: 'Roboto_300Light', marginBottom: 16 }}>{`${accomplishment?.content[gradeLevel.year]}`}</Text>
                                         }
-                                        <Text style={{ marginTop: 16 }}>Capture your accomplishments</Text>
-                                        <TextInput
-                                            label="Accomplishments"
-                                            variant="outlined"
-                                            value={addAccomplishments[gradeLevel.year]}
-                                            onChangeText={(gradeLevelAccomplishment) => {
-                                                setAddAccomplishments({ ...addAccomplishments, [gradeLevel.year]: gradeLevelAccomplishment })
-                                            }}
-                                            style={{ marginTop: 12 }}
-                                            color={Colors.background}
-                                        />
-                                        <Button disabled={!addAccomplishments[gradeLevel.year]} color={Colors.highlight2} style={{ alignSelf: 'flex-end', marginTop: 8 }} title="Save" onPress={() => saveAccomplishmentForYear(gradeLevel.year).then(() => setShouldRefetch(true))} />
                                     </View>
                                 </View>)
                     }
