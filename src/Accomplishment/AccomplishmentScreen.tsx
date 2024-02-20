@@ -1,5 +1,5 @@
 import { Button, Icon, IconButton, TextInput } from "@react-native-material/core"
-import { Text, KeyboardAvoidingView, Platform, ScrollView, View } from "react-native"
+import { Text, KeyboardAvoidingView, Platform, ScrollView, View, Dimensions } from "react-native"
 import { Colors, GradeLevels } from "../Constants"
 import { useFocusEffect } from "@react-navigation/native"
 import { useCallback, useState } from "react"
@@ -70,9 +70,9 @@ export const AccomplishmentScreen = ({ navigation }) => {
     }
 
     return (
-        <View style={{ height: '100%' }}>
+        <View style={{ height: '100%', marginVertical: Dimensions.get('window').height / 10 }}>
             {/* todo: add badges at top and make filtering happen! */}
-            <Text style={{ fontFamily: 'Roboto_400Regular', color: Colors.text, marginTop: 64, marginBottom: 32, marginLeft: 16, fontSize: 28 }}>Accomplishments</Text>
+            <Text style={{ fontFamily: 'Roboto_400Regular', color: Colors.text, marginBottom: 32, marginLeft: 16, fontSize: 28 }}>Accomplishments</Text>
             <KeyboardAvoidingView
                 style={{ flex: 1 }}
                 behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
@@ -120,7 +120,7 @@ export const AccomplishmentScreen = ({ navigation }) => {
                                                         inputStyle={{ margin: 8 }}
                                                         color={Colors.background}
                                                     />
-                                                    <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'flex-end' }}>
+                                                    <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'flex-end', marginTop: 16 }}>
                                                         <Button
                                                             color={Colors.text} tintColor={Colors.background}
                                                             title="Cancel"

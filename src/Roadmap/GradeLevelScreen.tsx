@@ -1,4 +1,4 @@
-import { ScrollView, StyleSheet, Text, View } from 'react-native'
+import { Dimensions, ScrollView, StyleSheet, Text, View } from 'react-native'
 import { Button, Icon, IconButton, ListItem } from '@react-native-material/core'
 import * as Progress from 'react-native-progress'
 import { Colors, GradeLevels, semesters } from "../Constants"
@@ -49,8 +49,8 @@ export const GradeLevelScreen = ({ navigation, route }: Props) => {
   const gradeLevel = GradeLevels.find(gradeLevel => gradeLevel.year === year);
 
   return (
-    <View>
-      <View style={{ marginTop: 48, display: 'flex', flexDirection: 'row', paddingBottom: 16 }}>
+    <View style={{ marginVertical: Dimensions.get('window').height / 10 }}>
+      <View style={{ display: 'flex', flexDirection: 'row', paddingBottom: 16 }}>
         <IconButton
           onPress={() => { navigation.pop() }}
           icon={<Icon size={24} color='white' name="arrow-left" />}

@@ -108,7 +108,7 @@ export const ActivityScreen = ({ navigation, route }: Props) => {
                   <Text style={{ fontFamily: 'Roboto_400Regular', fontSize: 16, marginBottom: 12 }}>{activity.overview.header}</Text>
                   {
                     activity.overview.items.map(item =>
-                      <Text key={item} style={{ marginLeft: 16 }}>{item}</Text>
+                      <Text key={item} style={{ marginLeft: 16 }}>{`\u2022 ${item}`}</Text>
                     )
                   }
                 </View> : <></>
@@ -146,10 +146,17 @@ export const ActivityScreen = ({ navigation, route }: Props) => {
                 :
                 <View>
                   <Text style={{ fontFamily: 'Roboto_400Regular' }}>{activity.description.header}</Text>
-                  <View style={{ margin: 12 }}>
+                  <View style={{ margin: 12, }}>
                     {
-                      activity.description.items.map(item =>
-                        <Text key={item} style={{ marginBottom: 8 }}>{item}</Text>
+                      activity.description.items.map(item => {
+                        const headerAndContent = item.split(':');
+                        return <View key={item} style={{ marginBottom: 8 }}>
+                          <Text style={{ fontWeight: 'bold' }}>{headerAndContent[0]}:
+                            <Text style={{ fontWeight: 'normal' }}>{headerAndContent[1]}</Text>
+                          </Text>
+
+                        </View>
+                      }
                       )
                     }
                   </View>
