@@ -7,6 +7,7 @@ import { collection, doc, getDocs, getFirestore, query, setDoc, where } from "fi
 import { useAuthentication } from "../utils/hooks/useAuthentication"
 import { useHeaderHeight } from "@react-navigation/elements"
 import * as Progress from 'react-native-progress'
+import * as Clipboard from 'expo-clipboard'
 
 export const AccomplishmentScreen = ({ navigation }) => {
     const db = getFirestore()
@@ -69,10 +70,22 @@ export const AccomplishmentScreen = ({ navigation }) => {
         }
     }
 
+    const copyToClipboard = async () => {
+        const content = Object.values(accomplishment.content).join("\n\n");
+        await Clipboard.setStringAsync(content.trim().length === 0 ? '' : content);
+    };
+
     return (
         <View style={{ height: '100%', marginVertical: Dimensions.get('window').height / 10 }}>
             {/* todo: add badges at top and make filtering happen! */}
-            <Text style={{ fontFamily: 'Roboto_400Regular', color: Colors.text, marginBottom: 32, marginLeft: 16, fontSize: 28 }}>Accomplishments</Text>
+            <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                <Text style={{ fontFamily: 'Roboto_400Regular', color: Colors.text, marginBottom: 32, marginLeft: 16, fontSize: 28 }}>Accomplishments</Text>
+                <IconButton
+                    style={{ marginTop: -12, marginRight: 16 }}
+                    onPress={() => { copyToClipboard().then(() => { /* todo: toast copied*/ }) }}
+                    icon={<Icon size={24} color={Colors.text} name="content-copy" />}
+                />
+            </View>
             <KeyboardAvoidingView
                 style={{ flex: 1 }}
                 behavior={Platform.OS === 'ios' ? 'padding' : 'height'}

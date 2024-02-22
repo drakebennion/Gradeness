@@ -26,9 +26,9 @@ export const RoadmapScreen = ({ navigation }: Props) => {
       <View
         style={{ marginHorizontal: 16, marginVertical: windowHeight / 50 }}>
         <StatusBar style="light" />
-        {/* <Button style={{ marginTop: 32 }} onPress={() => auth.signOut()} title='Log out' /> */}
         <Text style={{ fontFamily: 'Roboto_400Regular', color: Colors.text, marginTop: windowHeight / 10, fontSize: 28 }}>Welcome</Text>
         <Text style={{ fontFamily: 'Roboto_400Regular', color: Colors.text, marginTop: 24, fontSize: 16 }}>
+          {/* <Button style={{ marginTop: 32 }} onPress={() => auth.signOut()} title='Log out' /> */}
           Gradeness is designed to simplify the high school process by providing a
           roadmap of time sensitive activities to prepare you for your future and a
           place to capture your accomplishments.

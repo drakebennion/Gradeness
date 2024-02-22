@@ -1,7 +1,7 @@
 import { Button, Icon, IconButton, TextInput } from '@react-native-material/core'
 import { collection, doc, getDoc, getDocs, getFirestore, query, setDoc, updateDoc, where } from 'firebase/firestore'
 import { useCallback, useState } from 'react'
-import { ImageBackground, ScrollView, StyleSheet, Text, View } from 'react-native'
+import { Dimensions, ImageBackground, ScrollView, StyleSheet, Text, View } from 'react-native'
 import { Colors } from "../Constants"
 import { useFocusEffect } from '@react-navigation/native'
 import { useAuthentication } from '../utils/hooks/useAuthentication'
@@ -68,8 +68,8 @@ export const ActivityScreen = ({ navigation, route }: Props) => {
     loadingActivity
       ? <Progress.Circle size={40} indeterminate={true} color={Colors.highlight2} borderWidth={3} style={{ alignSelf: 'center', marginTop: '66%' }} />
       :
-      <View>
-        <View style={{ marginTop: 48, marginBottom: 16 }}>
+      <View style={{ marginVertical: Dimensions.get('window').height / 10 }}>
+        <View style={{ marginBottom: 16 }}>
           <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
             <IconButton
               onPress={() => { navigation.pop() }}
