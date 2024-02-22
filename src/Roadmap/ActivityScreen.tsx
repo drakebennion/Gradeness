@@ -9,6 +9,7 @@ import { getGradeLevelNameForYear } from '../utils/style'
 import { type NativeStackScreenProps } from '@react-navigation/native-stack'
 import { type Activity } from '../types/Activity'
 import * as Progress from 'react-native-progress'
+import { getStorage, ref, getDownloadURL } from 'firebase/storage'
 
 type Props = NativeStackScreenProps<UserStackParamList, 'Activity'>
 export const ActivityScreen = ({ navigation, route }: Props) => {
@@ -19,6 +20,8 @@ export const ActivityScreen = ({ navigation, route }: Props) => {
   const [accomplishment, setAccomplishment] = useState({ id: null, content: {} });
   const [addAccomplishment, setAddAccomplishment] = useState('')
   const [loadingActivity, setLoadingActivity] = useState(true)
+  const storage = getStorage()
+  const [imgUri, setImgUri] = useState({ uri: '' })
 
   const toggleComplete = async () => {
     const activityRef = doc(db, 'activities', activityId)
@@ -48,7 +51,17 @@ export const ActivityScreen = ({ navigation, route }: Props) => {
           const activity = await getDoc(doc(db, 'activities', activityId))
           // todo: need handling for if there are no activities at all, plus network error handling
           // todo: mapper for firestore data to Activity
-          setActivity(activity.data())
+          const activityData = activity.data()
+          setActivity(activityData)
+
+          // load image, if fails fallback
+          const imgRef = ref(storage, `/${activityData.year}-${activityData.semester}-${activityData.name}.jpg`)
+          const uri = await getDownloadURL(imgRef)
+            .catch(() => console.log("could not download image"))
+          if (uri) {
+            setImgUri({ uri })
+          }
+
           setLoadingActivity(false)
 
           const q = query(collection(db, 'accomplishments'),
@@ -88,7 +101,7 @@ export const ActivityScreen = ({ navigation, route }: Props) => {
         </View>
         <ScrollView contentContainerStyle={styles.container}>
           <View>
-            <ImageBackground source={require('../../assets/activities/orientation.png')} style={{ display: 'flex', flexDirection: 'row', justifyContent: 'flex-end', paddingRight: 12, height: 160 }}>
+            <ImageBackground source={imgUri.uri ? imgUri : require('../../assets/activities/orientation.png')} style={{ display: 'flex', flexDirection: 'row', justifyContent: 'flex-end', paddingRight: 12, height: 160 }}>
               {/* todo: pull this into a Badge component */}
               <View style={{ backgroundColor: Colors.text, padding: 8, borderRadius: 8, margin: 8, alignSelf: 'flex-end' }}>
                 <Text style={{ fontFamily: 'Roboto_400Regular' }}>{activity.semester}</Text>
