@@ -3,7 +3,7 @@ import { Button, Icon, IconButton, ListItem } from '@react-native-material/core'
 import * as Progress from 'react-native-progress'
 import { Colors, GradeLevels, semesters } from "../Constants"
 import { useCallback, useState } from 'react'
-import { collection, getDocs, getFirestore, query, where } from 'firebase/firestore'
+import { collection, doc, getDocs, getFirestore, query, updateDoc, where } from 'firebase/firestore'
 import { useAuthentication } from '../utils/hooks/useAuthentication'
 import { getColorForYear } from '../utils/style'
 import { useFocusEffect } from '@react-navigation/native'
@@ -20,12 +20,13 @@ export const GradeLevelScreen = ({ navigation, route }: Props) => {
   const [activities, setActivities] = useState({})
   const [loadingActivities, setLoadingActivities] = useState(true)
   const [progress, setProgress] = useState(0.0)
+  const [shouldRefetch, setShouldRefetch] = useState(true);
   const highlightColor = getColorForYear(year);
 
   useFocusEffect(
     useCallback(() => {
       const fetchData = async () => {
-        if (user) {
+        if (user && shouldRefetch) {
           const q = query(collection(db, 'activities'),
             where('userId', '==', user.uid),
             where('year', '==', year))
@@ -39,12 +40,18 @@ export const GradeLevelScreen = ({ navigation, route }: Props) => {
           setProgress(numberOfCompletedActivities / totalCountOfActivities)
           setActivities(activitiesBySemester)
           setLoadingActivities(false)
+          setShouldRefetch(false)
         }
       }
 
       fetchData().catch(console.error)
-    }, [user])
+    }, [user, shouldRefetch])
   )
+
+  const toggleActivityComplete = async (activityId: string, complete: boolean) => {
+    const activityRef = doc(db, 'activities', activityId)
+    await updateDoc(activityRef, { complete: !complete })
+  }
 
   const gradeLevel = GradeLevels.find(gradeLevel => gradeLevel.year === year);
 
@@ -82,7 +89,7 @@ export const GradeLevelScreen = ({ navigation, route }: Props) => {
         <View>
           {loadingActivities
             ? <Progress.Circle size={40} indeterminate={true} color={Colors.background} borderWidth={3} style={{ alignSelf: 'center', marginTop: 32 }} />
-            : hasActivities(activities) ? <ActivityList activities={activities} navigation={navigation} highlightColor={Colors.highlight2} /> : <Text style={{ fontFamily: 'Roboto_400Regular' }}>No activities - create some! or refresh</Text>
+            : hasActivities(activities) ? <ActivityList activities={activities} setShouldRefetch={setShouldRefetch} toggleComplete={toggleActivityComplete} navigation={navigation} highlightColor={Colors.highlight2} /> : <Text style={{ fontFamily: 'Roboto_400Regular' }}>No activities - create some! or refresh</Text>
           }
         </View>
       </ScrollView>
@@ -92,7 +99,7 @@ export const GradeLevelScreen = ({ navigation, route }: Props) => {
 
 const hasActivities = (activities) => activities && (activities.Fall?.length || activities.Spring?.length || activities.Summer?.length)
 
-const ActivityList = ({ activities, navigation, highlightColor }) => {
+const ActivityList = ({ activities, toggleComplete, setShouldRefetch, navigation, highlightColor }) => {
   const activitySort = (a: Activity, b: Activity) => {
     if ((a.testActivityId && b.testActivityId) || (!a.testActivityId && !b.testActivityId)) {
       return a.order - b.order;
@@ -115,8 +122,12 @@ const ActivityList = ({ activities, navigation, highlightColor }) => {
                     <GradeLevelListItem
                       key={name}
                       title={name}
+                      id={id}
                       checked={complete}
                       highlightColor={highlightColor}
+                      //onToggle={() => toggleComplete(id, complete).then(() => setShouldRefetch(true))}
+                      toggleComplete={toggleComplete}
+                      setShouldRefetch={setShouldRefetch}
                       onPress={() => {
                         navigation.navigate('Activity', { activityId: id })
                       }}
@@ -129,7 +140,12 @@ const ActivityList = ({ activities, navigation, highlightColor }) => {
   )
 }
 
-const GradeLevelListItem = ({ title, checked, onPress, highlightColor }) => {
+const GradeLevelListItem = ({ title, id, toggleComplete, setShouldRefetch, checked, onPress, highlightColor }) => {
+  const [complete, setComplete] = useState(checked);
+
+  // lol at this
+  const setCompletePromise = async (newComplete: boolean) => setComplete(newComplete)
+
   return (
     // todo: get rid this / anythnig react-native-material lol
     <ListItem
@@ -137,7 +153,10 @@ const GradeLevelListItem = ({ title, checked, onPress, highlightColor }) => {
       title={title}
       onPress={onPress}
       leadingMode='icon'
-      leading={<Icon size={24} name={checked ? 'checkbox-marked-circle' : 'checkbox-blank-circle-outline'} color={highlightColor} />}
+      leading={<Icon
+        //onPress={() => toggleComplete(id, complete).then(() => { setComplete(!complete); setShouldRefetch(true) })}
+        onPress={() => setCompletePromise(!complete).then(() => toggleComplete(id, complete)).then(() => setShouldRefetch(true))}
+        size={24} name={complete ? 'checkbox-marked-circle' : 'checkbox-blank-circle-outline'} color={highlightColor} />}
       trailing={< Icon size={24} name="chevron-right" color="#365a75" />}
     />
   )
