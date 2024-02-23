@@ -36,3 +36,5 @@ yarn-error.*
 
 seedData.js
 .env
+
+gradeness-google-key.json

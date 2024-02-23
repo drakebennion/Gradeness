@@ -26,7 +26,7 @@ function Overview() {
                 tabBarInactiveTintColor: Colors.text,
                 tabBarActiveBackgroundColor: Colors.background,
                 tabBarInactiveBackgroundColor: Colors.background,
-                tabBarStyle: { borderTopWidth: 0, height: windowHeight / 9, },
+                tabBarStyle: { backgroundColor: Colors.background, borderTopWidth: 0, height: windowHeight / 9, },
                 tabBarLabelStyle: { marginBottom: 12, marginTop: -8 },
                 tabBarHideOnKeyboard: Platform.OS !== 'ios',
                 tabBarIcon: ({ color }) => {

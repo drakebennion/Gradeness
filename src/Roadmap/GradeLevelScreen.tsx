@@ -80,7 +80,7 @@ export const GradeLevelScreen = ({ navigation, route }: Props) => {
             <Button
               style={{ alignSelf: 'flex-end', marginBottom: 16, marginRight: 16 }}
               title="Add activity"
-              color={highlightColor}
+              color={Colors.highlight2}
               tintColor={Colors.background}
               onPress={() => { navigation.navigate('CreateUpdateActivity') }}
             />
@@ -154,6 +154,7 @@ const GradeLevelListItem = ({ title, id, toggleComplete, setShouldRefetch, check
       onPress={onPress}
       leadingMode='icon'
       leading={<Icon
+        // todo: can I update progress as soon as this gets toggled? without delay that is
         //onPress={() => toggleComplete(id, complete).then(() => { setComplete(!complete); setShouldRefetch(true) })}
         onPress={() => setCompletePromise(!complete).then(() => toggleComplete(id, complete)).then(() => setShouldRefetch(true))}
         size={24} name={complete ? 'checkbox-marked-circle' : 'checkbox-blank-circle-outline'} color={highlightColor} />}
