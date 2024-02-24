@@ -10,6 +10,7 @@ import { AccomplishmentScreen } from '../Accomplishment/AccomplishmentScreen'
 import { Colors } from '../Constants'
 import { Icon } from '@react-native-material/core'
 import { Dimensions, Platform } from 'react-native'
+import Toast from 'react-native-toast-message'
 
 const RoadmapStack = createNativeStackNavigator<RoadmapStackParamList>()
 const Tab = createBottomTabNavigator()
@@ -94,6 +95,7 @@ export default function UserStack() {
     return (
         <NavigationContainer theme={Theme}>
             <Overview />
+            <Toast />
         </NavigationContainer>
     )
 }

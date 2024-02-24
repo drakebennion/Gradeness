@@ -8,6 +8,7 @@ import { useAuthentication } from "../utils/hooks/useAuthentication"
 import { useHeaderHeight } from "@react-navigation/elements"
 import * as Progress from 'react-native-progress'
 import * as Clipboard from 'expo-clipboard'
+import Toast from 'react-native-toast-message'
 
 export const AccomplishmentScreen = ({ navigation }) => {
     const db = getFirestore()
@@ -82,7 +83,11 @@ export const AccomplishmentScreen = ({ navigation }) => {
                 <Text style={{ fontFamily: 'Roboto_400Regular', color: Colors.text, marginBottom: 32, marginLeft: 16, fontSize: 28 }}>Accomplishments</Text>
                 <IconButton
                     style={{ marginTop: -12, marginRight: 16 }}
-                    onPress={() => { copyToClipboard().then(() => { /* todo: toast copied*/ }) }}
+                    onPress={() => {
+                        copyToClipboard()
+                            .then(() => Toast.show({ type: 'success', text1: 'copied accomplishments to clipboard', swipeable: true }))
+                    }
+                    }
                     icon={<Icon size={24} color={Colors.text} name="content-copy" />}
                 />
             </View>
@@ -144,7 +149,11 @@ export const AccomplishmentScreen = ({ navigation }) => {
                                                             color={Colors.background} tintColor={Colors.text}
                                                             title="Save"
                                                             disabled={!yearAccomplishmentContent}
-                                                            onPress={async () => { await saveAccomplishment().then(() => toggleEditing(0)) }}
+                                                            onPress={async () => {
+                                                                await saveAccomplishment()
+                                                                    .then(() => toggleEditing(0))
+                                                                    .then(() => Toast.show({ type: 'success', text1: 'added!!!!', position: 'bottom', swipeable: true }))
+                                                            }}
                                                         />
                                                     </View>
                                                 </View> :

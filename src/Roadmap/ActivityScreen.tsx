@@ -10,6 +10,7 @@ import { type NativeStackScreenProps } from '@react-navigation/native-stack'
 import { type Activity } from '../types/Activity'
 import * as Progress from 'react-native-progress'
 import { getStorage, ref, getDownloadURL } from 'firebase/storage'
+import Toast from 'react-native-toast-message'
 
 type Props = NativeStackScreenProps<UserStackParamList, 'Activity'>
 export const ActivityScreen = ({ navigation, route }: Props) => {
@@ -149,7 +150,18 @@ export const ActivityScreen = ({ navigation, route }: Props) => {
                 inputStyle={{ margin: 8 }}
                 color={Colors.background}
               />
-              <Button disabled={!accomplishment} color={Colors.background} style={{ alignSelf: 'flex-end', marginTop: 8 }} title="Save" onPress={() => saveAccomplishment().then(() => setAddAccomplishment(''))} />
+              <Button
+                disabled={!accomplishment}
+                color={Colors.background}
+                style={
+                  { alignSelf: 'flex-end', marginTop: 8 }
+                }
+                title="Save"
+                onPress={
+                  () => saveAccomplishment()
+                    .then(() => setAddAccomplishment(''))
+                    .then(() => Toast.show({ type: 'success', text1: 'added!!!!', position: 'bottom', swipeable: true }))
+                } />
               {/* todo: pop toast when accomplishment saved */}
             </View>
 
