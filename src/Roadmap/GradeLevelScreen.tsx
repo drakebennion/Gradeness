@@ -2,7 +2,7 @@ import { Dimensions, ScrollView, StyleSheet, Text, View } from 'react-native'
 import { Button, Icon, IconButton, ListItem } from '@react-native-material/core'
 import * as Progress from 'react-native-progress'
 import { Colors, GradeLevels, semesters } from "../Constants"
-import { useCallback, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { collection, doc, getDocs, getFirestore, query, updateDoc, where } from 'firebase/firestore'
 import { useAuthentication } from '../utils/hooks/useAuthentication'
 import { getColorForYear } from '../utils/style'
@@ -47,6 +47,14 @@ export const GradeLevelScreen = ({ navigation, route }: Props) => {
       fetchData().catch(console.error)
     }, [user, shouldRefetch])
   )
+
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
+      setShouldRefetch(true)
+    })
+
+    return unsubscribe
+  })
 
   const toggleActivityComplete = async (activityId: string, complete: boolean) => {
     const activityRef = doc(db, 'activities', activityId)
@@ -125,7 +133,6 @@ const ActivityList = ({ activities, toggleComplete, setShouldRefetch, navigation
                       id={id}
                       checked={complete}
                       highlightColor={highlightColor}
-                      //onToggle={() => toggleComplete(id, complete).then(() => setShouldRefetch(true))}
                       toggleComplete={toggleComplete}
                       setShouldRefetch={setShouldRefetch}
                       onPress={() => {
@@ -141,11 +148,6 @@ const ActivityList = ({ activities, toggleComplete, setShouldRefetch, navigation
 }
 
 const GradeLevelListItem = ({ title, id, toggleComplete, setShouldRefetch, checked, onPress, highlightColor }) => {
-  const [complete, setComplete] = useState(checked);
-
-  // lol at this
-  const setCompletePromise = async (newComplete: boolean) => setComplete(newComplete)
-
   return (
     // todo: get rid this / anythnig react-native-material lol
     <ListItem
@@ -154,10 +156,8 @@ const GradeLevelListItem = ({ title, id, toggleComplete, setShouldRefetch, check
       onPress={onPress}
       leadingMode='icon'
       leading={<Icon
-        // todo: can I update progress as soon as this gets toggled? without delay that is
-        //onPress={() => toggleComplete(id, complete).then(() => { setComplete(!complete); setShouldRefetch(true) })}
-        onPress={() => setCompletePromise(!complete).then(() => toggleComplete(id, complete)).then(() => setShouldRefetch(true))}
-        size={24} name={complete ? 'checkbox-marked-circle' : 'checkbox-blank-circle-outline'} color={highlightColor} />}
+        onPress={() => toggleComplete(id, checked).then(() => setShouldRefetch(true))}
+        size={24} name={checked ? 'checkbox-marked-circle' : 'checkbox-blank-circle-outline'} color={highlightColor} />}
       trailing={< Icon size={24} name="chevron-right" color="#365a75" />}
     />
   )

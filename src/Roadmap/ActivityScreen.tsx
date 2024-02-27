@@ -23,6 +23,7 @@ export const ActivityScreen = ({ navigation, route }: Props) => {
   const [loadingActivity, setLoadingActivity] = useState(true)
   const storage = getStorage()
   const [imgUri, setImgUri] = useState({ uri: '' })
+  const [shouldRefetch, setShouldRefetch] = useState(true);
 
   const toggleComplete = async () => {
     const activityRef = doc(db, 'activities', activityId)
@@ -48,7 +49,7 @@ export const ActivityScreen = ({ navigation, route }: Props) => {
   useFocusEffect(
     useCallback(() => {
       const fetchData = async () => {
-        if (activityId && user) {
+        if (activityId && user && shouldRefetch) {
           const activity = await getDoc(doc(db, 'activities', activityId))
           // todo: need handling for if there are no activities at all, plus network error handling
           // todo: mapper for firestore data to Activity
@@ -56,7 +57,7 @@ export const ActivityScreen = ({ navigation, route }: Props) => {
           setActivity(activityData)
 
           // load image, if fails fallback
-          const imgRef = ref(storage, `/${activityData.year}-${activityData.semester}-${activityData.name}.jpg`)
+          const imgRef = ref(storage, `/${activityData.year}-${activityData.semester}-${activityData.order}.jpg`)
           const uri = await getDownloadURL(imgRef)
             .catch(() => console.log("could not download image"))
           if (uri) {
@@ -71,11 +72,12 @@ export const ActivityScreen = ({ navigation, route }: Props) => {
           const accomplishmentData = accomplishment.docs.map(doc => ({ id: doc.id, content: doc.data().content, ...doc.data() }))
 
           setAccomplishment(accomplishmentData[0])
+          setShouldRefetch(false)
         }
       }
 
       fetchData().catch(console.error)
-    }, [activityId, user])
+    }, [activityId, user, shouldRefetch])
   )
 
   return (
@@ -132,7 +134,7 @@ export const ActivityScreen = ({ navigation, route }: Props) => {
               tintColor={Colors.background}
               leading={activity.complete ? <Icon name='check' size={16} /> : <></>}
               title={activity.complete ? 'Complete' : 'Mark complete'}
-              onPress={async () => { await toggleComplete().then(() => { navigation.pop() }) }}
+              onPress={async () => { await toggleComplete().then(() => { setShouldRefetch(true) }) }}
               style={{ marginBottom: 24 }}
             />
 

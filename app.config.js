@@ -4,12 +4,11 @@ export default {
   "expo": {
     "name": "Gradeness",
     "slug": "gradeness",
-    "version": "1.0.0",
+    "version": "1.0.2",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/icon.jpg",
     "userInterfaceStyle": "light",
     "splash": {
-      // todo: get splash image screen
       "image": "./assets/splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#1C222E",
