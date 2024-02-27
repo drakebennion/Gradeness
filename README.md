@@ -1,2 +1,2 @@
 # Gradeness
-gradeness.app
+https://gradeness.app
