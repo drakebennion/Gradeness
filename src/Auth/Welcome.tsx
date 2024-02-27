@@ -1,7 +1,7 @@
 import { Button, Text } from '@react-native-material/core'
 import React from 'react'
 import { Image, StyleSheet, View } from 'react-native'
-import { Colors } from '../Constants'
+import { Colors, fontSizes } from '../Constants'
 
 export default function HomeScreen({ navigation }) {
   return (
@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
 
     text: {
       fontFamily: 'Roboto_400Regular',
-      fontSize: 46,
+      fontSize: fontSizes.xl,
     }
   },
   buttons: {

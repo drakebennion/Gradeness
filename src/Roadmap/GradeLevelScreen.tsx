@@ -1,7 +1,7 @@
 import { Dimensions, ScrollView, StyleSheet, Text, View } from 'react-native'
 import { Button, Icon, IconButton, ListItem } from '@react-native-material/core'
 import * as Progress from 'react-native-progress'
-import { Colors, GradeLevels, semesters } from "../Constants"
+import { Colors, GradeLevels, fontSizes, semesters } from "../Constants"
 import { useCallback, useEffect, useState } from 'react'
 import { collection, doc, getDocs, getFirestore, query, updateDoc, where } from 'firebase/firestore'
 import { useAuthentication } from '../utils/hooks/useAuthentication'
@@ -70,14 +70,14 @@ export const GradeLevelScreen = ({ navigation, route }: Props) => {
           onPress={() => { navigation.pop() }}
           icon={<Icon size={24} color='white' name="arrow-left" />}
         />
-        <Text style={{ fontFamily: 'Roboto_400Regular', color: getColorForYear(year), fontSize: 28, marginTop: 8 }}>
+        <Text style={{ fontFamily: 'Roboto_400Regular', color: getColorForYear(year), fontSize: fontSizes.l, marginTop: 8 }}>
           {gradeLevel.name}
         </Text>
       </View>
       <ScrollView contentContainerStyle={styles.container}>
         <View style={{ backgroundColor: Colors.background, padding: 16, borderBottomLeftRadius: 8, borderBottomRightRadius: 8 }}>
           <View style={{ marginBottom: 16 }}>
-            <Text style={{ fontFamily: 'Roboto_400Regular', fontSize: 16, color: Colors.text, marginBottom: 8 }}>{gradeLevel.objective}</Text>
+            <Text style={{ fontFamily: 'Roboto_400Regular', fontSize: fontSizes.s, color: Colors.text, marginBottom: 8 }}>{gradeLevel.objective}</Text>
             <Text style={{ fontFamily: 'Roboto_400Regular', color: Colors.text, lineHeight: 20, letterSpacing: 0.25 }}>{gradeLevel.details}</Text>
           </View>
           <View style={styles.progressContainer}>
@@ -124,7 +124,7 @@ const ActivityList = ({ activities, toggleComplete, setShouldRefetch, navigation
           .map(semester => {
             return (
               <View key={semester} style={{ marginTop: 16, marginHorizontal: 16 }} >
-                <Text style={{ fontFamily: 'Roboto_400Regular', fontSize: 16, fontWeight: '500', marginBottom: 8 }}>{semester}</Text>
+                <Text style={{ fontFamily: 'Roboto_400Regular', fontSize: fontSizes.s, fontWeight: '500', marginBottom: 8 }}>{semester}</Text>
                 {toSorted(activities[semester], activitySort)
                   .map(({ id, name, complete }) =>
                     <GradeLevelListItem

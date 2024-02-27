@@ -2,7 +2,7 @@ import { Button, Icon, IconButton, Text, TextInput } from '@react-native-materia
 import { addDoc, collection, doc, getFirestore, setDoc, updateDoc } from 'firebase/firestore'
 import { useState } from 'react'
 import { KeyboardAvoidingView, Platform, ScrollView, View } from 'react-native'
-import { Colors, semesters } from "../Constants"
+import { Colors, fontSizes, semesters } from "../Constants"
 import { useAuthentication } from '../utils/hooks/useAuthentication'
 import SelectDropdown from 'react-native-select-dropdown'
 import { GradeLevels } from '../Constants'
@@ -66,7 +66,7 @@ export const CreateUpdateActivityScreen = ({ navigation, route }: Props) => {
             color={Colors.background}
           />
 
-          <Text style={{ fontFamily: 'Roboto_400Regular', fontSize: 14, marginVertical: 8 }}>Choose the school year you would like to add the activity?</Text>
+          <Text style={{ fontFamily: 'Roboto_400Regular', fontSize: fontSizes.xs, marginVertical: 8 }}>Choose the school year you would like to add the activity?</Text>
           <SelectDropdown
             data={GradeLevels}
             onSelect={(gradeLevel) => { setActivity({ ...activity, year: gradeLevel.year }) }}
@@ -77,7 +77,7 @@ export const CreateUpdateActivityScreen = ({ navigation, route }: Props) => {
             buttonStyle={{ width: '100%' }}
           />
 
-          <Text style={{ fontFamily: 'Roboto_400Regular', fontSize: 14, marginTop: 16, marginBottom: 8 }}>What semester or time of year do you want to complete this activity?</Text>
+          <Text style={{ fontFamily: 'Roboto_400Regular', fontSize: fontSizes.xs, marginTop: 16, marginBottom: 8 }}>What semester or time of year do you want to complete this activity?</Text>
           <SelectDropdown
             data={semesters}
             onSelect={(semester) => { setActivity({ ...activity, semester }) }}

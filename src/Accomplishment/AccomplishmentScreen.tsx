@@ -1,8 +1,8 @@
 import { Button, Icon, IconButton, TextInput } from "@react-native-material/core"
 import { Text, KeyboardAvoidingView, Platform, ScrollView, View, Dimensions } from "react-native"
-import { Colors, GradeLevels } from "../Constants"
+import { Colors, GradeLevels, fontSizes } from "../Constants"
 import { useFocusEffect } from "@react-navigation/native"
-import { useCallback, useState } from "react"
+import { useCallback, useEffect, useState } from "react"
 import { collection, doc, getDocs, getFirestore, query, setDoc, where } from "firebase/firestore"
 import { useAuthentication } from "../utils/hooks/useAuthentication"
 import { useHeaderHeight } from "@react-navigation/elements"
@@ -42,6 +42,14 @@ export const AccomplishmentScreen = ({ navigation }) => {
         }, [user, shouldRefetch])
     )
 
+    useEffect(() => {
+        const unsubscribe = navigation.addListener('focus', () => {
+            setShouldRefetch(true)
+        })
+
+        return unsubscribe
+    })
+
     const saveAccomplishment = async () => {
         if (!yearAccomplishmentContent || editYear === 0) return;
 
@@ -80,7 +88,7 @@ export const AccomplishmentScreen = ({ navigation }) => {
         <View style={{ height: '100%', marginVertical: Dimensions.get('window').height / 10 }}>
             {/* todo: add badges at top and make filtering happen! */}
             <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                <Text style={{ fontFamily: 'Roboto_400Regular', color: Colors.text, marginBottom: 32, marginLeft: 16, fontSize: 28 }}>Accomplishments</Text>
+                <Text style={{ fontFamily: 'Roboto_400Regular', color: Colors.text, marginBottom: 32, marginLeft: 16, fontSize: fontSizes.l }}>Accomplishments</Text>
                 <IconButton
                     style={{ marginTop: -12, marginRight: 16 }}
                     onPress={() => {
@@ -107,63 +115,76 @@ export const AccomplishmentScreen = ({ navigation }) => {
                     {
                         loadingAccomplishment ?
                             <Progress.Circle size={40} indeterminate={true} color={Colors.background} borderWidth={3} style={{ alignSelf: 'center', marginTop: '66%' }} /> :
-                            GradeLevels.map(gradeLevel =>
-                                <View key={gradeLevel.year} style={{ borderWidth: 0.5, borderColor: '#1D1B20', borderRadius: 8, marginVertical: 32, marginHorizontal: 16, padding: 8, paddingVertical: 16 }}>
-                                    <View style={{ padding: 8 }}>
-                                        <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
-                                            <Text style={{ fontFamily: 'Roboto_400Regular', fontSize: 16, letterSpacing: 0.5, marginBottom: 8 }}>{gradeLevel.name} year</Text>
-                                            {
-                                                editYear !== gradeLevel.year &&
-                                                <IconButton
-                                                    style={{ marginTop: -12 }}
-                                                    onPress={() => { toggleEditing(gradeLevel.year) }}
-                                                    icon={<Icon size={24} color={Colors.background} name="square-edit-outline" />}
-                                                />
-                                            }
-                                        </View>
-                                        <Text style={{ fontFamily: 'Roboto_300Light', marginBottom: 24 }}>During your {gradeLevel.name.toLowerCase()} year, you:</Text>
-                                        {
-                                            editYear === gradeLevel.year ?
-                                                <View>
-                                                    <TextInput
-                                                        multiline
-                                                        //label="Accomplishments"
-                                                        variant="outlined"
-                                                        value={yearAccomplishmentContent}
-                                                        onChangeText={(content) => {
-                                                            setYearAccomplishmentContent(content)
-                                                        }}
-                                                        style={{ marginTop: 16 }}
-                                                        // todo: give inner text some top padding, this ain't doing it :(
-                                                        inputStyle={{ margin: 8 }}
-                                                        color={Colors.background}
-                                                    />
-                                                    <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'flex-end', marginTop: 16 }}>
-                                                        <Button
-                                                            color={Colors.text} tintColor={Colors.background}
-                                                            title="Cancel"
-                                                            style={{ marginRight: 8 }}
-                                                            onPress={() => { toggleEditing(0) }}
-                                                        />
-                                                        <Button
-                                                            color={Colors.background} tintColor={Colors.text}
-                                                            title="Save"
-                                                            disabled={!yearAccomplishmentContent}
-                                                            onPress={async () => {
-                                                                await saveAccomplishment()
-                                                                    .then(() => toggleEditing(0))
-                                                                    .then(() => Toast.show({ type: 'success', text1: 'added!!!!', position: 'bottom', swipeable: true }))
-                                                            }}
-                                                        />
-                                                    </View>
-                                                </View> :
-                                                <Text style={{ fontFamily: 'Roboto_300Light', marginBottom: 16 }}>{`${accomplishment?.content[gradeLevel.year]}`}</Text>
-                                        }
-                                    </View>
-                                </View>)
+                            <AccomplishmentContent
+                                editYear={editYear}
+                                toggleEditing={toggleEditing}
+                                yearAccomplishmentContent={yearAccomplishmentContent}
+                                setYearAccomplishmentContent={setYearAccomplishmentContent}
+                                accomplishment={accomplishment}
+                                saveAccomplishment={saveAccomplishment}
+                            />
                     }
                 </ScrollView>
             </KeyboardAvoidingView>
         </View>
+    )
+}
+
+const AccomplishmentContent = ({ editYear, toggleEditing, yearAccomplishmentContent, setYearAccomplishmentContent, accomplishment, saveAccomplishment }) => {
+    return (
+        GradeLevels.map(gradeLevel =>
+            <View key={gradeLevel.year} style={{ borderWidth: 0.5, borderColor: '#1D1B20', borderRadius: 8, marginVertical: 32, marginHorizontal: 16, padding: 8, paddingVertical: 16 }}>
+                <View style={{ padding: 8 }}>
+                    <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
+                        <Text style={{ fontFamily: 'Roboto_400Regular', fontSize: fontSizes.s, letterSpacing: 0.5, marginBottom: 8 }}>{gradeLevel.name} year</Text>
+                        {
+                            editYear !== gradeLevel.year &&
+                            <IconButton
+                                style={{ marginTop: -12 }}
+                                onPress={() => { toggleEditing(gradeLevel.year) }}
+                                icon={<Icon size={24} color={Colors.background} name="square-edit-outline" />}
+                            />
+                        }
+                    </View>
+                    <Text style={{ fontFamily: 'Roboto_300Light', fontSize: fontSizes.xs, marginBottom: 24 }}>During your {gradeLevel.name.toLowerCase()} year, you:</Text>
+                    {
+                        editYear === gradeLevel.year ?
+                            <View>
+                                <TextInput
+                                    multiline
+                                    variant="outlined"
+                                    placeholder={yearAccomplishmentContent}
+                                    value={yearAccomplishmentContent}
+                                    onChangeText={(content) => {
+                                        setYearAccomplishmentContent(content)
+                                    }}
+                                    style={{ marginTop: 16 }}
+                                    // todo: give inner text some top padding, this ain't doing it :(
+                                    inputStyle={{ margin: 8, fontSize: fontSizes.xs }}
+                                    color={Colors.background}
+                                />
+                                <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'flex-end', marginTop: 16 }}>
+                                    <Button
+                                        color={Colors.text} tintColor={Colors.background}
+                                        title="Cancel"
+                                        style={{ marginRight: 8 }}
+                                        onPress={() => { toggleEditing(0) }}
+                                    />
+                                    <Button
+                                        color={Colors.background} tintColor={Colors.text}
+                                        title="Save"
+                                        disabled={!yearAccomplishmentContent}
+                                        onPress={async () => {
+                                            await saveAccomplishment()
+                                                .then(() => toggleEditing(0))
+                                                .then(() => Toast.show({ type: 'success', text1: 'added!!!!', position: 'bottom', swipeable: true }))
+                                        }}
+                                    />
+                                </View>
+                            </View> :
+                            <Text style={{ fontFamily: 'Roboto_300Light', fontSize: fontSizes.xs, marginBottom: 16 }}>{`${accomplishment?.content[gradeLevel.year]}`}</Text>
+                    }
+                </View>
+            </View>)
     )
 }

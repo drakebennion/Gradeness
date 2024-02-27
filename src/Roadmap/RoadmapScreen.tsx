@@ -1,5 +1,5 @@
 import { Button, Dimensions, FlatList, Pressable, Text, View } from 'react-native'
-import { Colors, GradeLevels } from '../Constants'
+import { Colors, GradeLevels, fontSizes } from '../Constants'
 import { getAuth } from 'firebase/auth'
 import { getColorForYear } from '../utils/style'
 import { type NativeStackScreenProps } from '@react-navigation/native-stack'
@@ -26,8 +26,8 @@ export const RoadmapScreen = ({ navigation }: Props) => {
       <View
         style={{ marginHorizontal: 16, marginVertical: windowHeight / 50, backgroundColor: Colors.background }}>
         <StatusBar backgroundColor={Colors.background} style="light" />
-        <Text style={{ fontFamily: 'Roboto_400Regular', color: Colors.text, marginTop: windowHeight / 10, fontSize: 28 }}>Welcome</Text>
-        <Text style={{ fontFamily: 'Roboto_400Regular', color: Colors.text, marginTop: 24, fontSize: 16 }}>
+        <Text style={{ fontFamily: 'Roboto_400Regular', color: Colors.text, marginTop: windowHeight / 10, fontSize: fontSizes.l }}>Welcome</Text>
+        <Text style={{ fontFamily: 'Roboto_400Regular', color: Colors.text, marginTop: 24, fontSize: fontSizes.s }}>
           {/* <Button style={{ marginTop: 32 }} onPress={() => auth.signOut()} title='Log out' /> */}
           Gradeness is designed to simplify the high school process by providing a
           roadmap of time sensitive activities to prepare you for your future and a
@@ -45,8 +45,8 @@ export const RoadmapScreen = ({ navigation }: Props) => {
               >
                 <View style={{ display: 'flex', margin: 16, height: '88%', justifyContent: 'space-between' }}>
                   <View>
-                    <Text style={{ fontFamily: 'Roboto_500Medium', fontSize: 16, color: Colors.text }}>{name}</Text>
-                    <Text style={{ fontFamily: 'Roboto_400Regular', fontSize: 14, color: Colors.text, marginTop: 8 }}>{objective}</Text>
+                    <Text style={{ fontFamily: 'Roboto_500Medium', fontSize: fontSizes.s, color: Colors.text }}>{name}</Text>
+                    <Text style={{ fontFamily: 'Roboto_400Regular', fontSize: fontSizes.xs, color: Colors.text, marginTop: 8 }}>{objective}</Text>
                   </View>
                   <Text
                     style={

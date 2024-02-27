@@ -2,7 +2,7 @@ import { Button, TextInput } from '@react-native-material/core'
 import React, { useState } from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth'
-import { Colors } from '../Constants'
+import { Colors, fontSizes } from '../Constants'
 
 export default function SignInScreen({ navigation }) {
   const auth = getAuth()
@@ -29,7 +29,7 @@ export default function SignInScreen({ navigation }) {
 
   return (
     <View style={styles.container}>
-      <Text style={{ fontFamily: 'Roboto_400Regular', fontSize: 24, marginBottom: 16 }}>Sign In</Text>
+      <Text style={{ fontFamily: 'Roboto_400Regular', fontSize: fontSizes.m, marginBottom: 16 }}>Sign In</Text>
 
       {!!signIn.error && <View><Text style={{ fontFamily: 'Roboto_400Regular' }}>{signIn.error}</Text></View>}
 

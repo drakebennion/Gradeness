@@ -2,7 +2,7 @@ import { Button, Icon, IconButton, TextInput } from '@react-native-material/core
 import { collection, doc, getDoc, getDocs, getFirestore, query, setDoc, updateDoc, where } from 'firebase/firestore'
 import { useCallback, useState } from 'react'
 import { Dimensions, ImageBackground, ScrollView, StyleSheet, Text, View } from 'react-native'
-import { Colors } from "../Constants"
+import { Colors, fontSizes } from "../Constants"
 import { useFocusEffect } from '@react-navigation/native'
 import { useAuthentication } from '../utils/hooks/useAuthentication'
 import { getGradeLevelNameForYear } from '../utils/style'
@@ -98,7 +98,7 @@ export const ActivityScreen = ({ navigation, route }: Props) => {
               />
             }
           </View>
-          <Text style={{ fontFamily: 'Roboto_400Regular', color: Colors.text, fontSize: 24, marginTop: 8, marginLeft: 16, marginRight: 8 }}>
+          <Text style={{ fontFamily: 'Roboto_400Regular', color: Colors.text, fontSize: fontSizes.m, marginTop: 8, marginLeft: 16, marginRight: 8 }}>
             {activity.name}
           </Text>
         </View>
@@ -117,11 +117,11 @@ export const ActivityScreen = ({ navigation, route }: Props) => {
           <View style={{ paddingHorizontal: 24, marginTop: 16 }}>
             {/* todo: could def handle this better - if no overview show nothing, if overview is string display it, otherwise show header and items */}
             {typeof activity.overview === "string" ?
-              <Text style={{ fontFamily: 'Roboto_400Regular', fontSize: 16, marginBottom: 12 }}>{activity.overview}</Text> :
+              <Text style={{ fontFamily: 'Roboto_400Regular', fontSize: fontSizes.s, marginBottom: 12 }}>{activity.overview}</Text> :
 
               activity.overview ?
                 <View style={{ marginBottom: 16 }}>
-                  <Text style={{ fontFamily: 'Roboto_400Regular', fontSize: 16, marginBottom: 12 }}>{activity.overview.header}</Text>
+                  <Text style={{ fontFamily: 'Roboto_400Regular', fontSize: fontSizes.s, marginBottom: 12 }}>{activity.overview.header}</Text>
                   {
                     activity.overview.items.map(item =>
                       <Text key={item} style={{ marginLeft: 16 }}>{`\u2022 ${item}`}</Text>

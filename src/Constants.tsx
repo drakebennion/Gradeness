@@ -20,3 +20,11 @@ export const Colors = {
   background: '#1C222E',
   text: '#FFF'
 };
+
+export const fontSizes = {
+  xs: 18,
+  s: 20,
+  m: 28,
+  l: 32,
+  xl: 46
+}
