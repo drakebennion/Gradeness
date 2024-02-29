@@ -24,7 +24,7 @@ export const RoadmapScreen = ({ navigation }: Props) => {
       style={{ height: '100%' }}
       colors={[Colors.background, '#2a354c']}>
       <View
-        style={{ marginHorizontal: 16, marginVertical: windowHeight / 50, backgroundColor: Colors.background }}>
+        style={{ marginHorizontal: 16, marginVertical: windowHeight / 50 }}>
         <StatusBar backgroundColor={Colors.background} style="light" />
         <Text style={{ fontFamily: 'Roboto_400Regular', color: Colors.text, marginTop: windowHeight / 10, fontSize: fontSizes.l }}>Welcome</Text>
         <Text style={{ fontFamily: 'Roboto_400Regular', color: Colors.text, marginTop: 24, fontSize: fontSizes.s }}>

@@ -162,7 +162,7 @@ export const ActivityScreen = ({ navigation, route }: Props) => {
                 onPress={
                   () => saveAccomplishment()
                     .then(() => setAddAccomplishment(''))
-                    .then(() => Toast.show({ type: 'success', text1: 'added!!!!', position: 'bottom', swipeable: true }))
+                    .then(() => Toast.show({ type: 'success', text1: 'Accomplishment saved', position: 'bottom', swipeable: true }))
                 } />
               {/* todo: pop toast when accomplishment saved */}
             </View>

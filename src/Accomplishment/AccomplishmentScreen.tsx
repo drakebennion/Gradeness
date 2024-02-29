@@ -93,7 +93,7 @@ export const AccomplishmentScreen = ({ navigation }) => {
                     style={{ marginTop: -12, marginRight: 16 }}
                     onPress={() => {
                         copyToClipboard()
-                            .then(() => Toast.show({ type: 'success', text1: 'copied accomplishments to clipboard', swipeable: true }))
+                            .then(() => Toast.show({ type: 'success', text1: 'Copied accomplishments to clipboard', position: 'bottom', swipeable: true }))
                     }
                     }
                     icon={<Icon size={24} color={Colors.text} name="content-copy" />}
@@ -177,7 +177,7 @@ const AccomplishmentContent = ({ editYear, toggleEditing, yearAccomplishmentCont
                                         onPress={async () => {
                                             await saveAccomplishment()
                                                 .then(() => toggleEditing(0))
-                                                .then(() => Toast.show({ type: 'success', text1: 'added!!!!', position: 'bottom', swipeable: true }))
+                                                .then(() => Toast.show({ type: 'success', text1: 'Accomplishment saved', position: 'bottom', swipeable: true }))
                                         }}
                                     />
                                 </View>

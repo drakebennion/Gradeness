@@ -97,10 +97,26 @@ export const GradeLevelScreen = ({ navigation, route }: Props) => {
         <View>
           {loadingActivities
             ? <Progress.Circle size={40} indeterminate={true} color={Colors.background} borderWidth={3} style={{ alignSelf: 'center', marginTop: 32 }} />
-            : hasActivities(activities) ? <ActivityList activities={activities} setShouldRefetch={setShouldRefetch} toggleComplete={toggleActivityComplete} navigation={navigation} highlightColor={Colors.highlight2} /> : <Text style={{ fontFamily: 'Roboto_400Regular' }}>No activities - create some! or refresh</Text>
+            : hasActivities(activities) ? <ActivityList activities={activities} setShouldRefetch={setShouldRefetch} toggleComplete={toggleActivityComplete} navigation={navigation} highlightColor={Colors.highlight2} />
+              : <EmptyActivityList navigation={navigation} />
           }
         </View>
       </ScrollView>
+    </View>
+  )
+}
+
+const EmptyActivityList = ({ navigation }) => {
+  return (
+    <View style={{ marginTop: 16, marginHorizontal: 32 }}>
+      <Text style={{ fontFamily: 'Roboto_400Regular', fontSize: fontSizes.s }}>Oops! Looks like our data decided to play hooky today!</Text>
+      <Text style={{ fontFamily: 'Roboto_300Light', fontSize: fontSizes.xs, marginTop: 48 }}>To start again, please navigate to the Roadmap page and then return to this page.</Text>
+      <Button
+        color={Colors.text} tintColor={Colors.background}
+        title="Return to roadmap"
+        style={{ marginTop: 16 }}
+        onPress={() => { navigation.pop() }}
+      />
     </View>
   )
 }
@@ -128,12 +144,11 @@ const ActivityList = ({ activities, toggleComplete, setShouldRefetch, navigation
                 {toSorted(activities[semester], activitySort)
                   .map(({ id, name, complete }) =>
                     <GradeLevelListItem
-                      key={name}
+                      key={name + complete}
                       title={name}
-                      id={id}
                       checked={complete}
                       highlightColor={highlightColor}
-                      toggleComplete={toggleComplete}
+                      toggleComplete={() => toggleComplete(id, complete)}
                       setShouldRefetch={setShouldRefetch}
                       onPress={() => {
                         navigation.navigate('Activity', { activityId: id })
@@ -147,7 +162,16 @@ const ActivityList = ({ activities, toggleComplete, setShouldRefetch, navigation
   )
 }
 
-const GradeLevelListItem = ({ title, id, toggleComplete, setShouldRefetch, checked, onPress, highlightColor }) => {
+const GradeLevelListItem = ({ title, toggleComplete, setShouldRefetch, checked, onPress, highlightColor }) => {
+  const [iconName, setIconName] = useState(checked ? 'checkbox-marked-circle' : 'checkbox-blank-circle-outline');
+
+  const onCompletionIconPressed = async (e) => {
+    e.preventDefault();
+    setIconName(!checked ? 'checkbox-marked-circle' : 'checkbox-blank-circle-outline')
+    await toggleComplete();
+    setShouldRefetch(true);
+  }
+
   return (
     // todo: get rid this / anythnig react-native-material lol
     <ListItem
@@ -155,10 +179,11 @@ const GradeLevelListItem = ({ title, id, toggleComplete, setShouldRefetch, check
       title={title}
       onPress={onPress}
       leadingMode='icon'
-      leading={<Icon
-        onPress={() => toggleComplete(id, checked).then(() => setShouldRefetch(true))}
-        size={24} name={checked ? 'checkbox-marked-circle' : 'checkbox-blank-circle-outline'} color={highlightColor} />}
-      trailing={< Icon size={24} name="chevron-right" color="#365a75" />}
+      leading={<IconButton
+        color={highlightColor}
+        onPress={onCompletionIconPressed}
+        icon={(props) => <Icon name={iconName} color={highlightColor} {...props} />} />}
+      trailing={<Icon size={24} name="chevron-right" color="#365a75" />}
     />
   )
 }
