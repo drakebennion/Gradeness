@@ -22,9 +22,9 @@ export const Colors = {
 };
 
 export const fontSizes = {
-  xs: 18,
-  s: 20,
-  m: 28,
-  l: 32,
-  xl: 46
+  xs: 16,
+  s: 18,
+  m: 24,
+  l: 28,
+  xl: 28
 }

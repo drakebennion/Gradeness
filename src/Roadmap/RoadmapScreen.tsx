@@ -8,7 +8,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { StatusBar } from 'expo-status-bar'
 import { useState } from 'react'
 import { Drawer } from 'react-native-drawer-layout'
-import { Icon, IconButton } from '@react-native-material/core'
+import { Dialog, DialogActions, DialogContent, DialogHeader, Icon, IconButton } from '@react-native-material/core'
 
 const roadmapGradeLevels = GradeLevels
 
@@ -17,6 +17,7 @@ export const RoadmapScreen = ({ navigation }: Props) => {
   const auth = getAuth()
 
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const [deleteAccountDialogOpen, setDeleteAccountDialogOpen] = useState(false);
 
   const cardMargin = 16;
   const windowHeight = Dimensions.get('window').height;
@@ -34,17 +35,39 @@ export const RoadmapScreen = ({ navigation }: Props) => {
         onClose={() => setDrawerOpen(false)}
         renderDrawerContent={() => {
           return (
-            <View style={{ marginTop: windowHeight / 50 }}>
+            <View style={{ marginTop: windowHeight / 10 }}>
+              <Button onPress={() => setDrawerOpen(false)} title='Close' />
               <Button onPress={() => auth.signOut()} title='Log out' />
+              <Text>Need help? Contact us at support@gradeness.app</Text>
+              <Text onPress={() => setDeleteAccountDialogOpen(true)}>Delete your account</Text>
             </View>
           )
         }}
         drawerType='front'
         drawerPosition='right'
         drawerStyle={{ backgroundColor: '#E9ECF2', width: drawerOpen ? windowWidth * 0.8 : 0 }}
-        swipeEnabled={false}
         hideStatusBarOnOpen={true}
       >
+        <Dialog
+          visible={deleteAccountDialogOpen} onDismiss={() => setDeleteAccountDialogOpen(false)}
+        >
+          <DialogHeader title="Delete your account?" />
+          <DialogContent>
+            <Text>
+              You can delete your account with Gradeness but you will lose all of your information. Account deletion will take place in 2-3 business days.
+            </Text>
+          </DialogContent>
+          <DialogActions>
+            <Button
+              title="Cancel"
+              onPress={() => setDeleteAccountDialogOpen(false)}
+            />
+            <Button
+              title="Delete"
+              onPress={() => setDeleteAccountDialogOpen(false)}
+            />
+          </DialogActions>
+        </Dialog>
         <View
           style={{ marginHorizontal: 16, marginVertical: windowHeight / 50 }}>
           <StatusBar backgroundColor={Colors.background} style="light" />

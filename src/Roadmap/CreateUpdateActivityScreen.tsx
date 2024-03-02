@@ -89,9 +89,11 @@ export const CreateUpdateActivityScreen = ({ navigation, route }: Props) => {
           <TextInput
             label="Description"
             variant='outlined'
+            multiline
             value={activity?.description}
             onChangeText={(description) => { setActivity({ ...activity, description }) }}
             style={{ marginVertical: 24 }}
+            inputStyle={{ margin: 8 }}
             color={Colors.background}
           />
           <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'flex-end' }}>

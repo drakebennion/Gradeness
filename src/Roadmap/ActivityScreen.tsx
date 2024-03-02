@@ -124,7 +124,7 @@ export const ActivityScreen = ({ navigation, route }: Props) => {
                   <Text style={{ fontFamily: 'Roboto_400Regular', fontSize: fontSizes.s, marginBottom: 12 }}>{activity.overview.header}</Text>
                   {
                     activity.overview.items.map(item =>
-                      <Text key={item} style={{ marginLeft: 16 }}>{`\u2022 ${item}`}</Text>
+                      <Text key={item} style={{ marginLeft: 16, fontSize: fontSizes.s }}>{`\u2022 ${item}`}</Text>
                     )
                   }
                 </View> : <></>
@@ -164,7 +164,6 @@ export const ActivityScreen = ({ navigation, route }: Props) => {
                     .then(() => setAddAccomplishment(''))
                     .then(() => Toast.show({ type: 'success', text1: 'Accomplishment saved', position: 'bottom', swipeable: true }))
                 } />
-              {/* todo: pop toast when accomplishment saved */}
             </View>
 
             {
@@ -172,14 +171,14 @@ export const ActivityScreen = ({ navigation, route }: Props) => {
                 <Text style={{ fontFamily: 'Roboto_400Regular' }}>{activity.description}</Text>
                 :
                 <View>
-                  <Text style={{ fontFamily: 'Roboto_400Regular' }}>{activity.description.header}</Text>
-                  <View style={{ margin: 12, }}>
+                  <Text style={{ fontFamily: 'Roboto_400Regular', lineHeight: 20 }}>{activity.description.header}</Text>
+                  <View style={{ margin: 12 }}>
                     {
                       activity.description.items.map(item => {
                         const headerAndContent = item.split(':');
                         return <View key={item} style={{ marginBottom: 8 }}>
-                          <Text style={{ fontWeight: 'bold' }}>{headerAndContent[0]}:
-                            <Text style={{ fontWeight: 'normal' }}>{headerAndContent[1]}</Text>
+                          <Text style={{ fontWeight: 'bold', lineHeight: 20 }}>{headerAndContent[0]}:
+                            <Text style={{ fontWeight: 'normal', lineHeight: 20 }}>{headerAndContent[1]}</Text>
                           </Text>
 
                         </View>
@@ -187,7 +186,7 @@ export const ActivityScreen = ({ navigation, route }: Props) => {
                       )
                     }
                   </View>
-                  <Text style={{ fontFamily: 'Roboto_400Regular' }}>{activity.description.footer}</Text>
+                  <Text style={{ fontFamily: 'Roboto_400Regular', lineHeight: 20 }}>{activity.description.footer}</Text>
                 </View>
             }
           </View>
