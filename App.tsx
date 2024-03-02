@@ -1,3 +1,4 @@
+import 'react-native-gesture-handler';
 import { IconComponentProvider } from '@react-native-material/core'
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import './firebaseConfig';
