@@ -64,7 +64,7 @@ export const GradeLevelScreen = ({ navigation, route }: Props) => {
   const gradeLevel = GradeLevels.find(gradeLevel => gradeLevel.year === year);
 
   return (
-    <View style={{ marginVertical: Dimensions.get('window').height / 10 }}>
+    <View style={{ marginTop: Dimensions.get('window').height / 10 }}>
       <View style={{ display: 'flex', flexDirection: 'row', paddingBottom: 16 }}>
         <IconButton
           onPress={() => { navigation.pop() }}

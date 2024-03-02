@@ -1,4 +1,4 @@
-import { Button, Dimensions, FlatList, Pressable, Text, View } from 'react-native'
+import { Dimensions, FlatList, Pressable, Text, View } from 'react-native'
 import { Colors, GradeLevels, fontSizes } from '../Constants'
 import { getAuth } from 'firebase/auth'
 import { getColorForYear } from '../utils/style'
@@ -8,7 +8,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { StatusBar } from 'expo-status-bar'
 import { useState } from 'react'
 import { Drawer } from 'react-native-drawer-layout'
-import { Dialog, DialogActions, DialogContent, DialogHeader, Icon, IconButton } from '@react-native-material/core'
+import { Button, Dialog, DialogActions, DialogContent, DialogHeader, Icon, IconButton } from '@react-native-material/core'
 
 const roadmapGradeLevels = GradeLevels
 
@@ -25,6 +25,60 @@ export const RoadmapScreen = ({ navigation }: Props) => {
   const cardWidth = (windowWidth - cardMargin * 3) / 2;
   const cardHeight = cardWidth;
 
+  const DeleteAccountDialog = () => {
+    return (
+      <Dialog
+        visible={deleteAccountDialogOpen} onDismiss={() => setDeleteAccountDialogOpen(false)}
+      >
+        <DialogHeader title="Delete your account?" />
+        <DialogContent>
+          <Text>
+            You can delete your account with Gradeness but you will lose all of your information. Account deletion will take place in 2-3 business days.
+          </Text>
+        </DialogContent>
+        <DialogActions>
+          <Button
+            title="Cancel"
+            variant='text'
+            onPress={() => setDeleteAccountDialogOpen(false)}
+          />
+          <Button
+            title="Delete"
+            variant='text'
+            onPress={() => setDeleteAccountDialogOpen(false)}
+          />
+        </DialogActions>
+      </Dialog>
+    )
+  }
+
+  const DrawerContent = () => {
+    return (
+      <View style={{ display: 'flex', height: '80%', justifyContent: 'space-between', marginTop: windowHeight / 10, marginHorizontal: 24 }}>
+        <View>
+          <View style={{ alignSelf: 'flex-end' }}>
+            <IconButton
+              onPress={() => setDrawerOpen(false)}
+              icon={<Icon size={24} name="close" />}
+            />
+          </View>
+          <View>
+            <Pressable onPress={() => auth.signOut()} style={{ marginBottom: 24 }}>
+              <Text style={{ fontFamily: 'Roboto_400Regular', fontSize: fontSizes.s }}>Log out</Text>
+            </Pressable>
+            <Text style={{ fontFamily: 'Roboto_400Regular', fontSize: fontSizes.s }}>Need help?</Text>
+            <Text style={{ fontFamily: 'Roboto_400Regular', fontSize: fontSizes.xs }}>Contact us at support@gradeness.app</Text>
+          </View>
+        </View>
+        {/* todo: now what? mark account for deletion? sign them out?c */}
+        <Pressable onPress={() => setDeleteAccountDialogOpen(true)}>
+          <Text style={{ fontFamily: 'Roboto_400Regular', fontSize: fontSizes.s }}>Delete your account</Text>
+          <Text style={{ fontFamily: 'Roboto_400Regular', fontSize: fontSizes.xs }}>Account deletion will take place in 2-3 business days.</Text>
+        </Pressable>
+      </View>
+    )
+  }
+
   return (
     <LinearGradient
       style={{ height: '100%' }}
@@ -33,41 +87,14 @@ export const RoadmapScreen = ({ navigation }: Props) => {
         open={drawerOpen}
         onOpen={() => setDrawerOpen(true)}
         onClose={() => setDrawerOpen(false)}
-        renderDrawerContent={() => {
-          return (
-            <View style={{ marginTop: windowHeight / 10 }}>
-              <Button onPress={() => setDrawerOpen(false)} title='Close' />
-              <Button onPress={() => auth.signOut()} title='Log out' />
-              <Text>Need help? Contact us at support@gradeness.app</Text>
-              <Text onPress={() => setDeleteAccountDialogOpen(true)}>Delete your account</Text>
-            </View>
-          )
-        }}
+        renderDrawerContent={DrawerContent}
         drawerType='front'
-        drawerPosition='right'
-        drawerStyle={{ backgroundColor: '#E9ECF2', width: drawerOpen ? windowWidth * 0.8 : 0 }}
+        // todo: known bug using drawerPosition Right: https://github.com/react-navigation/react-navigation/issues/11853
+        // drawerPosition='right'
+        drawerStyle={{ backgroundColor: '#E9ECF2', width: '80%' }}
         hideStatusBarOnOpen={true}
       >
-        <Dialog
-          visible={deleteAccountDialogOpen} onDismiss={() => setDeleteAccountDialogOpen(false)}
-        >
-          <DialogHeader title="Delete your account?" />
-          <DialogContent>
-            <Text>
-              You can delete your account with Gradeness but you will lose all of your information. Account deletion will take place in 2-3 business days.
-            </Text>
-          </DialogContent>
-          <DialogActions>
-            <Button
-              title="Cancel"
-              onPress={() => setDeleteAccountDialogOpen(false)}
-            />
-            <Button
-              title="Delete"
-              onPress={() => setDeleteAccountDialogOpen(false)}
-            />
-          </DialogActions>
-        </Dialog>
+        <DeleteAccountDialog />
         <View
           style={{ marginHorizontal: 16, marginVertical: windowHeight / 50 }}>
           <StatusBar backgroundColor={Colors.background} style="light" />
