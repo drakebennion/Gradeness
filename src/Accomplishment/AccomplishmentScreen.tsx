@@ -87,8 +87,11 @@ export const AccomplishmentScreen = ({ navigation }) => {
     return (
         <View style={{ height: '100%', marginVertical: Dimensions.get('window').height / 10 }}>
             {/* todo: add badges at top and make filtering happen! */}
-            <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                <Text style={{ fontFamily: 'Roboto_400Regular', color: Colors.text, marginBottom: 32, marginLeft: 16, fontSize: fontSizes.l }}>Accomplishments</Text>
+            <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
+                <View style={{ marginBottom: 32, marginLeft: 32, }}>
+                    <Text style={{ fontFamily: 'Roboto_400Regular', color: Colors.text, fontSize: fontSizes.l, marginBottom: 16 }}>Accomplishments</Text>
+                    <Text style={{ fontFamily: 'Roboto_400Regular', color: Colors.text, fontSize: fontSizes.s, lineHeight: 24 }}>Capture your accomplishments along the way so it’s much easier to respond to college applications or create a resume.</Text>
+                </View>
                 <IconButton
                     style={{ marginTop: -12, marginRight: 16 }}
                     onPress={() => {

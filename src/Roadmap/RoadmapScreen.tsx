@@ -9,6 +9,7 @@ import { StatusBar } from 'expo-status-bar'
 import { useState } from 'react'
 import { Drawer } from 'react-native-drawer-layout'
 import { Button, Dialog, DialogActions, DialogContent, DialogHeader, Icon, IconButton } from '@react-native-material/core'
+import * as Linking from 'expo-linking';
 
 const roadmapGradeLevels = GradeLevels
 
@@ -45,7 +46,11 @@ export const RoadmapScreen = ({ navigation }: Props) => {
           <Button
             title="Delete"
             variant='text'
-            onPress={() => setDeleteAccountDialogOpen(false)}
+            onPress={() => {
+              setDeleteAccountDialogOpen(false);
+              auth.signOut();
+              Linking.openURL('https://www.gradeness.app/delete-account');
+            }}
           />
         </DialogActions>
       </Dialog>
