@@ -60,8 +60,8 @@ export default function SignUpScreen({ navigation }) {
 
         {/* todo: replace all react-native-material shit, this is silly. */}
         <Button color={Colors.highlight2} title="Sign up" onPress={onSignUp} />
-        <Text style={{ marginTop: 24, alignSelf: 'center' }}>Already have an account?
-          <Text onPress={() => navigation.navigate("Sign In")} style={{ textDecorationLine: 'underline' }}> Sign in</Text>
+        <Text style={{ marginTop: 24, alignSelf: 'center' }}>Already have an account? {''}
+          <Text onPress={() => navigation.navigate("Sign In")} style={{ textDecorationLine: 'underline' }}>Sign in</Text>
         </Text>
       </View>
     </View>

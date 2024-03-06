@@ -1,7 +1,7 @@
 import { Button, Icon, IconButton, TextInput } from '@react-native-material/core'
 import { collection, doc, getDoc, getDocs, getFirestore, query, setDoc, updateDoc, where } from 'firebase/firestore'
 import { useCallback, useState } from 'react'
-import { Dimensions, ImageBackground, ScrollView, StyleSheet, Text, View } from 'react-native'
+import { Dimensions, ImageBackground, KeyboardAvoidingView, Platform, ScrollView, StyleSheet, Text, View } from 'react-native'
 import { Colors, fontSizes } from "../Constants"
 import { useFocusEffect } from '@react-navigation/native'
 import { useAuthentication } from '../utils/hooks/useAuthentication'
@@ -11,6 +11,7 @@ import { type Activity } from '../types/Activity'
 import * as Progress from 'react-native-progress'
 import { getStorage, ref, getDownloadURL } from 'firebase/storage'
 import Toast from 'react-native-toast-message'
+import { useHeaderHeight } from '@react-navigation/elements'
 
 type Props = NativeStackScreenProps<UserStackParamList, 'Activity'>
 export const ActivityScreen = ({ navigation, route }: Props) => {
@@ -24,6 +25,7 @@ export const ActivityScreen = ({ navigation, route }: Props) => {
   const storage = getStorage()
   const [imgUri, setImgUri] = useState({ uri: '' })
   const [shouldRefetch, setShouldRefetch] = useState(true);
+  const headerHeight = useHeaderHeight();
 
   const toggleComplete = async () => {
     const activityRef = doc(db, 'activities', activityId)
@@ -84,114 +86,122 @@ export const ActivityScreen = ({ navigation, route }: Props) => {
     loadingActivity
       ? <Progress.Circle size={40} indeterminate={true} color={Colors.highlight2} borderWidth={3} style={{ alignSelf: 'center', marginTop: '66%' }} />
       :
-      <View style={{ marginVertical: Dimensions.get('window').height / 10 }}>
-        <View style={{ marginBottom: 16 }}>
-          <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
-            <IconButton
-              onPress={() => { navigation.pop() }}
-              icon={<Icon size={24} color={Colors.text} name="arrow-left" />}
-            />
-            {!!activity.testActivityId ? <></> :
+      <KeyboardAvoidingView
+        style={{ flex: 1 }}
+        behavior={Platform.OS === 'ios' ? 'position' : 'height'}
+        keyboardVerticalOffset={headerHeight}
+      >
+        <View style={{ marginVertical: Dimensions.get('window').height / 10 }}>
+          <View style={{ marginBottom: 16 }}>
+            <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
               <IconButton
-                onPress={() => { navigation.navigate('CreateUpdateActivity', { activity: { activityId, name: activity.name, semester: activity.semester, year: activity.year, description: activity.description } }) }}
-                icon={<Icon size={24} color={Colors.text} name="square-edit-outline" />}
+                onPress={() => { navigation.pop() }}
+                icon={<Icon size={24} color={Colors.text} name="arrow-left" />}
               />
-            }
-          </View>
-          <Text style={{ fontFamily: 'Roboto_400Regular', color: Colors.text, fontSize: fontSizes.m, marginTop: 8, marginLeft: 16, marginRight: 8 }}>
-            {activity.name}
-          </Text>
-        </View>
-        <ScrollView contentContainerStyle={styles.container}>
-          <View>
-            <ImageBackground source={imgUri.uri ? imgUri : require('../../assets/activities/orientation.png')} style={{ display: 'flex', flexDirection: 'row', justifyContent: 'flex-end', paddingRight: 12, height: 160 }}>
-              {/* todo: pull this into a Badge component */}
-              <View style={{ backgroundColor: Colors.text, padding: 8, borderRadius: 8, margin: 8, alignSelf: 'flex-end' }}>
-                <Text style={{ fontFamily: 'Roboto_400Regular' }}>{activity.semester}</Text>
-              </View>
-              <View style={{ backgroundColor: Colors.text, padding: 8, borderRadius: 8, margin: 8, alignSelf: 'flex-end' }}>
-                <Text style={{ fontFamily: 'Roboto_400Regular' }}>{getGradeLevelNameForYear(activity.year)}</Text>
-              </View>
-            </ImageBackground>
-          </View>
-          <View style={{ paddingHorizontal: 24, marginTop: 16 }}>
-            {/* todo: could def handle this better - if no overview show nothing, if overview is string display it, otherwise show header and items */}
-            {typeof activity.overview === "string" ?
-              <Text style={{ fontFamily: 'Roboto_400Regular', fontSize: fontSizes.s, marginBottom: 12 }}>{activity.overview}</Text> :
-
-              activity.overview ?
-                <View style={{ marginBottom: 16 }}>
-                  <Text style={{ fontFamily: 'Roboto_400Regular', fontSize: fontSizes.s, marginBottom: 12 }}>{activity.overview.header}</Text>
-                  {
-                    activity.overview.items.map(item =>
-                      <Text key={item} style={{ marginLeft: 16, fontSize: fontSizes.s }}>{`\u2022 ${item}`}</Text>
-                    )
-                  }
-                </View> : <></>
-            }
-            <Button
-              color={activity.complete ? Colors.text : Colors.highlight2}
-              tintColor={Colors.background}
-              leading={activity.complete ? <Icon name='check' size={16} /> : <></>}
-              title={activity.complete ? 'Complete' : 'Mark complete'}
-              onPress={async () => { await toggleComplete().then(() => { setShouldRefetch(true) }) }}
-              style={{ marginBottom: 24 }}
-            />
-
-            <View style={{ marginBottom: 24 }}>
-              <Text style={{ marginTop: 16 }}>Capture your accomplishments</Text>
-              <TextInput
-                label="Accomplishments"
-                multiline
-                variant="outlined"
-                value={addAccomplishment}
-                onChangeText={(content) => {
-                  setAddAccomplishment(content)
-                }}
-                style={{ marginTop: 16, }}
-                inputStyle={{ margin: 8 }}
-                color={Colors.background}
-              />
-              <Button
-                disabled={!addAccomplishment}
-                color={Colors.background}
-                style={
-                  { alignSelf: 'flex-end', marginTop: 8 }
-                }
-                title="Save"
-                onPress={
-                  () => saveAccomplishment()
-                    .then(() => setAddAccomplishment(''))
-                    .then(() => Toast.show({ type: 'success', text1: 'Accomplishment saved', position: 'bottom', swipeable: true }))
-                } />
+              {!!activity.testActivityId ? <></> :
+                <IconButton
+                  onPress={() => { navigation.navigate('CreateUpdateActivity', { activity: { activityId, name: activity.name, semester: activity.semester, year: activity.year, description: activity.description } }) }}
+                  icon={<Icon size={24} color={Colors.text} name="square-edit-outline" />}
+                />
+              }
             </View>
+            <Text style={{ fontFamily: 'Roboto_400Regular', color: Colors.text, fontSize: fontSizes.m, marginTop: 8, marginLeft: 16, marginRight: 8 }}>
+              {activity.name}
+            </Text>
+          </View>
+          <ScrollView contentContainerStyle={styles.container}>
+            <View>
+              <ImageBackground source={imgUri.uri ? imgUri : require('../../assets/activities/orientation.png')} style={{ display: 'flex', flexDirection: 'row', justifyContent: 'flex-end', paddingRight: 12, height: 160 }}>
+                {/* todo: pull this into a Badge component */}
+                <View style={{ backgroundColor: Colors.text, padding: 8, borderRadius: 8, margin: 8, alignSelf: 'flex-end' }}>
+                  <Text style={{ fontFamily: 'Roboto_400Regular' }}>{activity.semester}</Text>
+                </View>
+                <View style={{ backgroundColor: Colors.text, padding: 8, borderRadius: 8, margin: 8, alignSelf: 'flex-end' }}>
+                  <Text style={{ fontFamily: 'Roboto_400Regular' }}>{getGradeLevelNameForYear(activity.year)}</Text>
+                </View>
+              </ImageBackground>
+            </View>
+            <View style={{ paddingHorizontal: 24, marginTop: 16 }}>
+              {/* todo: could def handle this better - if no overview show nothing, if overview is string display it, otherwise show header and items */}
+              {typeof activity.overview === "string" ?
+                <Text style={{ fontFamily: 'Roboto_400Regular', fontSize: fontSizes.s, marginBottom: 12 }}>{activity.overview}</Text> :
 
-            {
-              typeof activity.description === "string" ?
-                <Text style={{ fontFamily: 'Roboto_400Regular', fontSize: fontSizes.s }}>{activity.description}</Text>
-                :
-                <View>
-                  <Text style={{ fontFamily: 'Roboto_400Regular', fontSize: fontSizes.s, lineHeight: 20 }}>{activity.description.header}</Text>
-                  <View style={{ margin: 12 }}>
+                activity.overview ?
+                  <View style={{ marginBottom: 16 }}>
+                    <Text style={{ fontFamily: 'Roboto_400Regular', fontSize: fontSizes.s, marginBottom: 12 }}>{activity.overview.header}</Text>
                     {
-                      activity.description.items.map(item => {
-                        const headerAndContent = item.split(':');
-                        return <View key={item} style={{ marginBottom: 8 }}>
-                          <Text style={{ fontWeight: 'bold', lineHeight: 20, fontSize: fontSizes.xs, }}>{headerAndContent[0]}:
-                            <Text style={{ fontWeight: 'normal', lineHeight: 20, fontSize: fontSizes.xs }}>{headerAndContent[1]}</Text>
-                          </Text>
-
-                        </View>
-                      }
+                      activity.overview.items.map(item =>
+                        <Text key={item} style={{ marginLeft: 16, fontSize: fontSizes.s }}>{`\u2022 ${item}`}</Text>
                       )
                     }
+                  </View> : <></>
+              }
+              <Button
+                color={activity.complete ? Colors.text : Colors.highlight2}
+                tintColor={Colors.background}
+                leading={activity.complete ? <Icon name='check' size={16} /> : <></>}
+                title={activity.complete ? 'Complete' : 'Mark complete'}
+                onPress={async () => { await toggleComplete().then(() => { setShouldRefetch(true) }) }}
+                style={{ marginBottom: 24 }}
+              />
+
+              <View style={{ marginBottom: 24 }}>
+                <Text style={{ marginTop: 16 }}>Capture your accomplishments</Text>
+                <TextInput
+                  label="Accomplishments"
+                  multiline
+                  variant="outlined"
+                  value={addAccomplishment}
+                  onChangeText={(content) => {
+                    setAddAccomplishment(content)
+                  }}
+                  style={{ marginTop: 16, }}
+                  inputStyle={{ margin: 8 }}
+                  color={Colors.background}
+                />
+                <Button
+                  disabled={!addAccomplishment}
+                  color={Colors.background}
+                  style={
+                    { alignSelf: 'flex-end', marginTop: 8 }
+                  }
+                  title="Save"
+                  onPress={
+                    () => saveAccomplishment()
+                      .then(() => setAddAccomplishment(''))
+                      .then(() => Toast.show({ type: 'success', text1: 'Accomplishment saved', position: 'bottom', swipeable: true }))
+                  } />
+              </View>
+
+              {
+                typeof activity.description === "string" ?
+                  <Text style={{ fontFamily: 'Roboto_400Regular', fontSize: fontSizes.s }}>{activity.description}</Text>
+                  :
+                  <View>
+                    <Text style={{ fontFamily: 'Roboto_400Regular', fontSize: fontSizes.s, lineHeight: 20 }}>{activity.description.header}</Text>
+                    <View style={{ margin: 12 }}>
+                      {
+                        activity.description.items.map(item => {
+                          const headerAndContent = item.split(':');
+                          return <View key={item} style={{ marginBottom: 8 }}>
+                            <Text style={{ fontWeight: 'bold', lineHeight: 20, fontSize: fontSizes.xs, }}>{headerAndContent[0]}:
+                              <Text style={{ fontWeight: 'normal', lineHeight: 20, fontSize: fontSizes.xs }}>{headerAndContent[1]}</Text>
+                            </Text>
+
+                          </View>
+                        }
+                        )
+                      }
+                    </View>
+                    <Text style={{ fontFamily: 'Roboto_400Regular', lineHeight: 20, fontSize: fontSizes.xs }}>{
+                      activity.description.footer
+                    }</Text>
                   </View>
-                  <Text style={{ fontFamily: 'Roboto_400Regular', lineHeight: 20, fontSize: fontSizes.xs }}>{activity.description.footer}</Text>
-                </View>
-            }
-          </View>
-        </ScrollView>
-      </View>
+              }
+            </View>
+          </ScrollView>
+        </View>
+      </KeyboardAvoidingView>
   )
 }
 

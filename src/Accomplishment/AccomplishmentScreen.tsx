@@ -104,7 +104,7 @@ export const AccomplishmentScreen = ({ navigation }) => {
             </View>
             <KeyboardAvoidingView
                 style={{ flex: 1 }}
-                behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+                behavior={Platform.OS === 'ios' ? 'position' : 'height'}
                 keyboardVerticalOffset={headerHeight}
             >
                 <ScrollView contentContainerStyle={

@@ -13,6 +13,8 @@ import * as Linking from 'expo-linking';
 
 const roadmapGradeLevels = GradeLevels
 
+// todo: show banner if they need to verify their email
+
 type Props = NativeStackScreenProps<RoadmapStackParamList, 'RoadmapHome'>
 export const RoadmapScreen = ({ navigation }: Props) => {
   const auth = getAuth()
@@ -114,41 +116,63 @@ export const RoadmapScreen = ({ navigation }: Props) => {
             roadmap of time sensitive activities to prepare you for your future and a
             place to capture your accomplishments.
           </Text>
-          <FlatList
-            data={roadmapGradeLevels}
-            renderItem={({ item: { year, name, objective } }) => (
-              <Pressable
-                onPress={() => { navigation.navigate('GradeLevel', { year }) }}
-              >
-                <LinearGradient
-                  colors={[getColorForYear(year, true), getColorForYear(year)]}
-                  style={{ width: cardWidth, height: cardHeight, margin: 4, borderRadius: 8 }}
+          <View>
+            <FlatList
+              data={roadmapGradeLevels}
+              renderItem={({ item: { year, name, objective } }) => (
+                <Pressable
+                  onPress={() => { navigation.navigate('GradeLevel', { year }) }}
                 >
-                  <View style={{ display: 'flex', margin: 16, height: '88%', justifyContent: 'space-between' }}>
-                    <View>
-                      <Text style={{ fontFamily: 'Roboto_500Medium', fontSize: fontSizes.s, color: Colors.text }}>{name}</Text>
-                      <Text style={{ fontFamily: 'Roboto_400Regular', fontSize: fontSizes.xs, color: Colors.text, marginTop: 8 }}>{objective}</Text>
-                    </View>
-                    <Text
-                      style={
-                        {
-                          fontFamily: 'Roboto_300Light',
-                          color: Colors.text,
-                          fontSize: 32,
-                          alignSelf: 'flex-end',
-                          opacity: 0.7,
+                  <LinearGradient
+                    colors={[getColorForYear(year, true), getColorForYear(year)]}
+                    style={{ width: cardWidth, height: cardHeight, margin: 4, borderRadius: 8 }}
+                  >
+                    <View style={{ display: 'flex', margin: 16, height: '88%', justifyContent: 'space-between' }}>
+                      <View>
+                        <Text style={{ fontFamily: 'Roboto_500Medium', fontSize: fontSizes.s, color: Colors.text }}>{name}</Text>
+                        <Text style={{ fontFamily: 'Roboto_400Regular', fontSize: fontSizes.xs, color: Colors.text, marginTop: 8 }}>{objective}</Text>
+                      </View>
+                      <Text
+                        style={
+                          {
+                            fontFamily: 'Roboto_300Light',
+                            color: Colors.text,
+                            fontSize: 32,
+                            alignSelf: 'flex-end',
+                            opacity: 0.7,
+                          }
                         }
-                      }
-                    >
-                      {year}
+                      >
+                        {year}
+                      </Text>
+                    </View>
+                  </LinearGradient>
+                </Pressable>
+              )}
+              numColumns={2}
+              style={{ marginTop: 24, alignSelf: 'center' }}
+              ListFooterComponent={
+                <View
+                  style={{
+                    borderColor: Colors.background,
+                    borderWidth: 1,
+                    borderRadius: 8,
+                    marginTop: 24,
+                    padding: 16,
+                    marginBottom: 600, // hilarious
+                  }}
+                >
+                  {/* todo: move to slideout  */}
+                  <Text style={{ color: Colors.text, fontFamily: 'Roboto_400Regular', fontSize: fontSizes.s, marginBottom: 16 }}>We are always seeking ways to improve</Text>
+                  <Text style={{ color: Colors.text, fontFamily: 'Roboto_400Regular', fontSize: fontSizes.xs }}>Your feedback is valuable to us. Please improve the app and respond to {''}
+                    <Text onPress={() => Linking.openURL('https://forms.gle/q6TfiTnTqLYZwZAY8')} style={{ textDecorationLine: 'underline', paddingLeft: 4 }}>
+                      this survey.
                     </Text>
-                  </View>
-                </LinearGradient>
-              </Pressable>
-            )}
-            numColumns={2}
-            style={{ marginTop: 24, alignSelf: 'center' }}
-          />
+                  </Text>
+                </View>
+              }
+            />
+          </View>
         </View>
       </Drawer>
     </LinearGradient >

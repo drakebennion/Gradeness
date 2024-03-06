@@ -44,7 +44,7 @@ export const CreateUpdateActivityScreen = ({ navigation, route }: Props) => {
   return (
     <KeyboardAvoidingView
       style={{ flex: 1 }}
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      behavior={Platform.OS === 'ios' ? 'position' : 'height'}
       keyboardVerticalOffset={headerHeight}
     >
       <ScrollView style={{ backgroundColor: Colors.text, height: '100%', marginTop: 64, paddingVertical: 24, paddingHorizontal: 16, }}>
