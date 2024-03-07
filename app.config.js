@@ -13,6 +13,12 @@ export default {
       "resizeMode": "contain",
       "backgroundColor": "#1C222E",
     },
+    "updates": {
+      "url": "https://u.expo.dev/ad714b42-ee9b-4763-b2ce-23fcbd430692"
+    },
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
     "assetBundlePatterns": [
       "**/*"
     ],
