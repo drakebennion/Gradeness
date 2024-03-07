@@ -1,4 +1,4 @@
-import { Dimensions, FlatList, Pressable, Text, View } from 'react-native'
+import { Dimensions, FlatList, Image, Pressable, Text, View } from 'react-native'
 import { Colors, GradeLevels, fontSizes } from '../Constants'
 import { getAuth } from 'firebase/auth'
 import { getColorForYear } from '../utils/style'
@@ -63,24 +63,24 @@ export const RoadmapScreen = ({ navigation }: Props) => {
     return (
       <View style={{ display: 'flex', height: '80%', justifyContent: 'space-between', marginTop: windowHeight / 10, marginHorizontal: 24 }}>
         <View>
-          <View style={{ alignSelf: 'flex-end' }}>
-            <IconButton
-              onPress={() => setDrawerOpen(false)}
-              icon={<Icon size={24} name="close" />}
-            />
-          </View>
           <View>
+            <Image source={require('../../assets/slideoutowl.png')} style={{ marginBottom: 36 }} />
             <Pressable onPress={() => auth.signOut()} style={{ marginBottom: 24 }}>
-              <Text style={{ fontFamily: 'Roboto_400Regular', fontSize: fontSizes.s }}>Log out</Text>
+              <Text style={{ fontFamily: 'Roboto_400Regular', fontSize: fontSizes.s }}><Icon size={24} name='logout' />{'   '}Log out</Text>
             </Pressable>
-            <Text style={{ fontFamily: 'Roboto_400Regular', fontSize: fontSizes.s }}>Need help?</Text>
-            <Text style={{ fontFamily: 'Roboto_400Regular', fontSize: fontSizes.xs }}>Contact us at support@gradeness.app</Text>
+            <Pressable onPress={() => Linking.openURL('https://forms.gle/q6TfiTnTqLYZwZAY8')} style={{ marginBottom: 24 }}>
+              <Text style={{ fontFamily: 'Roboto_400Regular', fontSize: fontSizes.s, marginBottom: 8 }}><Icon size={24} name='message-outline' />{'   '}Give feedback</Text>
+              <Text style={{ fontFamily: 'Roboto_300Light', fontSize: fontSizes.xxs, lineHeight: 20, marginLeft: 36 }}>Your feedback is valuable to us. Help us improve the app and respond to <Text style={{ textDecorationLine: 'underline' }}>this survey.</Text></Text>
+            </Pressable>
+            <View>
+              <Text style={{ fontFamily: 'Roboto_400Regular', fontSize: fontSizes.s, marginBottom: 8 }}><Icon size={24} name="email-outline" />{'   '}Need help?</Text>
+              <Text style={{ fontFamily: 'Roboto_300Light', fontSize: fontSizes.xxs, lineHeight: 20, marginLeft: 36 }}>Contact us at support@gradeness.app</Text>
+            </View>
           </View>
         </View>
-        {/* todo: now what? mark account for deletion? sign them out?c */}
         <Pressable onPress={() => setDeleteAccountDialogOpen(true)}>
-          <Text style={{ fontFamily: 'Roboto_400Regular', fontSize: fontSizes.s }}>Delete your account</Text>
-          <Text style={{ fontFamily: 'Roboto_400Regular', fontSize: fontSizes.xs }}>Account deletion will take place in 2-3 business days.</Text>
+          <Text style={{ fontFamily: 'Roboto_400Regular', fontSize: fontSizes.s, marginBottom: 8 }}><Icon size={24} name="delete-outline" />{'   '}Delete your account</Text>
+          <Text style={{ fontFamily: 'Roboto_300Light', fontSize: fontSizes.xxs, lineHeight: 20, marginLeft: 36 }}>Account deletion will take place in 2-3 business days.</Text>
         </Pressable>
       </View>
     )
@@ -98,7 +98,7 @@ export const RoadmapScreen = ({ navigation }: Props) => {
         drawerType='front'
         // todo: known bug using drawerPosition Right: https://github.com/react-navigation/react-navigation/issues/11853
         // drawerPosition='right'
-        drawerStyle={{ backgroundColor: '#E9ECF2', width: '80%' }}
+        drawerStyle={{ backgroundColor: '#E9ECF2', width: '90%', borderRadius: 16 }}
         hideStatusBarOnOpen={true}
       >
         <DeleteAccountDialog />
@@ -106,7 +106,7 @@ export const RoadmapScreen = ({ navigation }: Props) => {
           style={{ marginHorizontal: 16, marginVertical: windowHeight / 50 }}>
           <StatusBar backgroundColor={Colors.background} style="light" />
           <IconButton
-            style={{ marginTop: windowHeight / 10, alignSelf: 'flex-end' }}
+            style={{ marginTop: windowHeight / 10, marginBottom: 16, marginLeft: -12 }}
             onPress={() => setDrawerOpen(true)}
             icon={<Icon size={24} color={Colors.text} name="menu" />}
           />
@@ -151,26 +151,6 @@ export const RoadmapScreen = ({ navigation }: Props) => {
               )}
               numColumns={2}
               style={{ marginTop: 24, alignSelf: 'center' }}
-              ListFooterComponent={
-                <View
-                  style={{
-                    borderColor: Colors.background,
-                    borderWidth: 1,
-                    borderRadius: 8,
-                    marginTop: 24,
-                    padding: 16,
-                    marginBottom: 600, // hilarious
-                  }}
-                >
-                  {/* todo: move to slideout  */}
-                  <Text style={{ color: Colors.text, fontFamily: 'Roboto_400Regular', fontSize: fontSizes.s, marginBottom: 16 }}>We are always seeking ways to improve</Text>
-                  <Text style={{ color: Colors.text, fontFamily: 'Roboto_400Regular', fontSize: fontSizes.xs }}>Your feedback is valuable to us. Please improve the app and respond to {''}
-                    <Text onPress={() => Linking.openURL('https://forms.gle/q6TfiTnTqLYZwZAY8')} style={{ textDecorationLine: 'underline', paddingLeft: 4 }}>
-                      this survey.
-                    </Text>
-                  </Text>
-                </View>
-              }
             />
           </View>
         </View>
