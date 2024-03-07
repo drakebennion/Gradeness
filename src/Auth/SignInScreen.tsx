@@ -1,7 +1,7 @@
 import { Button, TextInput } from '@react-native-material/core'
 import React, { useState } from 'react'
 import { StyleSheet, Text, View } from 'react-native'
-import { getAuth, signInWithEmailAndPassword } from 'firebase/auth'
+import { getAuth, sendEmailVerification, signInWithEmailAndPassword } from 'firebase/auth'
 import { Colors, fontSizes } from '../Constants'
 
 export default function SignInScreen({ navigation }) {
@@ -23,6 +23,11 @@ export default function SignInScreen({ navigation }) {
     }
 
     signInWithEmailAndPassword(auth, signIn.email, signIn.password)
+      .then(() => {
+        if (!auth.currentUser?.emailVerified) {
+          sendEmailVerification(auth.currentUser);
+        }
+      })
       .then(() => navigation.navigate('Sign In'))
       .catch(error => { setSignIn({ ...signIn, error: error.message }) })
   }

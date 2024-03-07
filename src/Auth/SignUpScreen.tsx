@@ -1,7 +1,7 @@
 import { Button, TextInput } from '@react-native-material/core'
 import React, { useState } from 'react'
 import { StyleSheet, Text, View } from 'react-native'
-import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth'
+import { getAuth, createUserWithEmailAndPassword, sendEmailVerification } from 'firebase/auth'
 import { Colors, fontSizes } from '../Constants'
 
 export default function SignUpScreen({ navigation }) {
@@ -23,6 +23,7 @@ export default function SignUpScreen({ navigation }) {
     }
 
     createUserWithEmailAndPassword(auth, signUp.email, signUp.password)
+      .then(() => sendEmailVerification(auth.currentUser))
       // should i even have this 'then'? this authenticates them and
       // sends them right to the Roadmap so idk
       .then(() => navigation.navigate('Sign In'))

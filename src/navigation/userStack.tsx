@@ -7,7 +7,7 @@ import { CreateUpdateActivityScreen } from '../Roadmap/CreateUpdateActivityScree
 import { type RoadmapStackParamList } from './userStackParams'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { AccomplishmentScreen } from '../Accomplishment/AccomplishmentScreen'
-import { Colors } from '../Constants'
+import { Colors, fontSizes } from '../Constants'
 import { Icon } from '@react-native-material/core'
 import { Dimensions, Platform } from 'react-native'
 import Toast, { BaseToast } from 'react-native-toast-message'
@@ -96,7 +96,8 @@ const toastConfig = {
         <BaseToast
             {...props}
             style={{ borderLeftColor: '#000', backgroundColor: '#000' }}
-            text1Style={{ color: Colors.text }}
+            text1Style={{ color: Colors.text, fontFamily: 'Roboto_400Regular', fontSize: fontSizes.xs }}
+            text2Style={{ fontFamily: 'Roboto_300Light', fontSize: fontSizes.xs }}
         />
     )
 }
