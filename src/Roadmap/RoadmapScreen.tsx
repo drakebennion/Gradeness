@@ -100,7 +100,7 @@ export const RoadmapScreen = ({ navigation }: Props) => {
               <DrawerItem iconName={'logout'} text={'Log out'} subtext={''} />
             </Pressable>
             <Pressable onPress={() => Linking.openURL('https://forms.gle/q6TfiTnTqLYZwZAY8')} style={{ marginBottom: 24 }}>
-              <DrawerItem iconName={'message-outline'} text={'Give feedback'} subtext={'Your feedback is valuable to us. Click here to respond to our survey and help us improve the app'} />
+              <DrawerItem iconName={'message-outline'} text={'Give feedback'} subtext={'Your feedback is valuable to us. Click here to respond to our survey and help us improve the app.'} />
             </Pressable>
             <DrawerItem iconName={'email-outline'} text={'Need help?'} subtext={'Contact us at support@gradeness.app'} />
           </View>
