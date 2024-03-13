@@ -1,6 +1,6 @@
 import { Button, TextInput } from '@react-native-material/core'
 import React, { useState } from 'react'
-import { StyleSheet, Text, View } from 'react-native'
+import { Linking, StyleSheet, Text, View } from 'react-native'
 import { getAuth, createUserWithEmailAndPassword, sendEmailVerification } from 'firebase/auth'
 import { Colors, fontSizes } from '../Constants'
 
@@ -53,14 +53,19 @@ export default function SignUpScreen({ navigation }) {
           variant='outlined'
           value={signUp.password}
           onChangeText={(password) => { setSignUp({ ...signUp, password }) }}
-          style={{ marginBottom: 12 }}
+          style={{ marginBottom: 16 }}
           secureTextEntry
           autoComplete='new-password'
           color={Colors.background}
         />
 
+        <Text style={{ fontFamily: 'Roboto_400Regular', fontSize: fontSizes.xxs, lineHeight: 20, letterSpacing: .25, marginBottom: 16 }}>By signing up you agree to the {''}
+          <Text
+            onPress={() => Linking.openURL('https://www.gradeness.app/privacy-policy')}
+            style={{ textDecorationLine: 'underline' }}>privacy policy</Text>
+        </Text>
         {/* todo: replace all react-native-material shit, this is silly. */}
-        <Button color={Colors.highlight2} title="Sign up" onPress={onSignUp} />
+        <Button color={Colors.highlight2} style={{ marginTop: 8 }} title="Sign up" onPress={onSignUp} />
         <Text style={{ marginTop: 24, alignSelf: 'center' }}>Already have an account? {''}
           <Text onPress={() => navigation.navigate("Sign In")} style={{ textDecorationLine: 'underline' }}>Sign in</Text>
         </Text>

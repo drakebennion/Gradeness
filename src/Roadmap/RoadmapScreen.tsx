@@ -81,7 +81,7 @@ export const RoadmapScreen = ({ navigation }: Props) => {
   const DrawerItem = ({ iconName, text, subtext }) => {
     return (
       <View style={{ display: 'flex', flexDirection: 'row' }}>
-        <Icon size={24} name={iconName} />
+        <Icon size={24} name={iconName} color={Colors.background} />
         <View style={{ marginHorizontal: 16 }}>
           <Text style={{ fontFamily: 'Roboto_400Regular', fontSize: fontSizes.s, marginBottom: 8 }}>{text}</Text>
           {subtext ? <Text style={{ fontFamily: 'Roboto_300Light', fontSize: fontSizes.xxs, lineHeight: 20 }}>{subtext}</Text> : <></>}
