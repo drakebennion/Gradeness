@@ -78,15 +78,17 @@ export const RoadmapScreen = ({ navigation }: Props) => {
     )
   }
 
-  const DrawerItem = ({ iconName, text, subtext }) => {
+  const DrawerItem = ({ onPress, iconName, text, subtext, lastItem = false }) => {
     return (
-      <View style={{ display: 'flex', flexDirection: 'row' }}>
-        <Icon size={24} name={iconName} color={Colors.background} />
-        <View style={{ marginHorizontal: 16 }}>
-          <Text style={{ fontFamily: 'Roboto_400Regular', fontSize: fontSizes.s, marginBottom: 8 }}>{text}</Text>
-          {subtext ? <Text style={{ fontFamily: 'Roboto_300Light', fontSize: fontSizes.xxs, lineHeight: 20 }}>{subtext}</Text> : <></>}
+      <Pressable style={{ marginBottom: lastItem ? 0 : 24 }} onPress={onPress}>
+        <View style={{ display: 'flex', flexDirection: 'row' }}>
+          <Icon size={24} name={iconName} color={Colors.background} />
+          <View style={{ marginHorizontal: 16 }}>
+            <Text style={{ fontFamily: 'Roboto_400Regular', fontSize: fontSizes.s, marginBottom: 8 }}>{text}</Text>
+            {subtext ? <Text style={{ fontFamily: 'Roboto_300Light', fontSize: fontSizes.xxs, lineHeight: 20 }}>{subtext}</Text> : <></>}
+          </View>
         </View>
-      </View>
+      </Pressable>
     );
   }
 
@@ -96,18 +98,15 @@ export const RoadmapScreen = ({ navigation }: Props) => {
         <View>
           <View>
             <Image source={require('../../assets/slideoutowl.png')} style={{ marginBottom: 36 }} />
-            <Pressable onPress={() => auth.signOut()} style={{ marginBottom: 24 }}>
-              <DrawerItem iconName={'logout'} text={'Log out'} subtext={''} />
-            </Pressable>
-            <Pressable onPress={() => Linking.openURL('https://forms.gle/q6TfiTnTqLYZwZAY8')} style={{ marginBottom: 24 }}>
-              <DrawerItem iconName={'message-outline'} text={'Give feedback'} subtext={'Your feedback is valuable to us. Click here to respond to our survey and help us improve the app.'} />
-            </Pressable>
-            <DrawerItem iconName={'email-outline'} text={'Need help?'} subtext={'Contact us at support@gradeness.app'} />
+            <DrawerItem onPress={() => auth.signOut()} iconName={'logout'} text={'Log out'} subtext={''} />
+            <DrawerItem onPress={() => Linking.openURL('https://forms.gle/q6TfiTnTqLYZwZAY8')} iconName={'message-outline'} text={'Give feedback'} subtext={'Your feedback is valuable to us. Click here to respond to our survey and help us improve the app.'} />
+            <DrawerItem onPress={() => Linking.openURL('https://www.youtube.com')} iconName={'video-outline'} text={'Tutorial'} subtext={'Watch on YouTube'} />
+            <DrawerItem onPress={() => { }} iconName={'email-outline'} text={'Need help?'} subtext={'Contact us at support@gradeness.app'} />
+            {/* todo: copy link to clipboard and toast saying 'copied' */}
+            <DrawerItem onPress={() => Linking.openURL('https://www.gradeness.app/')} iconName={'share-variant-outline'} text={'Share with a friend'} subtext={'Enjoying the app? Share with a friend.'} />
           </View>
         </View>
-        <Pressable onPress={() => setDeleteAccountDialogOpen(true)}>
-          <DrawerItem iconName={'delete-outline'} text={'Delete your account'} subtext={'Account deletion will take place in 2-3 business days.'} />
-        </Pressable>
+        <DrawerItem lastItem onPress={() => setDeleteAccountDialogOpen(true)} iconName={'delete-outline'} text={'Delete your account'} subtext={'Account deletion will take place in 2-3 business days.'} />
       </View>
     )
   }
