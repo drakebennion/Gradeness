@@ -12,6 +12,7 @@ import { Button, Dialog, DialogActions, DialogContent, DialogHeader, Icon, IconB
 import * as Linking from 'expo-linking';
 import Toast from 'react-native-toast-message'
 import { useAuthentication } from '../utils/hooks/useAuthentication'
+import * as Clipboard from 'expo-clipboard'
 
 const roadmapGradeLevels = GradeLevels
 
@@ -100,10 +101,13 @@ export const RoadmapScreen = ({ navigation }: Props) => {
             <Image source={require('../../assets/slideoutowl.png')} style={{ marginBottom: 36 }} />
             <DrawerItem onPress={() => auth.signOut()} iconName={'logout'} text={'Log out'} subtext={''} />
             <DrawerItem onPress={() => Linking.openURL('https://forms.gle/q6TfiTnTqLYZwZAY8')} iconName={'message-outline'} text={'Give feedback'} subtext={'Your feedback is valuable to us. Click here to respond to our survey and help us improve the app.'} />
-            <DrawerItem onPress={() => Linking.openURL('https://www.youtube.com')} iconName={'video-outline'} text={'Tutorial'} subtext={'Watch on YouTube'} />
+            <DrawerItem onPress={() => Linking.openURL('https://www.youtube.com/watch?v=x89dP_hjT1k')} iconName={'video-outline'} text={'Tutorial'} subtext={'Watch on YouTube'} />
             <DrawerItem onPress={() => { }} iconName={'email-outline'} text={'Need help?'} subtext={'Contact us at support@gradeness.app'} />
             {/* todo: copy link to clipboard and toast saying 'copied' */}
-            <DrawerItem onPress={() => Linking.openURL('https://www.gradeness.app/')} iconName={'share-variant-outline'} text={'Share with a friend'} subtext={'Enjoying the app? Share with a friend.'} />
+            <DrawerItem onPress={() => {
+              Clipboard.setStringAsync('https://www.gradeness.app/')
+                .then(() => Toast.show({ type: 'success', text1: 'Copied!', position: 'bottom', bottomOffset: 300, swipeable: true }));
+            }} iconName={'share-variant-outline'} text={'Share with a friend'} subtext={'Enjoying the app? Share with a friend.'} />
           </View>
         </View>
         <DrawerItem lastItem onPress={() => setDeleteAccountDialogOpen(true)} iconName={'delete-outline'} text={'Delete your account'} subtext={'Account deletion will take place in 2-3 business days.'} />
