@@ -1,4 +1,4 @@
-import { Dimensions, ScrollView, StyleSheet, Text, View } from 'react-native'
+import { Dimensions, ScrollView, StyleSheet, View } from 'react-native'
 import { Button, Icon, IconButton, ListItem } from '@react-native-material/core'
 import * as Progress from 'react-native-progress'
 import { Colors, GradeLevels, fontSizes, semesters } from "../Constants"
@@ -11,6 +11,8 @@ import { type NativeStackScreenProps } from '@react-navigation/native-stack'
 import { type RoadmapStackParamList } from '../navigation/userStackParams'
 import { groupBy, toSorted } from '../utils/array'
 import { type Activity } from '../types/Activity'
+
+import { Text } from '../Typography';
 
 type Props = NativeStackScreenProps<RoadmapStackParamList, 'GradeLevel'>
 export const GradeLevelScreen = ({ navigation, route }: Props) => {
@@ -70,18 +72,16 @@ export const GradeLevelScreen = ({ navigation, route }: Props) => {
           onPress={() => { navigation.pop() }}
           icon={<Icon size={24} color='white' name="arrow-left" />}
         />
-        <Text style={{ fontFamily: 'Roboto_400Regular', color: getColorForYear(year), fontSize: fontSizes.l, marginTop: 8 }}>
-          {gradeLevel.name}
-        </Text>
+        <Text style={{ color: getColorForYear(year), fontSize: fontSizes.l, marginTop: 8 }}>{gradeLevel.name}</Text>
       </View>
       <ScrollView contentContainerStyle={styles.container}>
         <View style={{ backgroundColor: Colors.background, padding: 16, borderBottomLeftRadius: 8, borderBottomRightRadius: 8 }}>
           <View style={{ marginBottom: 16 }}>
-            <Text style={{ fontFamily: 'Roboto_400Regular', fontSize: fontSizes.s, color: Colors.text, marginBottom: 8 }}>{gradeLevel.objective}</Text>
-            <Text style={{ fontFamily: 'Roboto_400Regular', color: Colors.text, lineHeight: 20, letterSpacing: 0.25 }}>{gradeLevel.details}</Text>
+            <Text style={{ marginBottom: 8 }}>{gradeLevel.objective}</Text>
+            <Text size='xs' style={{ lineHeight: 20, letterSpacing: 0.25 }}>{gradeLevel.details}</Text>
           </View>
           <View style={styles.progressContainer}>
-            <Text style={{ fontFamily: 'Roboto_400Regular', fontWeight: '400', marginBottom: 8, color: Colors.text }}>Progress</Text>
+            <Text style={{ marginBottom: 8, }}>Progress</Text>
             <Progress.Bar color={highlightColor} borderColor={Colors.background} unfilledColor='#E6E0E9' width={null} progress={progress} />
           </View>
           <View>
@@ -109,8 +109,8 @@ export const GradeLevelScreen = ({ navigation, route }: Props) => {
 const EmptyActivityList = ({ navigation }) => {
   return (
     <View style={{ marginTop: 16, marginHorizontal: 32 }}>
-      <Text style={{ fontFamily: 'Roboto_400Regular', fontSize: fontSizes.s }}>Oops! Looks like our data decided to play hooky today!</Text>
-      <Text style={{ fontFamily: 'Roboto_300Light', fontSize: fontSizes.xs, marginTop: 48 }}>To start again, please navigate to the Roadmap page and then return to this page.</Text>
+      <Text>Oops! Looks like our data decided to play hooky today!</Text>
+      <Text weight='light' size='xs' style={{ marginTop: 48 }}>To start again, please navigate to the Roadmap page and then return to this page.</Text>
       <Button
         color={Colors.text} tintColor={Colors.background}
         title="Return to roadmap"
@@ -140,7 +140,7 @@ const ActivityList = ({ activities, toggleComplete, setShouldRefetch, navigation
           .map(semester => {
             return (
               <View key={semester} style={{ marginTop: 16, marginHorizontal: 16 }} >
-                <Text style={{ fontFamily: 'Roboto_400Regular', fontSize: fontSizes.s, fontWeight: '500', marginBottom: 8 }}>{semester}</Text>
+                <Text color='background' weight='medium' style={{ marginBottom: 8 }}>{semester}</Text>
                 {toSorted(activities[semester], activitySort)
                   .map(({ id, name, complete }) =>
                     <GradeLevelListItem
