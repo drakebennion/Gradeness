@@ -27,5 +27,12 @@ export const fontSizes = {
   s: 18,
   m: 24,
   l: 28,
-  xl: 28
+  xl: 28,
+  xxl: 32,
+}
+
+export const fontWeights = {
+  'medium': 'Roboto_500Medium',
+  'regular': 'Roboto_400Regular',
+  'light': 'Roboto_300Light'
 }

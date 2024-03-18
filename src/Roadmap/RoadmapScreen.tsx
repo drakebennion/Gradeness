@@ -1,4 +1,4 @@
-import { Dimensions, FlatList, Image, Pressable, Text, View } from 'react-native'
+import { Dimensions, FlatList, Image, Pressable, View } from 'react-native'
 import { Colors, GradeLevels, fontSizes } from '../Constants'
 import { getAuth } from 'firebase/auth'
 import { getColorForYear } from '../utils/style'
@@ -13,6 +13,7 @@ import * as Linking from 'expo-linking';
 import Toast from 'react-native-toast-message'
 import { useAuthentication } from '../utils/hooks/useAuthentication'
 import * as Clipboard from 'expo-clipboard'
+import { Text } from '../Typography'
 
 const roadmapGradeLevels = GradeLevels
 
@@ -55,7 +56,7 @@ export const RoadmapScreen = ({ navigation }: Props) => {
       >
         <DialogHeader title="Delete your account?" />
         <DialogContent>
-          <Text>
+          <Text size='xs'>
             You can delete your account with Gradeness but you will lose all of your information. Account deletion will take place in 2-3 business days.
           </Text>
         </DialogContent>
@@ -85,8 +86,8 @@ export const RoadmapScreen = ({ navigation }: Props) => {
         <View style={{ display: 'flex', flexDirection: 'row' }}>
           <Icon size={24} name={iconName} color={Colors.background} />
           <View style={{ marginHorizontal: 16 }}>
-            <Text style={{ fontFamily: 'Roboto_400Regular', fontSize: fontSizes.s, marginBottom: 8 }}>{text}</Text>
-            {subtext ? <Text style={{ fontFamily: 'Roboto_300Light', fontSize: fontSizes.xxs, lineHeight: 20 }}>{subtext}</Text> : <></>}
+            <Text style={{ marginBottom: 8 }}>{text}</Text>
+            {subtext ? <Text weight='light' size='xxs' style={{ lineHeight: 20 }}>{subtext}</Text> : <></>}
           </View>
         </View>
       </Pressable>
@@ -103,7 +104,6 @@ export const RoadmapScreen = ({ navigation }: Props) => {
             <DrawerItem onPress={() => Linking.openURL('https://forms.gle/q6TfiTnTqLYZwZAY8')} iconName={'message-outline'} text={'Give feedback'} subtext={'Your feedback is valuable to us. Click here to respond to our survey and help us improve the app.'} />
             <DrawerItem onPress={() => Linking.openURL('https://www.youtube.com/watch?v=x89dP_hjT1k')} iconName={'video-outline'} text={'Tutorial'} subtext={'Watch on YouTube'} />
             <DrawerItem onPress={() => { }} iconName={'email-outline'} text={'Need help?'} subtext={'Contact us at support@gradeness.app'} />
-            {/* todo: copy link to clipboard and toast saying 'copied' */}
             <DrawerItem onPress={() => {
               Clipboard.setStringAsync('https://www.gradeness.app/')
                 .then(() => Toast.show({ type: 'success', text1: 'Copied!', position: 'bottom', bottomOffset: 300, swipeable: true }));
@@ -139,8 +139,8 @@ export const RoadmapScreen = ({ navigation }: Props) => {
             onPress={() => setDrawerOpen(true)}
             icon={<Icon size={24} color={Colors.text} name="menu" />}
           />
-          <Text style={{ fontFamily: 'Roboto_400Regular', color: Colors.text, fontSize: fontSizes.l }}>Welcome</Text>
-          <Text style={{ fontFamily: 'Roboto_400Regular', color: Colors.text, marginTop: 24, fontSize: fontSizes.s }}>
+          <Text size='l'>Welcome</Text>
+          <Text style={{ marginTop: 24 }}>
             Gradeness is designed to simplify the high school process by providing a
             roadmap of time sensitive activities to prepare you for your future and a
             place to capture your accomplishments.
@@ -158,22 +158,10 @@ export const RoadmapScreen = ({ navigation }: Props) => {
                   >
                     <View style={{ display: 'flex', margin: 16, height: '88%', justifyContent: 'space-between' }}>
                       <View>
-                        <Text style={{ fontFamily: 'Roboto_500Medium', fontSize: fontSizes.s, color: Colors.text }}>{name}</Text>
-                        <Text style={{ fontFamily: 'Roboto_400Regular', fontSize: fontSizes.xs, color: Colors.text, marginTop: 8 }}>{objective}</Text>
+                        <Text weight='medium'>{name}</Text>
+                        <Text size='xs' style={{ marginTop: 8 }}>{objective}</Text>
                       </View>
-                      <Text
-                        style={
-                          {
-                            fontFamily: 'Roboto_300Light',
-                            color: Colors.text,
-                            fontSize: 32,
-                            alignSelf: 'flex-end',
-                            opacity: 0.7,
-                          }
-                        }
-                      >
-                        {year}
-                      </Text>
+                      <Text weight='light' size='xxl' style={{ alignSelf: 'flex-end', opacity: 0.7 }}>{year}</Text>
                     </View>
                   </LinearGradient>
                 </Pressable>
