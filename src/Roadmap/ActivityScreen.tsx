@@ -1,7 +1,7 @@
 import { Button, Icon, IconButton, TextInput } from '@react-native-material/core'
 import { collection, doc, getDoc, getDocs, getFirestore, query, setDoc, updateDoc, where } from 'firebase/firestore'
 import { useCallback, useState } from 'react'
-import { Dimensions, ImageBackground, KeyboardAvoidingView, Platform, ScrollView, StyleSheet, Text, View } from 'react-native'
+import { Dimensions, ImageBackground, KeyboardAvoidingView, Platform, ScrollView, StyleSheet, View } from 'react-native'
 import { Colors, fontSizes } from "../Constants"
 import { useFocusEffect } from '@react-navigation/native'
 import { useAuthentication } from '../utils/hooks/useAuthentication'
@@ -12,6 +12,8 @@ import * as Progress from 'react-native-progress'
 import { getStorage, ref, getDownloadURL } from 'firebase/storage'
 import Toast from 'react-native-toast-message'
 import { useHeaderHeight } from '@react-navigation/elements'
+
+import { Text } from '../Typography'
 
 type Props = NativeStackScreenProps<UserStackParamList, 'Activity'>
 export const ActivityScreen = ({ navigation, route }: Props) => {
@@ -105,7 +107,7 @@ export const ActivityScreen = ({ navigation, route }: Props) => {
                 />
               }
             </View>
-            <Text style={{ fontFamily: 'Roboto_400Regular', color: Colors.text, fontSize: fontSizes.m, marginTop: 8, marginLeft: 16, marginRight: 8 }}>
+            <Text size='m' style={{ marginTop: 8, marginLeft: 16, marginRight: 8 }}>
               {activity.name}
             </Text>
           </View>
@@ -114,24 +116,24 @@ export const ActivityScreen = ({ navigation, route }: Props) => {
               <ImageBackground source={imgUri.uri ? imgUri : require('../../assets/activities/orientation.png')} style={{ display: 'flex', flexDirection: 'row', justifyContent: 'flex-end', paddingRight: 12, height: 160 }}>
                 {/* todo: pull this into a Badge component */}
                 <View style={{ backgroundColor: Colors.text, padding: 8, borderRadius: 8, margin: 8, alignSelf: 'flex-end' }}>
-                  <Text style={{ fontFamily: 'Roboto_400Regular' }}>{activity.semester}</Text>
+                  <Text color='background'>{activity.semester}</Text>
                 </View>
                 <View style={{ backgroundColor: Colors.text, padding: 8, borderRadius: 8, margin: 8, alignSelf: 'flex-end' }}>
-                  <Text style={{ fontFamily: 'Roboto_400Regular' }}>{getGradeLevelNameForYear(activity.year)}</Text>
+                  <Text color='background'>{getGradeLevelNameForYear(activity.year)}</Text>
                 </View>
               </ImageBackground>
             </View>
             <View style={{ paddingHorizontal: 24, marginTop: 16 }}>
               {/* todo: could def handle this better - if no overview show nothing, if overview is string display it, otherwise show header and items */}
               {typeof activity.overview === "string" ?
-                <Text style={{ fontFamily: 'Roboto_400Regular', fontSize: fontSizes.s, marginBottom: 12 }}>{activity.overview}</Text> :
+                <Text color='background' style={{ marginBottom: 12 }}>{activity.overview}</Text> :
 
                 activity.overview ?
                   <View style={{ marginBottom: 16 }}>
-                    <Text style={{ fontFamily: 'Roboto_400Regular', fontSize: fontSizes.s, marginBottom: 12 }}>{activity.overview.header}</Text>
+                    <Text color='background' style={{ marginBottom: 12 }}>{activity.overview.header}</Text>
                     {
                       activity.overview.items.map(item =>
-                        <Text key={item} style={{ marginLeft: 16, fontSize: fontSizes.s }}>{`\u2022 ${item}`}</Text>
+                        <Text color='background' key={item} style={{ marginLeft: 16 }}>{`\u2022 ${item}`}</Text>
                       )
                     }
                   </View> : <></>
@@ -146,7 +148,7 @@ export const ActivityScreen = ({ navigation, route }: Props) => {
               />
 
               <View style={{ marginBottom: 24 }}>
-                <Text style={{ marginTop: 16 }}>Capture your accomplishments</Text>
+                <Text color='background' style={{ marginTop: 16 }}>Capture your accomplishments</Text>
                 <TextInput
                   label="Accomplishments"
                   multiline
@@ -175,17 +177,17 @@ export const ActivityScreen = ({ navigation, route }: Props) => {
 
               {
                 typeof activity.description === "string" ?
-                  <Text style={{ fontFamily: 'Roboto_400Regular', fontSize: fontSizes.s }}>{activity.description}</Text>
+                  <Text color='background'>{activity.description}</Text>
                   :
                   <View>
-                    <Text style={{ fontFamily: 'Roboto_400Regular', fontSize: fontSizes.s, lineHeight: 20 }}>{activity.description.header}</Text>
+                    <Text color='background' style={{ lineHeight: 20 }}>{activity.description.header}</Text>
                     <View style={{ margin: 12 }}>
                       {
                         activity.description.items.map(item => {
                           const headerAndContent = item.split(':');
                           return <View key={item} style={{ marginBottom: 8 }}>
-                            <Text style={{ fontWeight: 'bold', lineHeight: 20, fontSize: fontSizes.xs, }}>{headerAndContent[0]}:
-                              <Text style={{ fontWeight: 'normal', lineHeight: 20, fontSize: fontSizes.xs }}>{headerAndContent[1]}</Text>
+                            <Text color='background' size='xs' weight='medium' style={{ lineHeight: 20 }}>{headerAndContent[0]}:
+                              <Text color='background' size='xs' weight='regular' style={{ lineHeight: 20 }}>{headerAndContent[1]}</Text>
                             </Text>
 
                           </View>
@@ -193,7 +195,7 @@ export const ActivityScreen = ({ navigation, route }: Props) => {
                         )
                       }
                     </View>
-                    <Text style={{ fontFamily: 'Roboto_400Regular', lineHeight: 20, fontSize: fontSizes.xs }}>{
+                    <Text color='background' size='xs' style={{ lineHeight: 20 }}>{
                       activity.description.footer
                     }</Text>
                   </View>

@@ -1,5 +1,5 @@
 import { Button, Icon, IconButton, TextInput } from "@react-native-material/core"
-import { Text, KeyboardAvoidingView, Platform, ScrollView, View, Dimensions } from "react-native"
+import { KeyboardAvoidingView, Platform, ScrollView, View, Dimensions } from "react-native"
 import { Colors, GradeLevels, fontSizes } from "../Constants"
 import { useFocusEffect } from "@react-navigation/native"
 import { useCallback, useEffect, useState } from "react"
@@ -9,6 +9,8 @@ import { useHeaderHeight } from "@react-navigation/elements"
 import * as Progress from 'react-native-progress'
 import * as Clipboard from 'expo-clipboard'
 import Toast from 'react-native-toast-message'
+
+import { Text } from '../Typography'
 
 export const AccomplishmentScreen = ({ navigation }) => {
     const db = getFirestore()
@@ -89,8 +91,8 @@ export const AccomplishmentScreen = ({ navigation }) => {
             {/* todo: add badges at top and make filtering happen! */}
             <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
                 <View style={{ marginBottom: 32, marginLeft: 32, }}>
-                    <Text style={{ fontFamily: 'Roboto_400Regular', color: Colors.text, fontSize: fontSizes.l, marginBottom: 16 }}>Accomplishments</Text>
-                    <Text style={{ fontFamily: 'Roboto_400Regular', color: Colors.text, fontSize: fontSizes.s, lineHeight: 24 }}>Capture your accomplishments along the way so it’s much easier to respond to college applications or create a resume.</Text>
+                    <Text size='l' style={{ marginBottom: 16 }}>Accomplishments</Text>
+                    <Text style={{ lineHeight: 24 }}>Capture your accomplishments along the way so it’s much easier to respond to college applications or create a resume.</Text>
                 </View>
                 <IconButton
                     style={{ marginTop: -12, marginRight: 16 }}
@@ -139,7 +141,7 @@ const AccomplishmentContent = ({ editYear, toggleEditing, yearAccomplishmentCont
             <View key={gradeLevel.year} style={{ borderWidth: 0.5, borderColor: '#1D1B20', borderRadius: 8, marginVertical: 32, marginHorizontal: 16, padding: 8, paddingVertical: 16 }}>
                 <View style={{ padding: 8 }}>
                     <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
-                        <Text style={{ fontFamily: 'Roboto_400Regular', fontSize: fontSizes.s, letterSpacing: 0.5, marginBottom: 8 }}>{gradeLevel.name} year</Text>
+                        <Text color='background' style={{ letterSpacing: 0.5, marginBottom: 8 }}>{gradeLevel.name} year</Text>
                         {
                             editYear !== gradeLevel.year &&
                             <IconButton
@@ -149,7 +151,7 @@ const AccomplishmentContent = ({ editYear, toggleEditing, yearAccomplishmentCont
                             />
                         }
                     </View>
-                    <Text style={{ fontFamily: 'Roboto_300Light', fontSize: fontSizes.xs, marginBottom: 24 }}>During your {gradeLevel.name.toLowerCase()} year, you:</Text>
+                    <Text weight='light' size='xs' color='background' style={{ marginBottom: 24 }}>During your {gradeLevel.name.toLowerCase()} year, you:</Text>
                     {
                         editYear === gradeLevel.year ?
                             <View>
@@ -162,7 +164,6 @@ const AccomplishmentContent = ({ editYear, toggleEditing, yearAccomplishmentCont
                                         setYearAccomplishmentContent(content)
                                     }}
                                     style={{ marginTop: 16 }}
-                                    // todo: give inner text some top padding, this ain't doing it :(
                                     inputStyle={{ margin: 8, fontSize: fontSizes.xs }}
                                     color={Colors.background}
                                 />
@@ -185,7 +186,7 @@ const AccomplishmentContent = ({ editYear, toggleEditing, yearAccomplishmentCont
                                     />
                                 </View>
                             </View> :
-                            <Text style={{ fontFamily: 'Roboto_300Light', fontSize: fontSizes.xs, marginBottom: 16 }}>{`${accomplishment?.content[gradeLevel.year]}`}</Text>
+                            <Text weight='light' size='xs' color='background' style={{ marginBottom: 16 }}>{`${accomplishment?.content[gradeLevel.year]}`}</Text>
                     }
                 </View>
             </View>)

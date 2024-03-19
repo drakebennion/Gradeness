@@ -1,4 +1,4 @@
-import { Button, Icon, IconButton, Text, TextInput } from '@react-native-material/core'
+import { Button, Icon, IconButton, TextInput } from '@react-native-material/core'
 import { addDoc, collection, doc, getFirestore, setDoc, updateDoc } from 'firebase/firestore'
 import { useState } from 'react'
 import { KeyboardAvoidingView, Platform, ScrollView, View } from 'react-native'
@@ -9,6 +9,8 @@ import { GradeLevels } from '../Constants'
 import { type NativeStackScreenProps } from '@react-navigation/native-stack'
 import { type RoadmapStackParamList } from '../navigation/userStackParams'
 import { useHeaderHeight } from '@react-navigation/elements'
+
+import { Text } from '../Typography'
 
 type Props = NativeStackScreenProps<RoadmapStackParamList, 'CreateUpdateActivity'>
 export const CreateUpdateActivityScreen = ({ navigation, route }: Props) => {
@@ -49,7 +51,7 @@ export const CreateUpdateActivityScreen = ({ navigation, route }: Props) => {
     >
       <ScrollView style={{ backgroundColor: Colors.text, height: '100%', marginTop: 64, paddingVertical: 24, paddingHorizontal: 16, }}>
         <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', marginBottom: 24 }}>
-          <Text style={{ fontFamily: 'Roboto_400Regular', fontSize: 22 }}>{activity?.activityId ? 'Edit' : 'Add'} activity</Text>
+          <Text color='background' style={{ fontSize: 22 }}>{activity?.activityId ? 'Edit' : 'Add'} activity</Text>
           <IconButton
             style={{ marginTop: -8, marginRight: -16 }}
             onPress={() => { navigation.pop() }}
@@ -66,7 +68,7 @@ export const CreateUpdateActivityScreen = ({ navigation, route }: Props) => {
             color={Colors.background}
           />
 
-          <Text style={{ fontFamily: 'Roboto_400Regular', fontSize: fontSizes.xs, marginVertical: 8 }}>Choose the school year you would like to add the activity?</Text>
+          <Text size='xs' color='background' style={{ marginVertical: 8 }}>Choose the school year you would like to add the activity?</Text>
           <SelectDropdown
             data={GradeLevels}
             onSelect={(gradeLevel) => { setActivity({ ...activity, year: gradeLevel.year }) }}
@@ -77,7 +79,7 @@ export const CreateUpdateActivityScreen = ({ navigation, route }: Props) => {
             buttonStyle={{ width: '100%' }}
           />
 
-          <Text style={{ fontFamily: 'Roboto_400Regular', fontSize: fontSizes.xs, marginTop: 16, marginBottom: 8 }}>What semester or time of year do you want to complete this activity?</Text>
+          <Text size='xs' color='background' style={{ marginTop: 16, marginBottom: 8 }}>What semester or time of year do you want to complete this activity?</Text>
           <SelectDropdown
             data={semesters}
             onSelect={(semester) => { setActivity({ ...activity, semester }) }}

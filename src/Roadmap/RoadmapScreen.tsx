@@ -86,8 +86,8 @@ export const RoadmapScreen = ({ navigation }: Props) => {
         <View style={{ display: 'flex', flexDirection: 'row' }}>
           <Icon size={24} name={iconName} color={Colors.background} />
           <View style={{ marginHorizontal: 16 }}>
-            <Text style={{ marginBottom: 8 }}>{text}</Text>
-            {subtext ? <Text weight='light' size='xxs' style={{ lineHeight: 20 }}>{subtext}</Text> : <></>}
+            <Text color='background' style={{ marginBottom: 8 }}>{text}</Text>
+            {subtext ? <Text weight='light' size='xxs' color='background' style={{ lineHeight: 20 }}>{subtext}</Text> : <></>}
           </View>
         </View>
       </Pressable>
