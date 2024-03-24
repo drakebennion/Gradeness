@@ -14,6 +14,8 @@ import Toast from 'react-native-toast-message'
 import { useAuthentication } from '../utils/hooks/useAuthentication'
 import * as Clipboard from 'expo-clipboard'
 import { Text } from '../Typography'
+import { useFocusEffect } from '@react-navigation/native'
+import { collection, getCountFromServer, getFirestore, query, where } from 'firebase/firestore'
 
 const roadmapGradeLevels = GradeLevels
 
@@ -22,6 +24,7 @@ export const RoadmapScreen = ({ navigation }: Props) => {
   const auth = getAuth()
   const { user } = useAuthentication()
   const [toastHidden, setToastHidden] = useState(false);
+  const db = getFirestore();
 
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [deleteAccountDialogOpen, setDeleteAccountDialogOpen] = useState(false);
@@ -115,6 +118,52 @@ export const RoadmapScreen = ({ navigation }: Props) => {
     )
   }
 
+  const RoadmapCard = ({ year, name, objective }) => {
+    const [numberOfActivities, setNumberOfActivities] = useState(0);
+    const [loadingActivities, setLoadingActivities] = useState(true);
+    useFocusEffect(
+      useCallback(() => {
+        const fetchData = async () => {
+          if (user) {
+            const q = query(collection(db, 'activities'),
+              where('userId', '==', user.uid),
+              where('year', '==', year));
+            const snapshot = await getCountFromServer(q);
+            setNumberOfActivities(snapshot.data().count);
+            setLoadingActivities(false);
+          }
+        }
+
+        fetchData().catch(console.error)
+      }, [user])
+    )
+
+    return (
+      <Pressable
+        onPress={() => { navigation.navigate('GradeLevel', { year }) }}
+      >
+        <LinearGradient
+          colors={[getColorForYear(year, true), getColorForYear(year)]}
+          style={{ width: cardWidth, height: cardHeight, margin: 4, borderRadius: 8 }}
+        >
+          <View style={{ display: 'flex', margin: 16, height: '88%', justifyContent: 'space-between' }}>
+            <View>
+              <Text weight='medium'>{name}</Text>
+              <Text size='xs' style={{ marginTop: 8 }}>{objective}</Text>
+              <View style={{ flexDirection: 'row' }}>
+                <Text style={{ color: getColorForYear(year), fontSize: 8, marginTop: 10 }} >{'\u2B24  '}</Text>
+                <Text size='xxs' style={{ marginTop: 8 }}>
+                  {loadingActivities ? 'Loading your ' : numberOfActivities === 0 ? 'Creating your ' : numberOfActivities + ' '}activities
+                </Text>
+              </View>
+            </View>
+            <Text weight='light' size='xxl' style={{ alignSelf: 'flex-end', opacity: 0.7 }}>{year}</Text>
+          </View>
+        </LinearGradient>
+      </Pressable>
+    )
+  }
+
   return (
     <LinearGradient
       style={{ height: '100%' }}
@@ -125,7 +174,7 @@ export const RoadmapScreen = ({ navigation }: Props) => {
         onClose={() => setDrawerOpen(false)}
         renderDrawerContent={DrawerContent}
         drawerType='front'
-        // todo: known bug using drawerPosition Right: https://github.com/react-navigation/react-navigation/issues/11853
+        // todo: known bug using drawerPosition Right in android: https://github.com/react-navigation/react-navigation/issues/11853
         // drawerPosition='right'
         drawerStyle={{ backgroundColor: '#E9ECF2', width: '90%', borderRadius: 16 }}
         hideStatusBarOnOpen={true}
@@ -149,22 +198,7 @@ export const RoadmapScreen = ({ navigation }: Props) => {
             <FlatList
               data={roadmapGradeLevels}
               renderItem={({ item: { year, name, objective } }) => (
-                <Pressable
-                  onPress={() => { navigation.navigate('GradeLevel', { year }) }}
-                >
-                  <LinearGradient
-                    colors={[getColorForYear(year, true), getColorForYear(year)]}
-                    style={{ width: cardWidth, height: cardHeight, margin: 4, borderRadius: 8 }}
-                  >
-                    <View style={{ display: 'flex', margin: 16, height: '88%', justifyContent: 'space-between' }}>
-                      <View>
-                        <Text weight='medium'>{name}</Text>
-                        <Text size='xs' style={{ marginTop: 8 }}>{objective}</Text>
-                      </View>
-                      <Text weight='light' size='xxl' style={{ alignSelf: 'flex-end', opacity: 0.7 }}>{year}</Text>
-                    </View>
-                  </LinearGradient>
-                </Pressable>
+                <RoadmapCard {...{ year, name, objective }} />
               )}
               numColumns={2}
               style={{ marginTop: 24, alignSelf: 'center' }}
