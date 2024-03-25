@@ -1,4 +1,4 @@
-import { Dimensions, FlatList, Image, Pressable, View } from 'react-native'
+import { Dimensions, FlatList, Image, Platform, Pressable, View } from 'react-native'
 import { Colors, GradeLevels, fontSizes } from '../Constants'
 import { getAuth } from 'firebase/auth'
 import { getColorForYear } from '../utils/style'
@@ -173,7 +173,7 @@ export const RoadmapScreen = ({ navigation }: Props) => {
         onOpen={() => setDrawerOpen(true)}
         onClose={() => setDrawerOpen(false)}
         renderDrawerContent={DrawerContent}
-        drawerType='front'
+        drawerType={Platform.OS === 'android' ? 'slide' : 'front'}
         // todo: known bug using drawerPosition Right in android: https://github.com/react-navigation/react-navigation/issues/11853
         // drawerPosition='right'
         drawerStyle={{ backgroundColor: '#E9ECF2', width: '90%', borderRadius: 16 }}
