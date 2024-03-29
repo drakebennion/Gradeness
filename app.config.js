@@ -1,10 +1,13 @@
 import 'dotenv/config'
 
+const appVersion = '1.0.9';
+const versionCode = 8;
+
 export default {
   "expo": {
     "name": "Gradeness",
     "slug": "gradeness",
-    "version": "1.0.8",
+    "version": appVersion,
     "orientation": "portrait",
     "icon": "./assets/icon.jpg",
     "userInterfaceStyle": "light",
@@ -14,7 +17,12 @@ export default {
       "backgroundColor": "#1C222E",
     },
     "updates": {
-      "url": "https://u.expo.dev/ad714b42-ee9b-4763-b2ce-23fcbd430692"
+      "url": "https://u.expo.dev/ad714b42-ee9b-4763-b2ce-23fcbd430692",
+      "requestHeaders": {
+        "expo-runtime-version": appVersion,
+        // not sustainable, but eas update might require this?
+        "expo-channel-name": "production"
+      }
     },
     "runtimeVersion": {
       "policy": "appVersion"
@@ -33,7 +41,7 @@ export default {
       },
       "package": "com.drakeywakey.gradeness",
       "userInterfaceStyle": "light",
-      "versionCode": 7,
+      "versionCode": versionCode,
     },
     "web": {
       "favicon": "./assets/favicon.png"
