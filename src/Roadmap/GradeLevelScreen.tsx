@@ -1,5 +1,5 @@
-import { Dimensions, ScrollView, StyleSheet, View } from 'react-native'
-import { Button, Icon, IconButton, ListItem } from '@react-native-material/core'
+import { Dimensions, Pressable, ScrollView, StyleSheet, View } from 'react-native'
+import { Button, Divider, Icon, IconButton } from '@react-native-material/core'
 import * as Progress from 'react-native-progress'
 import { Colors, GradeLevels, fontSizes, semesters } from "../Constants"
 import { useCallback, useEffect, useState } from 'react'
@@ -139,7 +139,7 @@ const ActivityList = ({ activities, toggleComplete, setShouldRefetch, navigation
         semesters
           .map(semester => {
             return (
-              <View key={semester} style={{ marginTop: 16, marginHorizontal: 16 }} >
+              <View key={semester} style={{ marginTop: 16, marginHorizontal: 24 }} >
                 <Text color='background' weight='medium' style={{ marginBottom: 8 }}>{semester}</Text>
                 {toSorted(activities[semester], activitySort)
                   .map(({ id, name, complete }) =>
@@ -173,18 +173,38 @@ const GradeLevelListItem = ({ title, toggleComplete, setShouldRefetch, checked, 
   }
 
   return (
-    // todo: get rid this / anythnig react-native-material lol
-    <ListItem
-      key={title}
-      title={title}
-      onPress={onPress}
-      leadingMode='icon'
-      leading={<IconButton
-        color={highlightColor}
-        onPress={onCompletionIconPressed}
-        icon={(props) => <Icon name={iconName} color={highlightColor} {...props} />} />}
-      trailing={<Icon size={24} name="chevron-right" color="#365a75" />}
-    />
+    <Pressable onPress={onPress} style={{ borderBottomColor: '#eee', borderBottomWidth: 1 }}>
+      <View style={{ flexDirection: 'row', alignItems: 'center', marginVertical: 12 }}>
+        <View style={{
+          width: 24,
+          height: 24,
+          justifyContent: 'center',
+          alignItems: 'center',
+          marginStart: 16,
+        }}>
+          <IconButton
+            color={highlightColor}
+            onPress={onCompletionIconPressed}
+            icon={(props) => <Icon name={iconName} color={highlightColor} {...props} />} />
+        </View>
+        <View style={{ flex: 1, marginHorizontal: 16 }}>
+          <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+            <Text color='background'>
+              {title}
+            </Text>
+          </View>
+        </View>
+        <View style={{
+          width: 24,
+          height: 24,
+          marginEnd: 16,
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}>
+          <Icon size={24} name="chevron-right" color="#365a75" />
+        </View>
+      </View>
+    </Pressable>
   )
 }
 
