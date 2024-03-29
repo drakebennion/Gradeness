@@ -4,7 +4,7 @@ export default {
   "expo": {
     "name": "Gradeness",
     "slug": "gradeness",
-    "version": "1.0.7",
+    "version": "1.0.8",
     "orientation": "portrait",
     "icon": "./assets/icon.jpg",
     "userInterfaceStyle": "light",
@@ -33,7 +33,7 @@ export default {
       },
       "package": "com.drakeywakey.gradeness",
       "userInterfaceStyle": "light",
-      "versionCode": 6,
+      "versionCode": 7,
     },
     "web": {
       "favicon": "./assets/favicon.png"
