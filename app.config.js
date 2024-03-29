@@ -32,6 +32,7 @@ export default {
         "backgroundColor": "#ffffff"
       },
       "package": "com.drakeywakey.gradeness",
+      "userInterfaceStyle": "light",
       "versionCode": 6,
     },
     "web": {
