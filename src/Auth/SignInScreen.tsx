@@ -49,6 +49,7 @@ export default function SignInScreen({ navigation }) {
           inputMode='email'
           autoCapitalize='none'
           color={Colors.background}
+          inputContainerStyle={{ backgroundColor: Colors.text }}
         />
         <TextInput
           label='Password'
@@ -59,6 +60,7 @@ export default function SignInScreen({ navigation }) {
           style={{ marginBottom: 12 }}
           autoComplete='password'
           color={Colors.background}
+          inputContainerStyle={{ backgroundColor: Colors.text }}
         />
 
         {/* todo: replace all react-native-material shit, this is silly. */}

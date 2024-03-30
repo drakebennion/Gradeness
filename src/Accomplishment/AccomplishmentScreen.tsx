@@ -166,6 +166,7 @@ const AccomplishmentContent = ({ editYear, toggleEditing, yearAccomplishmentCont
                                     style={{ marginTop: 16 }}
                                     inputStyle={{ margin: 8, fontSize: fontSizes.xs }}
                                     color={Colors.background}
+                                    inputContainerStyle={{ backgroundColor: Colors.text }}
                                 />
                                 <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'flex-end', marginTop: 16 }}>
                                     <Button

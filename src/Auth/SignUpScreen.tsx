@@ -47,6 +47,7 @@ export default function SignUpScreen({ navigation }) {
           inputMode='email'
           autoCapitalize='none'
           color={Colors.background}
+          inputContainerStyle={{ backgroundColor: Colors.text }}
         />
         <TextInput
           label='Password'
@@ -57,6 +58,7 @@ export default function SignUpScreen({ navigation }) {
           secureTextEntry
           autoComplete='new-password'
           color={Colors.background}
+          inputContainerStyle={{ backgroundColor: Colors.text }}
         />
 
         <Text style={{ fontFamily: 'Roboto_400Regular', fontSize: fontSizes.xxs, lineHeight: 20, letterSpacing: .25, marginBottom: 16 }}>By signing up you agree to the {''}
