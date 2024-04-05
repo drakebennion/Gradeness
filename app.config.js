@@ -32,7 +32,8 @@ export default {
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.drakeywakey.gradeness"
+      "bundleIdentifier": "com.drakeywakey.gradeness",
+      "userInterfaceStyle": "light",
     },
     "android": {
       "adaptiveIcon": {
