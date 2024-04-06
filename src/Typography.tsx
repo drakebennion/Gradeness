@@ -1,5 +1,5 @@
 import { ReactNode } from 'react';
-import { Text as ReactText, StyleProp, TextStyle } from 'react-native';
+import { Text as ReactText } from 'react-native';
 import { Colors, fontSizes, fontWeights } from './Constants';
 
 // todo: find good typescripty way to share these enums w/ corresponding Constants 

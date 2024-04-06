@@ -1,8 +1,8 @@
-import { Button, Icon, IconButton, TextInput } from '@react-native-material/core'
+import { Button, Icon, IconButton } from '@react-native-material/core'
 import { collection, doc, getDoc, getDocs, getFirestore, query, setDoc, updateDoc, where } from 'firebase/firestore'
 import { useCallback, useState } from 'react'
 import { Dimensions, ImageBackground, KeyboardAvoidingView, Platform, ScrollView, StyleSheet, View } from 'react-native'
-import { Colors, fontSizes } from "../Constants"
+import { Colors } from "../Constants"
 import { useFocusEffect } from '@react-navigation/native'
 import { useAuthentication } from '../utils/hooks/useAuthentication'
 import { getGradeLevelNameForYear } from '../utils/style'
@@ -14,6 +14,7 @@ import Toast from 'react-native-toast-message'
 import { useHeaderHeight } from '@react-navigation/elements'
 
 import { Text } from '../Typography'
+import { TextInput } from '../components/TextInput'
 
 type Props = NativeStackScreenProps<UserStackParamList, 'Activity'>
 export const ActivityScreen = ({ navigation, route }: Props) => {
@@ -152,14 +153,11 @@ export const ActivityScreen = ({ navigation, route }: Props) => {
                 <TextInput
                   label="Accomplishments"
                   multiline
-                  variant="outlined"
                   value={addAccomplishment}
                   onChangeText={(content) => {
                     setAddAccomplishment(content)
                   }}
                   style={{ marginTop: 16, }}
-                  inputStyle={{ margin: 8 }}
-                  color={Colors.background}
                 />
                 <Button
                   disabled={!addAccomplishment}

@@ -1,8 +1,9 @@
-import { Button, TextInput } from '@react-native-material/core'
+import { Button } from '@react-native-material/core'
 import React, { useState } from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 import { getAuth, sendEmailVerification, signInWithEmailAndPassword } from 'firebase/auth'
 import { Colors, fontSizes } from '../Constants'
+import { TextInput } from '../components/TextInput';
 
 export default function SignInScreen({ navigation }) {
   const auth = getAuth()
@@ -41,26 +42,20 @@ export default function SignInScreen({ navigation }) {
       <View>
         <TextInput
           label='Email'
-          variant='outlined'
           value={signIn.email}
           onChangeText={(email) => { setSignIn({ ...signIn, email }) }}
           style={{ marginBottom: 12 }}
           autoComplete='email'
           inputMode='email'
           autoCapitalize='none'
-          color={Colors.background}
-          inputContainerStyle={{ backgroundColor: Colors.text }}
         />
         <TextInput
           label='Password'
-          variant='outlined'
           value={signIn.password}
           onChangeText={(password) => { setSignIn({ ...signIn, password }) }}
           secureTextEntry
           style={{ marginBottom: 12 }}
           autoComplete='password'
-          color={Colors.background}
-          inputContainerStyle={{ backgroundColor: Colors.text }}
         />
 
         {/* todo: replace all react-native-material shit, this is silly. */}

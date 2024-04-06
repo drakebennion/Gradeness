@@ -10,7 +10,7 @@ export default {
     "version": appVersion,
     "orientation": "portrait",
     "icon": "./assets/icon.jpg",
-    "userInterfaceStyle": "light",
+    "userInterfaceStyle": "automatic",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
@@ -33,7 +33,7 @@ export default {
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.drakeywakey.gradeness",
-      "userInterfaceStyle": "light",
+      "userInterfaceStyle": "automatic",
     },
     "android": {
       "adaptiveIcon": {
@@ -41,7 +41,7 @@ export default {
         "backgroundColor": "#ffffff"
       },
       "package": "com.drakeywakey.gradeness",
-      "userInterfaceStyle": "light",
+      "userInterfaceStyle": "automatic",
       "versionCode": versionCode,
     },
     "web": {

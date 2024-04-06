@@ -1,8 +1,10 @@
-import { Button, TextInput } from '@react-native-material/core'
+import { Button } from '@react-native-material/core'
 import React, { useState } from 'react'
 import { Linking, StyleSheet, Text, View } from 'react-native'
 import { getAuth, createUserWithEmailAndPassword, sendEmailVerification } from 'firebase/auth'
 import { Colors, fontSizes } from '../Constants'
+
+import { TextInput } from '../components/TextInput'
 
 export default function SignUpScreen({ navigation }) {
   const auth = getAuth()
@@ -39,26 +41,20 @@ export default function SignUpScreen({ navigation }) {
       <View>
         <TextInput
           label='Email'
-          variant='outlined'
           value={signUp.email}
           onChangeText={(email) => { setSignUp({ ...signUp, email }) }}
           style={{ marginBottom: 12 }}
           autoComplete='email'
           inputMode='email'
           autoCapitalize='none'
-          color={Colors.background}
-          inputContainerStyle={{ backgroundColor: Colors.text }}
         />
         <TextInput
           label='Password'
-          variant='outlined'
           value={signUp.password}
           onChangeText={(password) => { setSignUp({ ...signUp, password }) }}
           style={{ marginBottom: 16 }}
           secureTextEntry
           autoComplete='new-password'
-          color={Colors.background}
-          inputContainerStyle={{ backgroundColor: Colors.text }}
         />
 
         <Text style={{ fontFamily: 'Roboto_400Regular', fontSize: fontSizes.xxs, lineHeight: 20, letterSpacing: .25, marginBottom: 16 }}>By signing up you agree to the {''}

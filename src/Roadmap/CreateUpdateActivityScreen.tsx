@@ -1,8 +1,8 @@
-import { Button, Icon, IconButton, TextInput } from '@react-native-material/core'
-import { addDoc, collection, doc, getFirestore, setDoc, updateDoc } from 'firebase/firestore'
+import { Button, Icon, IconButton } from '@react-native-material/core'
+import { addDoc, collection, doc, getFirestore, setDoc } from 'firebase/firestore'
 import { useState } from 'react'
 import { KeyboardAvoidingView, Platform, ScrollView, View } from 'react-native'
-import { Colors, fontSizes, semesters } from "../Constants"
+import { Colors, semesters } from "../Constants"
 import { useAuthentication } from '../utils/hooks/useAuthentication'
 import SelectDropdown from 'react-native-select-dropdown'
 import { GradeLevels } from '../Constants'
@@ -11,6 +11,7 @@ import { type RoadmapStackParamList } from '../navigation/userStackParams'
 import { useHeaderHeight } from '@react-navigation/elements'
 
 import { Text } from '../Typography'
+import { TextInput } from '../components/TextInput'
 
 type Props = NativeStackScreenProps<RoadmapStackParamList, 'CreateUpdateActivity'>
 export const CreateUpdateActivityScreen = ({ navigation, route }: Props) => {
@@ -61,12 +62,9 @@ export const CreateUpdateActivityScreen = ({ navigation, route }: Props) => {
         <View>
           <TextInput
             label="Name"
-            variant='outlined'
             style={{ marginBottom: 8 }}
             value={activity?.name}
             onChangeText={(name) => { setActivity({ ...activity, name }) }}
-            color={Colors.background}
-            inputContainerStyle={{ backgroundColor: Colors.text }}
           />
 
           <Text size='xs' color='background' style={{ marginVertical: 8 }}>Choose the school year you would like to add the activity?</Text>
@@ -91,14 +89,10 @@ export const CreateUpdateActivityScreen = ({ navigation, route }: Props) => {
 
           <TextInput
             label="Description"
-            variant='outlined'
             multiline
             value={activity?.description}
             onChangeText={(description) => { setActivity({ ...activity, description }) }}
             style={{ marginVertical: 24 }}
-            inputStyle={{ margin: 8 }}
-            color={Colors.background}
-            inputContainerStyle={{ backgroundColor: Colors.text }}
           />
           <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'flex-end' }}>
             <Button

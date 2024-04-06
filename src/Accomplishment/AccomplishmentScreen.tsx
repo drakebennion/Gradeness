@@ -1,4 +1,4 @@
-import { Button, Icon, IconButton, TextInput } from "@react-native-material/core"
+import { Button, Icon, IconButton } from "@react-native-material/core"
 import { KeyboardAvoidingView, Platform, ScrollView, View, Dimensions } from "react-native"
 import { Colors, GradeLevels, fontSizes } from "../Constants"
 import { useFocusEffect } from "@react-navigation/native"
@@ -11,6 +11,7 @@ import * as Clipboard from 'expo-clipboard'
 import Toast from 'react-native-toast-message'
 
 import { Text } from '../Typography'
+import { TextInput } from "../components/TextInput"
 
 export const AccomplishmentScreen = ({ navigation }) => {
     const db = getFirestore()
@@ -157,16 +158,12 @@ const AccomplishmentContent = ({ editYear, toggleEditing, yearAccomplishmentCont
                             <View>
                                 <TextInput
                                     multiline
-                                    variant="outlined"
                                     placeholder={yearAccomplishmentContent}
                                     value={yearAccomplishmentContent}
                                     onChangeText={(content) => {
                                         setYearAccomplishmentContent(content)
                                     }}
                                     style={{ marginTop: 16 }}
-                                    inputStyle={{ margin: 8, fontSize: fontSizes.xs }}
-                                    color={Colors.background}
-                                    inputContainerStyle={{ backgroundColor: Colors.text }}
                                 />
                                 <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'flex-end', marginTop: 16 }}>
                                     <Button
