@@ -11,6 +11,10 @@ import { Colors, fontSizes } from '../Constants'
 import { Icon } from '@react-native-material/core'
 import { Dimensions, Platform } from 'react-native'
 import Toast, { BaseToast } from 'react-native-toast-message'
+import { Drawer } from 'react-native-drawer-layout'
+import { useState } from 'react'
+import { RoadmapDialogContext, RoadmapDrawerContext } from '../Contexts'
+import { DrawerContent } from '../Roadmap/DrawerContent'
 
 const RoadmapStack = createNativeStackNavigator<RoadmapStackParamList>()
 const Tab = createBottomTabNavigator()
@@ -103,10 +107,27 @@ const toastConfig = {
 }
 
 export default function UserStack() {
+    const [drawerOpen, setDrawerOpen] = useState(false);
+    const [dialogOpen, setDialogOpen] = useState(false);
+
     return (
-        <NavigationContainer theme={Theme}>
-            <Overview />
+        <RoadmapDialogContext.Provider value={{ dialogOpen, setDialogOpen }}>
+            <RoadmapDrawerContext.Provider value={{ drawerOpen, setDrawerOpen }}>
+                <Drawer
+                    open={drawerOpen}
+                    onOpen={() => setDrawerOpen(true)}
+                    onClose={() => setDrawerOpen(false)}
+                    renderDrawerContent={DrawerContent}
+                    drawerType='front'
+                    drawerStyle={{ backgroundColor: '#E9ECF2', width: '90%', borderRadius: 16 }}
+                    hideStatusBarOnOpen={false}
+                >
+                    <NavigationContainer theme={Theme}>
+                        <Overview />
+                    </NavigationContainer>
+                </Drawer>
+            </RoadmapDrawerContext.Provider>
             <Toast config={toastConfig} />
-        </NavigationContainer>
+        </RoadmapDialogContext.Provider>
     )
 }
