@@ -16,11 +16,10 @@ import { useState } from 'react'
 import { RoadmapDialogContext, RoadmapDrawerContext } from '../Contexts'
 import { DrawerContent } from '../Roadmap/DrawerContent'
 
-const RoadmapStack = createNativeStackNavigator<RoadmapStackParamList>()
+const Stack = createNativeStackNavigator<RoadmapStackParamList>()
 const Tab = createBottomTabNavigator()
-const AccomplishmentsStack = createNativeStackNavigator()
 
-function Overview() {
+function RoadmapTabs() {
     const windowHeight = Dimensions.get('window').height;
 
     return (
@@ -42,48 +41,10 @@ function Overview() {
             })}
         >
             {/* <Tab.Screen name="Home" component={Home} /> */}
-            <Tab.Screen name="Roadmap" component={RoadmapScreens} />
-            <Tab.Screen name="Accomplishments" component={AccomplishmentsScreen} />
+            <Tab.Screen name="Roadmap" component={RoadmapScreen} />
+            <Tab.Screen name="Accomplishment" component={AccomplishmentScreen} />
             {/* <Tab.Screen name="Goals" component={Goals} /> */}
         </Tab.Navigator >
-    )
-}
-
-function AccomplishmentsScreen() {
-    return (
-        <AccomplishmentsStack.Navigator screenOptions={{ headerShown: false }}>
-            <AccomplishmentsStack.Screen
-                name="AccomplishmentHome"
-                component={AccomplishmentScreen}
-            />
-        </AccomplishmentsStack.Navigator>
-    )
-}
-
-function RoadmapScreens() {
-    return (
-        <RoadmapStack.Navigator screenOptions={{ headerShown: false }}>
-            <RoadmapStack.Group>
-                <RoadmapStack.Screen
-                    name="RoadmapHome"
-                    component={RoadmapScreen}
-                />
-                <RoadmapStack.Screen
-                    name="GradeLevel"
-                    component={GradeLevelScreen}
-                />
-                <RoadmapStack.Screen
-                    name="Activity"
-                    component={ActivityScreen}
-                />
-            </RoadmapStack.Group>
-            <RoadmapStack.Group>
-                <RoadmapStack.Screen
-                    name="CreateUpdateActivity"
-                    component={CreateUpdateActivityScreen}
-                />
-            </RoadmapStack.Group>
-        </ RoadmapStack.Navigator>
     )
 }
 
@@ -123,7 +84,28 @@ export default function UserStack() {
                     hideStatusBarOnOpen={false}
                 >
                     <NavigationContainer theme={Theme}>
-                        <Overview />
+                        <Stack.Navigator screenOptions={{ headerShown: false }}>
+                            <Stack.Group>
+                                <Stack.Screen
+                                    name="RoadmapTabs"
+                                    component={RoadmapTabs}
+                                />
+                                <Stack.Screen
+                                    name="GradeLevel"
+                                    component={GradeLevelScreen}
+                                />
+                                <Stack.Screen
+                                    name="Activity"
+                                    component={ActivityScreen}
+                                />
+                            </Stack.Group>
+                            <Stack.Group screenOptions={{ presentation: 'modal' }}>
+                                <Stack.Screen
+                                    name="CreateUpdateActivity"
+                                    component={CreateUpdateActivityScreen}
+                                />
+                            </Stack.Group>
+                        </Stack.Navigator>
                     </NavigationContainer>
                 </Drawer>
             </RoadmapDrawerContext.Provider>

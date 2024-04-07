@@ -90,7 +90,7 @@ export const CreateUpdateActivityScreen = ({ navigation, route }: Props) => {
           <TextInput
             label="Description"
             multiline
-            value={activity?.description}
+            value={activity?.description as string}
             onChangeText={(description) => { setActivity({ ...activity, description }) }}
             style={{ marginVertical: 24 }}
           />
