@@ -18,9 +18,8 @@ import { DeleteAccountDialog } from './DeleteAccountDialog'
 
 const roadmapGradeLevels = GradeLevels
 
-type Props = NativeStackScreenProps<RoadmapStackParamList, 'RoadmapHome'>
+type Props = NativeStackScreenProps<RoadmapStackParamList, 'Roadmap'>
 export const RoadmapScreen = ({ navigation }: Props) => {
-  const auth = getAuth()
   const { user } = useAuthentication()
   const [toastHidden, setToastHidden] = useState(false);
   const db = getFirestore();

@@ -8,6 +8,8 @@ import { Text } from '../Typography'
 import { Image } from 'react-native'
 import { useContext } from "react";
 import { RoadmapDialogContext } from "../Contexts";
+import { useAuthentication } from "../utils/hooks/useAuthentication";
+import * as Updates from 'expo-updates';
 
 const DrawerItem = ({ onPress, iconName, text, subtext, lastItem = false }) => {
     return (
@@ -26,6 +28,7 @@ const DrawerItem = ({ onPress, iconName, text, subtext, lastItem = false }) => {
 export const DrawerContent = () => {
     const windowHeight = Dimensions.get('window').height;
     const { setDialogOpen } = useContext(RoadmapDialogContext);
+    const { user } = useAuthentication();
 
     return (
         <View style={{ display: 'flex', height: '85%', justifyContent: 'space-between', marginTop: windowHeight / 10, marginHorizontal: 24 }}>
@@ -40,6 +43,11 @@ export const DrawerContent = () => {
                         Clipboard.setStringAsync('https://www.gradeness.app/')
                             .then(() => Toast.show({ type: 'success', text1: 'Copied!', position: 'bottom', bottomOffset: 300, swipeable: true }));
                     }} iconName={'share-variant-outline'} text={'Share with a friend'} subtext={'Enjoying the app? Share with a friend.'} />
+                    {
+                        // drake
+                        user?.uid === 'WTEFA5EQstZemjYx55samSY0rzl1' &&
+                        <DrawerItem text={'update number: ' + Updates.updateId} />
+                    }
                 </View>
             </View>
             <DrawerItem lastItem onPress={() => setDialogOpen(true)} iconName={'delete-outline'} text={'Delete your account'} subtext={'Account deletion will take place in 2-3 business days.'} />

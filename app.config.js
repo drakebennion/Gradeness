@@ -1,7 +1,7 @@
 import 'dotenv/config'
 
-const appVersion = '1.0.9';
-const versionCode = 8;
+const appVersion = '1.0.10';
+const versionCode = 9;
 
 export default {
   "expo": {
