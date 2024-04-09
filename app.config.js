@@ -2,6 +2,7 @@ import 'dotenv/config'
 
 const appVersion = '1.0.10';
 const versionCode = 9;
+const projectId = "ad714b42-ee9b-4763-b2ce-23fcbd430692";
 
 export default {
   "expo": {
@@ -17,7 +18,7 @@ export default {
       "backgroundColor": "#1C222E",
     },
     "updates": {
-      "url": "https://u.expo.dev/ad714b42-ee9b-4763-b2ce-23fcbd430692",
+      "url": `https://u.expo.dev/${projectId}`,
       "requestHeaders": {
         "expo-runtime-version": appVersion,
         // not sustainable, but eas update might require this?
@@ -49,7 +50,7 @@ export default {
     },
     "extra": {
       "eas": {
-        "projectId": "ad714b42-ee9b-4763-b2ce-23fcbd430692"
+        "projectId": projectId
       },
       "firebase": {
         "apiKey": process.env.FIREBASE_API_KEY,
@@ -61,6 +62,6 @@ export default {
         "measurementId": process.env.FIREBASE_MEASUREMENT_ID
       }
     },
-    "owner": "drakeywakey"
+    "owner": "gradeness"
   }
 }
