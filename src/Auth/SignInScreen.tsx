@@ -1,9 +1,10 @@
-import { Button } from '@react-native-material/core'
 import React, { useState } from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 import { getAuth, sendEmailVerification, signInWithEmailAndPassword } from 'firebase/auth'
-import { Colors, fontSizes } from '../Constants'
+import { fontSizes } from '../Constants'
 import { TextInput } from '../components/TextInput';
+
+import { Button } from '../components/Button';
 
 export default function SignInScreen({ navigation }) {
   const auth = getAuth()
@@ -58,8 +59,12 @@ export default function SignInScreen({ navigation }) {
           autoComplete='password'
         />
 
-        {/* todo: replace all react-native-material shit, this is silly. */}
-        <Button color={Colors.highlight2} title="Sign in" onPress={onSignIn} />
+        <Button
+          type='primary'
+          onPress={onSignIn}
+          style={{ marginTop: 8 }}>
+          Sign in
+        </Button>
         <Text style={{ marginTop: 24, alignSelf: 'center' }}>New here? {''}
           <Text onPress={() => navigation.navigate("Sign Up")} style={{ textDecorationLine: 'underline' }}>Sign up</Text>
         </Text>
