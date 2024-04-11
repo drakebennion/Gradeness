@@ -12,12 +12,16 @@ export const Button = (props: ButtonProps) => {
         'secondary': {
             buttonColor: Colors.text,
             textColor: Colors.background,
+        },
+        'tertiary': {
+            buttonColor: Colors.background,
+            textColor: Colors.text,
         }
     };
 
     return (
         <ReactNativePaperButton
-            mode='contained'
+            mode={props.type === 'secondary' ? 'outlined' : 'contained'}
             {...colors[props.type]}
             {...props}
         >

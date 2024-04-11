@@ -1,4 +1,4 @@
-import { Icon } from "@react-native-material/core";
+import { Icon } from "react-native-paper"
 import { Dimensions, Linking, Pressable, View } from "react-native";
 import Toast from "react-native-toast-message";
 import { auth } from "../../firebaseConfig";
@@ -15,7 +15,7 @@ const DrawerItem = ({ onPress, iconName, text, subtext, lastItem = false }) => {
     return (
         <Pressable style={{ marginBottom: lastItem ? 0 : 24 }} onPress={onPress}>
             <View style={{ display: 'flex', flexDirection: 'row' }}>
-                <Icon size={24} name={iconName} color={Colors.background} />
+                <Icon size={24} source={iconName} color={Colors.background} />
                 <View style={{ marginHorizontal: 16 }}>
                     <Text color='background' style={{ marginBottom: 8 }}>{text}</Text>
                     {subtext ? <Text weight='light' size='xxs' color='background' style={{ lineHeight: 20 }}>{subtext}</Text> : <></>}
@@ -46,7 +46,7 @@ export const DrawerContent = () => {
                     {
                         // drake
                         user?.uid === 'WTEFA5EQstZemjYx55samSY0rzl1' &&
-                        <DrawerItem text={'update number: ' + Updates.updateId} />
+                        <DrawerItem onPress={() => { }} iconName={'information-outline'} text={'update number: ' + Updates.updateId} subtext={''} />
                     }
                 </View>
             </View>

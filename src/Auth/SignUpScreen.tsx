@@ -62,7 +62,6 @@ export default function SignUpScreen({ navigation }) {
             onPress={() => Linking.openURL('https://www.gradeness.app/privacy-policy')}
             style={{ textDecorationLine: 'underline' }}>privacy policy</Text>
         </Text>
-        {/* todo: replace all react-native-material shit, this is silly. */}
         <Button type='primary' style={{ marginTop: 8 }} onPress={onSignUp}>
           Sign up
         </Button>

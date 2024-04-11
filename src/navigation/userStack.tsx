@@ -8,7 +8,7 @@ import { type RoadmapStackParamList } from './userStackParams'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { AccomplishmentScreen } from '../Accomplishment/AccomplishmentScreen'
 import { Colors, fontSizes } from '../Constants'
-import { Icon } from '@react-native-material/core'
+import { Icon } from 'react-native-paper'
 import { Dimensions, Platform } from 'react-native'
 import Toast, { BaseToast } from 'react-native-toast-message'
 import { Drawer } from 'react-native-drawer-layout'
@@ -35,7 +35,7 @@ function RoadmapTabs() {
                 tabBarHideOnKeyboard: Platform.OS !== 'ios',
                 tabBarIcon: ({ color }) => {
                     let iconName = route.name === 'Roadmap' ? 'map-outline' : 'checkbox-marked-circle-outline';
-                    return <Icon size={32} name={iconName} color={color} />;
+                    return <Icon size={32} source={iconName} color={color} />;
                 },
 
             })}
