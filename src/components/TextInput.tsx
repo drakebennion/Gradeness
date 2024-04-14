@@ -9,7 +9,6 @@ export const TextInput = (props: Props) => {
             textColor={Colors.background}
             selectionColor={Colors.background}
             activeOutlineColor={Colors.background}
-            contentStyle={{ backgroundColor: Colors.text, borderWidth: 1 }}
             {...props} />
     )
 }
