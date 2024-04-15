@@ -4,7 +4,7 @@ https://gradeness.app
 
 # Running the app
 
-## prerequisite's
+## Prerequisites
 
 Install node: v21.5.0 (npm 10.2.4)
 
@@ -18,13 +18,11 @@ You will need to be invited to contribute to gradeness before pushing code
 1. Reach out to drakobian for invite.
 
 You will need to configure your .env file
-1. reach out to drakobian for env file values TODO: Create a shared secrets / password manager for sharing creds. 
-2. Create `.env` file at the root level of the Gradenss App (inline with package.json)
-3. past values into .env file save dont commit! this is gitignored so dont override. 
+1. reach out to drakobian for env file values
+2. Create `.env` file at the root level of the Gradeness App (inline with package.json)
+3. paste values into .env file save (don't commit! this is gitignored so dont override.)
 
-
-
-You should be able to clone the repo and simply
+You should then be able to run
 
 ```
 npm i
@@ -35,6 +33,6 @@ Then you have the option of opening on an emulator, or through the Expo Go app o
 
 # Tech debt
 
-- uses react-native-material library, but finding it a bit restrictive without adding much, strongly considering removing it
-- a way to manage secrets such as environement vars. 
+- Create a shared secrets / password manager for sharing creds. 
+- a way to manage secrets such as environment vars. 
 - local development that doesnt need production creds. 

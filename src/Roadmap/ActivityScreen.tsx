@@ -1,4 +1,4 @@
-import { Button, Icon, IconButton } from '@react-native-material/core'
+import { IconButton } from 'react-native-paper'
 import { collection, doc, getDoc, getDocs, getFirestore, query, setDoc, updateDoc, where } from 'firebase/firestore'
 import { useCallback, useState } from 'react'
 import { Dimensions, ImageBackground, KeyboardAvoidingView, Platform, ScrollView, StyleSheet, View } from 'react-native'
@@ -15,6 +15,7 @@ import { useHeaderHeight } from '@react-navigation/elements'
 
 import { Text } from '../Typography'
 import { TextInput } from '../components/TextInput'
+import { Button } from '../components/Button'
 
 type Props = NativeStackScreenProps<UserStackParamList, 'Activity'>
 export const ActivityScreen = ({ navigation, route }: Props) => {
@@ -99,12 +100,14 @@ export const ActivityScreen = ({ navigation, route }: Props) => {
             <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
               <IconButton
                 onPress={() => { navigation.pop() }}
-                icon={<Icon size={24} color={Colors.text} name="arrow-left" />}
+                iconColor={Colors.text}
+                icon='arrow-left'
               />
               {!!activity.testActivityId ? <></> :
                 <IconButton
                   onPress={() => { navigation.navigate('CreateUpdateActivity', { activity: { activityId, name: activity.name, semester: activity.semester, year: activity.year, description: activity.description } }) }}
-                  icon={<Icon size={24} color={Colors.text} name="square-edit-outline" />}
+                  iconColor={Colors.text}
+                  icon='square-edit-outline'
                 />
               }
             </View>
@@ -140,13 +143,15 @@ export const ActivityScreen = ({ navigation, route }: Props) => {
                   </View> : <></>
               }
               <Button
-                color={activity.complete ? Colors.text : Colors.highlight2}
-                tintColor={Colors.background}
-                leading={activity.complete ? <Icon name='check' size={16} /> : <></>}
-                title={activity.complete ? 'Complete' : 'Mark complete'}
+                type={activity.complete ? 'secondary' : 'primary'}
+                icon={activity.complete ? 'check' : ''}
                 onPress={async () => { await toggleComplete().then(() => { setShouldRefetch(true) }) }}
                 style={{ marginBottom: 24 }}
-              />
+              >
+                <Text color='background' size='xs' weight={activity.complete ? 'regular' : 'medium'}>
+                  {activity.complete ? 'Complete' : 'Mark complete'}
+                </Text>
+              </Button>
 
               <View style={{ marginBottom: 24 }}>
                 <Text color='background' style={{ marginTop: 16 }}>Capture your accomplishments</Text>
@@ -161,16 +166,16 @@ export const ActivityScreen = ({ navigation, route }: Props) => {
                 />
                 <Button
                   disabled={!addAccomplishment}
-                  color={Colors.background}
-                  style={
-                    { alignSelf: 'flex-end', marginTop: 8 }
-                  }
-                  title="Save"
+                  //color={Colors.background}
+                  type='tertiary'
+                  style={{ alignSelf: 'flex-end', marginTop: 16 }}
                   onPress={
                     () => saveAccomplishment()
                       .then(() => setAddAccomplishment(''))
                       .then(() => Toast.show({ type: 'success', text1: 'Accomplishment saved', position: 'bottom', swipeable: true }))
-                  } />
+                  }>
+                  Save
+                </Button>
               </View>
 
               {

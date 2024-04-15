@@ -1,7 +1,8 @@
-import { Button, Text } from '@react-native-material/core'
 import React from 'react'
 import { Image, StyleSheet, View } from 'react-native'
 import { Colors, fontSizes } from '../Constants'
+
+import { Button } from '../components/Button'
 
 export default function HomeScreen({ navigation }) {
   return (
@@ -10,8 +11,12 @@ export default function HomeScreen({ navigation }) {
         <Image source={require('../../assets/logo.png')} />
       </View>
       <View style={styles.buttons}>
-        <Button title="Get started" color={Colors.highlight2} style={styles.button} onPress={() => navigation.navigate('Sign Up')} />
-        <Button title="Sign In" color={Colors.text} style={styles.button} onPress={() => navigation.navigate('Sign In')} />
+        <Button type='primary' style={styles.button} onPress={() => navigation.navigate('Sign Up')}>
+          Get started
+        </Button>
+        <Button type='secondary' style={styles.button} onPress={() => navigation.navigate('Sign In')}>
+          Sign in
+        </Button>
       </View>
     </View>
   )

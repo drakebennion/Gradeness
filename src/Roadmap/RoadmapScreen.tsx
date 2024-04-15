@@ -1,13 +1,12 @@
 import { Dimensions, FlatList, Pressable, View } from 'react-native'
 import { Colors, GradeLevels } from '../Constants'
-import { getAuth } from 'firebase/auth'
 import { getColorForYear } from '../utils/style'
 import { type NativeStackScreenProps } from '@react-navigation/native-stack'
 import { type RoadmapStackParamList } from '../navigation/userStackParams'
 import { LinearGradient } from 'expo-linear-gradient';
 import { StatusBar } from 'expo-status-bar'
 import { useCallback, useContext, useEffect, useState } from 'react'
-import { Icon, IconButton } from '@react-native-material/core'
+import { IconButton } from 'react-native-paper'
 import Toast from 'react-native-toast-message'
 import { useAuthentication } from '../utils/hooks/useAuthentication'
 import { Text } from '../Typography'
@@ -105,8 +104,9 @@ export const RoadmapScreen = ({ navigation }: Props) => {
         <StatusBar backgroundColor={Colors.background} style="light" />
         <IconButton
           style={{ marginTop: windowHeight / 10, marginBottom: 16, marginLeft: -12 }}
+          iconColor={Colors.text}
           onPress={() => setDrawerOpen(true)}
-          icon={<Icon size={24} color={Colors.text} name="menu" />}
+          icon='menu'
         />
         <Text size='l'>Welcome</Text>
         <Text style={{ marginTop: 24 }}>

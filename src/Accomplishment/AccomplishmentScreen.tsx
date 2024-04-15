@@ -1,6 +1,6 @@
-import { Button, Icon, IconButton } from "@react-native-material/core"
+import { IconButton } from 'react-native-paper'
 import { KeyboardAvoidingView, Platform, ScrollView, View, Dimensions } from "react-native"
-import { Colors, GradeLevels, fontSizes } from "../Constants"
+import { Colors, GradeLevels } from "../Constants"
 import { useFocusEffect } from "@react-navigation/native"
 import { useCallback, useEffect, useState } from "react"
 import { collection, doc, getDocs, getFirestore, query, setDoc, where } from "firebase/firestore"
@@ -12,6 +12,7 @@ import Toast from 'react-native-toast-message'
 
 import { Text } from '../Typography'
 import { TextInput } from "../components/TextInput"
+import { Button } from '../components/Button'
 
 export const AccomplishmentScreen = ({ navigation }) => {
     const db = getFirestore()
@@ -96,13 +97,14 @@ export const AccomplishmentScreen = ({ navigation }) => {
                     <Text style={{ lineHeight: 24 }}>Capture your accomplishments along the way so it’s much easier to respond to college applications or create a resume.</Text>
                 </View>
                 <IconButton
-                    style={{ marginTop: -12, marginRight: 16 }}
+                    style={{ marginTop: -8, marginRight: 16 }}
                     onPress={() => {
                         copyToClipboard()
                             .then(() => Toast.show({ type: 'success', text1: 'Copied accomplishments to clipboard', position: 'bottom', swipeable: true }))
                     }
                     }
-                    icon={<Icon size={24} color={Colors.text} name="content-copy" />}
+                    iconColor={Colors.text}
+                    icon='content-copy'
                 />
             </View>
             <KeyboardAvoidingView
@@ -146,9 +148,10 @@ const AccomplishmentContent = ({ editYear, toggleEditing, yearAccomplishmentCont
                         {
                             editYear !== gradeLevel.year &&
                             <IconButton
-                                style={{ marginTop: -12 }}
+                                style={{ marginTop: -8, marginRight: -8 }}
                                 onPress={() => { toggleEditing(gradeLevel.year) }}
-                                icon={<Icon size={24} color={Colors.background} name="square-edit-outline" />}
+                                iconColor={Colors.background}
+                                icon='square-edit-outline'
                             />
                         }
                     </View>
@@ -167,21 +170,23 @@ const AccomplishmentContent = ({ editYear, toggleEditing, yearAccomplishmentCont
                                 />
                                 <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'flex-end', marginTop: 16 }}>
                                     <Button
-                                        color={Colors.text} tintColor={Colors.background}
-                                        title="Cancel"
+                                        type='secondary'
                                         style={{ marginRight: 8 }}
                                         onPress={() => { toggleEditing(0) }}
-                                    />
+                                    >
+                                        Cancel
+                                    </Button>
                                     <Button
-                                        color={Colors.background} tintColor={Colors.text}
-                                        title="Save"
+                                        type='tertiary'
                                         disabled={!yearAccomplishmentContent}
                                         onPress={async () => {
                                             await saveAccomplishment()
                                                 .then(() => toggleEditing(0))
                                                 .then(() => Toast.show({ type: 'success', text1: 'Accomplishment saved', position: 'bottom', swipeable: true }))
                                         }}
-                                    />
+                                    >
+                                        Save
+                                    </Button>
                                 </View>
                             </View> :
                             <Text weight='light' size='xs' color='background' style={{ marginBottom: 16 }}>{`${accomplishment?.content[gradeLevel.year]}`}</Text>

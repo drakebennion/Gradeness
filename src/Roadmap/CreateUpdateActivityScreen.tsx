@@ -1,4 +1,4 @@
-import { Button, Icon, IconButton } from '@react-native-material/core'
+import { IconButton } from 'react-native-paper'
 import { addDoc, collection, doc, getFirestore, setDoc } from 'firebase/firestore'
 import { useState } from 'react'
 import { KeyboardAvoidingView, Platform, ScrollView, View } from 'react-native'
@@ -12,6 +12,7 @@ import { useHeaderHeight } from '@react-navigation/elements'
 
 import { Text } from '../Typography'
 import { TextInput } from '../components/TextInput'
+import { Button } from '../components/Button'
 
 type Props = NativeStackScreenProps<RoadmapStackParamList, 'CreateUpdateActivity'>
 export const CreateUpdateActivityScreen = ({ navigation, route }: Props) => {
@@ -54,9 +55,9 @@ export const CreateUpdateActivityScreen = ({ navigation, route }: Props) => {
         <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', marginBottom: 24 }}>
           <Text color='background' style={{ fontSize: 22 }}>{activity?.activityId ? 'Edit' : 'Add'} activity</Text>
           <IconButton
-            style={{ marginTop: -8, marginRight: -16 }}
+            style={{ marginTop: -8, marginRight: -8 }}
             onPress={() => { navigation.pop() }}
-            icon={<Icon size={22} name="close" />}
+            icon='close'
           />
         </View>
         <View>
@@ -96,17 +97,20 @@ export const CreateUpdateActivityScreen = ({ navigation, route }: Props) => {
           />
           <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'flex-end' }}>
             <Button
-              color={Colors.text} tintColor={Colors.background}
-              title="Cancel"
+              type='secondary'
+              mode='outlined'
               style={{ marginRight: 8 }}
               onPress={() => { navigation.pop() }}
-            />
+            >
+              Cancel
+            </Button>
             <Button
-              color={Colors.background} tintColor={Colors.text}
-              title="Save"
+              type='tertiary'
               disabled={!(activity && activity.year && activity.semester && activity.description && activity.name)}
               onPress={async () => { await updateActivityWithDatabase().then(() => { navigation.goBack() }) }}
-            />
+            >
+              Save
+            </Button>
           </View>
         </View>
       </ScrollView>

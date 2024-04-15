@@ -1,5 +1,5 @@
 import { Dimensions, Pressable, ScrollView, StyleSheet, View } from 'react-native'
-import { Button, Divider, Icon, IconButton } from '@react-native-material/core'
+import { Icon, IconButton } from 'react-native-paper'
 import * as Progress from 'react-native-progress'
 import { Colors, GradeLevels, fontSizes, semesters } from "../Constants"
 import { useCallback, useEffect, useState } from 'react'
@@ -13,6 +13,7 @@ import { groupBy, toSorted } from '../utils/array'
 import { type Activity } from '../types/Activity'
 
 import { Text } from '../Typography';
+import { Button } from '../components/Button';
 
 type Props = NativeStackScreenProps<RoadmapStackParamList, 'GradeLevel'>
 export const GradeLevelScreen = ({ navigation, route }: Props) => {
@@ -70,7 +71,8 @@ export const GradeLevelScreen = ({ navigation, route }: Props) => {
       <View style={{ display: 'flex', flexDirection: 'row', paddingBottom: 16 }}>
         <IconButton
           onPress={() => { navigation.pop() }}
-          icon={<Icon size={24} color='white' name="arrow-left" />}
+          icon='arrow-left'
+          iconColor={Colors.text}
         />
         <Text style={{ color: getColorForYear(year), fontSize: fontSizes.l, marginTop: 8 }}>{gradeLevel.name}</Text>
       </View>
@@ -86,12 +88,12 @@ export const GradeLevelScreen = ({ navigation, route }: Props) => {
           </View>
           <View>
             <Button
-              style={{ alignSelf: 'flex-end', marginBottom: 16, marginRight: 16 }}
-              title="Add activity"
-              color={Colors.highlight2}
-              tintColor={Colors.background}
+              style={{ alignSelf: 'flex-end', marginVertical: 16 }}
+              type='primary'
               onPress={() => { navigation.navigate('CreateUpdateActivity') }}
-            />
+            >
+              Add activity
+            </Button>
           </View>
         </View>
         <View>
@@ -109,14 +111,16 @@ export const GradeLevelScreen = ({ navigation, route }: Props) => {
 const EmptyActivityList = ({ navigation }) => {
   return (
     <View style={{ marginTop: 16, marginHorizontal: 32 }}>
-      <Text>Oops! Looks like our data decided to play hooky today!</Text>
-      <Text weight='light' size='xs' style={{ marginTop: 48 }}>To start again, please navigate to the Roadmap page and then return to this page.</Text>
+      <Text color='background'>Oops! Looks like our data decided to play hooky today!</Text>
+      <Text color='background' weight='light' size='xs' style={{ marginTop: 48 }}>To start again, please navigate to the Roadmap page and then return to this page.</Text>
       <Button
-        color={Colors.text} tintColor={Colors.background}
-        title="Return to roadmap"
+        type='secondary'
+        mode='outlined'
         style={{ marginTop: 16 }}
         onPress={() => { navigation.pop() }}
-      />
+      >
+        Return to roadmap
+      </Button>
     </View>
   )
 }
@@ -183,9 +187,10 @@ const GradeLevelListItem = ({ title, toggleComplete, setShouldRefetch, checked, 
           marginStart: 16,
         }}>
           <IconButton
-            color={highlightColor}
+            iconColor={highlightColor}
             onPress={onCompletionIconPressed}
-            icon={(props) => <Icon name={iconName} color={highlightColor} {...props} />} />
+            icon={iconName}
+          />
         </View>
         <View style={{ flex: 1, marginHorizontal: 16 }}>
           <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -201,7 +206,7 @@ const GradeLevelListItem = ({ title, toggleComplete, setShouldRefetch, checked, 
           justifyContent: 'center',
           alignItems: 'center',
         }}>
-          <Icon size={24} name="chevron-right" color="#365a75" />
+          <Icon size={24} source="chevron-right" color="#365a75" />
         </View>
       </View>
     </Pressable>
