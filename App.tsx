@@ -1,5 +1,5 @@
 import 'react-native-gesture-handler';
-import { PaperProvider } from 'react-native-paper';
+import { DefaultTheme, PaperProvider } from 'react-native-paper';
 import './firebaseConfig';
 import RootNavigation from './src/navigation';
 import { useFonts, Roboto_300Light, Roboto_400Regular, Roboto_500Medium } from "@expo-google-fonts/roboto";
@@ -17,7 +17,7 @@ export default function App() {
   }
 
   return (
-    <PaperProvider>
+    <PaperProvider theme={DefaultTheme}>
       <RootNavigation />
     </PaperProvider>
   );
