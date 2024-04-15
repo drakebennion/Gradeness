@@ -13,10 +13,10 @@
       "channel": "preview"
     },
     "production": {
-      "channel": "production"
-    },
-    "ios": {
-      "image": "latest"
+      "channel": "production",
+      "ios": {
+        "image": "latest"
+      }
     }
   },
   "submit": {
