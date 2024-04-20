@@ -46,7 +46,7 @@ export const DrawerContent = () => {
                     {
                         // drake
                         user?.uid === 'WTEFA5EQstZemjYx55samSY0rzl1' &&
-                        <DrawerItem onPress={() => { }} iconName={'information-outline'} text={'update number: ' + Updates.updateId} subtext={''} />
+                        <DrawerItem onPress={() => { }} iconName={'information-outline'} text={'update number: ' + Updates.updateId} subtext={Updates.runtimeVersion} />
                     }
                 </View>
             </View>

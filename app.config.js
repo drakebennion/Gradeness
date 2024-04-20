@@ -44,6 +44,8 @@ export default {
       "package": "com.drakeywakey.gradeness",
       "userInterfaceStyle": "automatic",
       "versionCode": versionCode,
+      // todo: setup env vars so this file can be checked in securely
+      "googleServicesFile": "./gradeness-google-key.json"
     },
     "web": {
       "favicon": "./assets/favicon.png"

@@ -5,6 +5,7 @@ import { fontSizes } from '../Constants'
 import { TextInput } from '../components/TextInput';
 
 import { Button } from '../components/Button';
+import Notification from '../../Notification';
 
 export default function SignInScreen({ navigation }) {
   const auth = getAuth()
@@ -65,6 +66,7 @@ export default function SignInScreen({ navigation }) {
           style={{ marginTop: 8 }}>
           Sign in
         </Button>
+        <Notification />
         <Text style={{ marginTop: 24, alignSelf: 'center' }}>New here? {''}
           <Text onPress={() => navigation.navigate("Sign Up")} style={{ textDecorationLine: 'underline' }}>Sign up</Text>
         </Text>
