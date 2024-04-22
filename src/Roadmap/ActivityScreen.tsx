@@ -1,6 +1,6 @@
-import { IconButton } from 'react-native-paper'
+import { Divider, Icon, IconButton } from 'react-native-paper'
 import { collection, doc, getDoc, getDocs, getFirestore, query, setDoc, updateDoc, where } from 'firebase/firestore'
-import { useCallback, useState } from 'react'
+import { useCallback, useMemo, useRef, useState } from 'react'
 import { Dimensions, ImageBackground, KeyboardAvoidingView, Platform, ScrollView, StyleSheet, View } from 'react-native'
 import { Colors } from "../Constants"
 import { useFocusEffect } from '@react-navigation/native'
@@ -16,6 +16,7 @@ import { useHeaderHeight } from '@react-navigation/elements'
 import { Text } from '../Typography'
 import { TextInput } from '../components/TextInput'
 import { Button } from '../components/Button'
+import BottomSheet, { BottomSheetBackdrop } from '@gorhom/bottom-sheet'
 
 type Props = NativeStackScreenProps<UserStackParamList, 'Activity'>
 export const ActivityScreen = ({ navigation, route }: Props) => {
@@ -86,6 +87,22 @@ export const ActivityScreen = ({ navigation, route }: Props) => {
     }, [activityId, user, shouldRefetch])
   )
 
+  const sheetRef = useRef<BottomSheet>(null);
+  const snapPoints = useMemo(() => [1, "35%"], []);
+  const handleSnapPress = useCallback((index) => {
+    sheetRef.current?.snapToIndex(index);
+  }, []);
+  const renderBackdrop = useCallback(
+    (props) => (
+      <BottomSheetBackdrop
+        {...props}
+        disappearsOnIndex={0}
+        appearsOnIndex={1}
+      />
+    ),
+    []
+  );
+
   return (
     loadingActivity
       ? <Progress.Circle size={40} indeterminate={true} color={Colors.highlight2} borderWidth={3} style={{ alignSelf: 'center', marginTop: '66%' }} />
@@ -128,6 +145,18 @@ export const ActivityScreen = ({ navigation, route }: Props) => {
               </ImageBackground>
             </View>
             <View style={{ paddingHorizontal: 24, marginTop: 16 }}>
+              {/* todo: fix spacing/make look better lol */}
+              <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                <Icon size={24} source='calendar' />
+                <View>
+                  <Text color='background'>Due Date</Text>
+                  {/* todo: wire this to existing activity due date */}
+                  <Text color='background'>{activity.dueDate ? activity.dueDate.toLocaleDateString() : 'No date set. Set a due date.'} </Text>
+                  <Text color='background'>{(new Date()).toLocaleDateString()} </Text>
+                </View>
+                <IconButton icon='pencil-outline' onPress={() => handleSnapPress(1)} />
+              </View>
+              <Divider style={{ marginBottom: 12 }} />
               {/* todo: could def handle this better - if no overview show nothing, if overview is string display it, otherwise show header and items */}
               {typeof activity.overview === "string" ?
                 <Text color='background' style={{ marginBottom: 12 }}>{activity.overview}</Text> :
@@ -166,7 +195,6 @@ export const ActivityScreen = ({ navigation, route }: Props) => {
                 />
                 <Button
                   disabled={!addAccomplishment}
-                  //color={Colors.background}
                   type='tertiary'
                   style={{ alignSelf: 'flex-end', marginTop: 16 }}
                   onPress={
@@ -206,7 +234,37 @@ export const ActivityScreen = ({ navigation, route }: Props) => {
             </View>
           </ScrollView>
         </View>
-      </KeyboardAvoidingView>
+        <BottomSheet
+          ref={sheetRef}
+          snapPoints={snapPoints}
+          handleStyle={{ display: 'none' }}
+          style={{ borderRadius: 5, padding: 16 }}
+          backdropComponent={renderBackdrop}
+        >
+          {/* todo: find a reasonable date picker :) */}
+          <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+            <Text color='background'>Add due date</Text>
+            <IconButton icon='close' />
+          </View>
+          <Text color='background'>Please provide a due date for this activity.</Text>
+          <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'flex-end', marginTop: 16 }}>
+            <Button
+              type='secondary'
+              style={{ marginRight: 8 }}
+              onPress={() => { }}
+            >
+              Cancel
+            </Button>
+            <Button
+              type='tertiary'
+              onPress={() => {
+              }}
+            >
+              Save
+            </Button>
+          </View>
+        </BottomSheet>
+      </KeyboardAvoidingView >
   )
 }
 

@@ -3,6 +3,7 @@ export interface Activity {
   complete: boolean
   createdAt: Date
   defaultActivityId?: string
+  dueDate?: Date
   testActivityId?: string
   description: {
     header: string,
