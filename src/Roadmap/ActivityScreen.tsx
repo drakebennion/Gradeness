@@ -17,6 +17,7 @@ import { Text } from '../Typography'
 import { TextInput } from '../components/TextInput'
 import { Button } from '../components/Button'
 import BottomSheet, { BottomSheetBackdrop } from '@gorhom/bottom-sheet'
+import DateTimePicker from '@react-native-community/datetimepicker';
 
 type Props = NativeStackScreenProps<UserStackParamList, 'Activity'>
 export const ActivityScreen = ({ navigation, route }: Props) => {
@@ -87,8 +88,9 @@ export const ActivityScreen = ({ navigation, route }: Props) => {
     }, [activityId, user, shouldRefetch])
   )
 
+  // todo: pull all this into its own component? for bottomsheet and datepicker
   const sheetRef = useRef<BottomSheet>(null);
-  const snapPoints = useMemo(() => [1, "35%"], []);
+  const snapPoints = useMemo(() => [1, "55%"], []);
   const handleSnapPress = useCallback((index) => {
     sheetRef.current?.snapToIndex(index);
   }, []);
@@ -102,6 +104,14 @@ export const ActivityScreen = ({ navigation, route }: Props) => {
     ),
     []
   );
+
+  const [date, setDate] = useState(activity?.dueDate);
+  const [show, setShow] = useState(false);
+  const onChange = (_event, selectedDate) => {
+    const currentDate = selectedDate;
+    setShow(false);
+    setDate(currentDate);
+  };
 
   return (
     loadingActivity
@@ -152,7 +162,7 @@ export const ActivityScreen = ({ navigation, route }: Props) => {
                   <Text color='background'>Due Date</Text>
                   {/* todo: wire this to existing activity due date */}
                   <Text color='background'>{activity.dueDate ? activity.dueDate.toLocaleDateString() : 'No date set. Set a due date.'} </Text>
-                  <Text color='background'>{(new Date()).toLocaleDateString()} </Text>
+                  {/* <Text color='background'>{(new Date()).toLocaleDateString()} </Text> */}
                 </View>
                 <IconButton icon='pencil-outline' onPress={() => handleSnapPress(1)} />
               </View>
@@ -238,15 +248,30 @@ export const ActivityScreen = ({ navigation, route }: Props) => {
           ref={sheetRef}
           snapPoints={snapPoints}
           handleStyle={{ display: 'none' }}
-          style={{ borderRadius: 5, padding: 16 }}
+          style={{ borderRadius: 5, paddingHorizontal: 16 }}
           backdropComponent={renderBackdrop}
         >
-          {/* todo: find a reasonable date picker :) */}
           <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
             <Text color='background'>Add due date</Text>
             <IconButton icon='close' />
           </View>
           <Text color='background'>Please provide a due date for this activity.</Text>
+          <View style={{ borderColor: Colors.background, borderWidth: 1, flexDirection: 'row', justifyContent: 'space-between' }}>
+
+            {show ? <DateTimePicker
+              value={date}
+              mode='date'
+              onChange={onChange}
+            /> : <Text color='background'>{date?.toDateString()}</Text>
+            }
+            <IconButton icon='calendar' onPress={() => {
+              if (!date) {
+                setDate(new Date());
+              }
+
+              setShow(true);
+            }} />
+          </View>
           <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'flex-end', marginTop: 16 }}>
             <Button
               type='secondary'
