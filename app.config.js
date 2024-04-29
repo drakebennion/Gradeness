@@ -12,6 +12,9 @@ export default {
     "orientation": "portrait",
     "icon": "./assets/icon.jpg",
     "userInterfaceStyle": "automatic",
+    "plugins": [
+      "expo-font"
+    ],
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
