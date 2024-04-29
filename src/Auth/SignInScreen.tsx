@@ -66,7 +66,6 @@ export default function SignInScreen({ navigation }) {
           style={{ marginTop: 8 }}>
           Sign in
         </Button>
-        <Notification />
         <Text style={{ marginTop: 24, alignSelf: 'center' }}>New here? {''}
           <Text onPress={() => navigation.navigate("Sign Up")} style={{ textDecorationLine: 'underline' }}>Sign up</Text>
         </Text>

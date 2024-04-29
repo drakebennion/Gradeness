@@ -1,9 +1,11 @@
+import { Timestamp } from "firebase/firestore"
+
 export interface Activity {
   activityId?: string
   complete: boolean
   createdAt: Date
   defaultActivityId?: string
-  dueDate?: Date
+  dueDate?: Timestamp
   testActivityId?: string
   description: {
     header: string,

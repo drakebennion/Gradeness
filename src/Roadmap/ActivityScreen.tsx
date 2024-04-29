@@ -105,13 +105,30 @@ export const ActivityScreen = ({ navigation, route }: Props) => {
     []
   );
 
-  const [date, setDate] = useState(activity?.dueDate);
+  const [date, setDate] = useState(activity?.dueDate.toDate());
   const [show, setShow] = useState(false);
   const onChange = (_event, selectedDate) => {
     const currentDate = selectedDate;
     setShow(false);
     setDate(currentDate);
   };
+
+  const updateActivityWithDatabase = async () => {
+    const activityRef = doc(db, 'activities', activityId)
+    const activityEntity = {
+      ...activity,
+      dueDate: date,
+      updatedAt: Date.now(),
+      updatedBy: user.uid
+    }
+    await setDoc(activityRef, activityEntity, { merge: true }).catch(console.error)
+  }
+
+  const saveActivityDueDate = async () => {
+    await updateActivityWithDatabase();
+    setShouldRefetch(true);
+    // schedule notification
+  }
 
   return (
     loadingActivity
@@ -161,7 +178,7 @@ export const ActivityScreen = ({ navigation, route }: Props) => {
                 <View>
                   <Text color='background'>Due Date</Text>
                   {/* todo: wire this to existing activity due date */}
-                  <Text color='background'>{activity.dueDate ? activity.dueDate.toLocaleDateString() : 'No date set. Set a due date.'} </Text>
+                  <Text color='background'>{activity.dueDate ? activity.dueDate.toDate().toDateString() : 'No date set. Set a due date.'} </Text>
                   {/* <Text color='background'>{(new Date()).toLocaleDateString()} </Text> */}
                 </View>
                 <IconButton icon='pencil-outline' onPress={() => handleSnapPress(1)} />
@@ -253,7 +270,7 @@ export const ActivityScreen = ({ navigation, route }: Props) => {
         >
           <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
             <Text color='background'>Add due date</Text>
-            <IconButton icon='close' />
+            <IconButton icon='close' onPress={() => sheetRef.current?.close()} />
           </View>
           <Text color='background'>Please provide a due date for this activity.</Text>
           <View style={{ borderColor: Colors.background, borderWidth: 1, flexDirection: 'row', justifyContent: 'space-between' }}>
@@ -261,6 +278,7 @@ export const ActivityScreen = ({ navigation, route }: Props) => {
             {show ? <DateTimePicker
               value={date}
               mode='date'
+              minimumDate={new Date()}
               onChange={onChange}
             /> : <Text color='background'>{date?.toDateString()}</Text>
             }
@@ -276,14 +294,13 @@ export const ActivityScreen = ({ navigation, route }: Props) => {
             <Button
               type='secondary'
               style={{ marginRight: 8 }}
-              onPress={() => { }}
+              onPress={() => { sheetRef.current?.close() }}
             >
               Cancel
             </Button>
             <Button
               type='tertiary'
-              onPress={() => {
-              }}
+              onPress={() => saveActivityDueDate().then(() => sheetRef.current?.close())}
             >
               Save
             </Button>

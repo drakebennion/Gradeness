@@ -118,28 +118,4 @@ export default function Notification() {
                 Notifications.removeNotificationSubscription(responseListener.current);
         };
     }, []);
-
-    return (
-        <View
-
-        >
-            <TextInput>Your Expo push token: {expoPushToken} </TextInput>
-            < View style={{ alignItems: 'center', justifyContent: 'center' }}>
-                <Text>
-                    Title: {notification && notification.request.content.title} {' '}
-                </Text>
-                < Text > Body: {notification && notification.request.content.body} </Text>
-                <Text>
-                    Data: {' '}
-                    {notification && JSON.stringify(notification.request.content.data)}
-                </Text>
-            </View>
-            < Button
-                title="Press to Send Notification"
-                onPress={async () => {
-                    await sendPushNotification(expoPushToken);
-                }}
-            />
-        </View>
-    );
 }
