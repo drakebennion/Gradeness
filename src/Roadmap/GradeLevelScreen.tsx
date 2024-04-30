@@ -168,7 +168,7 @@ export const GradeLevelScreen = ({ navigation, route }: Props) => {
               highlightColor={Colors.highlight2}
             />
           ) : (
-            <EmptyActivityList navigation={navigation} />
+            <EmptyActivityList setShouldRefetch={setShouldRefetch} />
           )}
         </View>
       </ScrollView>
@@ -176,7 +176,7 @@ export const GradeLevelScreen = ({ navigation, route }: Props) => {
   );
 };
 
-const EmptyActivityList = ({ navigation }) => {
+const EmptyActivityList = ({ setShouldRefetch }) => {
   return (
     <View style={{ marginTop: 16, marginHorizontal: 32 }}>
       <Text color='background'>
@@ -188,18 +188,17 @@ const EmptyActivityList = ({ navigation }) => {
         size='xs'
         style={{ marginTop: 48 }}
       >
-        To start again, please navigate to the Roadmap page and then return to
-        this page.
+        Lets try to get that data to class by clicking the refresh button below
       </Text>
       <Button
         type='secondary'
         mode='outlined'
         style={{ marginTop: 16 }}
         onPress={() => {
-          navigation.pop();
+          setShouldRefetch(true);
         }}
       >
-        Return to roadmap
+        Refresh
       </Button>
     </View>
   );
