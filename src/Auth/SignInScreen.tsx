@@ -5,7 +5,6 @@ import { fontSizes } from '../Constants'
 import { TextInput } from '../components/TextInput';
 
 import { Button } from '../components/Button';
-import Notification from '../../Notification';
 
 export default function SignInScreen({ navigation }) {
   const auth = getAuth()
