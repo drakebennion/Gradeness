@@ -1,7 +1,7 @@
 import 'dotenv/config'
 
-const appVersion = '1.0.11';
-const versionCode = 10;
+const appVersion = '1.0.12';
+const versionCode = 12;
 const projectId = "ad714b42-ee9b-4763-b2ce-23fcbd430692";
 
 export default {
@@ -22,11 +22,6 @@ export default {
     },
     "updates": {
       "url": `https://u.expo.dev/${projectId}`,
-      "requestHeaders": {
-        "expo-runtime-version": appVersion,
-        // not sustainable, but eas update might require this?
-        "expo-channel-name": "production"
-      }
     },
     "runtimeVersion": {
       "policy": "appVersion"
@@ -38,6 +33,26 @@ export default {
       "supportsTablet": true,
       "bundleIdentifier": "com.drakeywakey.gradeness",
       "userInterfaceStyle": "automatic",
+      "privacyManifests": {
+        "NSPrivacyAccessedAPITypes": [
+          {
+            "NSPrivacyAccessedAPIType": "NSPrivacyAccessedAPICategoryFileTimestamp",
+            "NSPrivacyAccessedAPITypeReasons": ["CA92.1"]
+          },
+          {
+            "NSPrivacyAccessedAPIType": "NSPrivacyAccessedAPICategoryDiskSpace",
+            "NSPrivacyAccessedAPITypeReasons": ["CA92.1"]
+          },
+          {
+            "NSPrivacyAccessedAPIType": "NSPrivacyAccessedAPICategorySystemBootTime",
+            "NSPrivacyAccessedAPITypeReasons": ["CA92.1"]
+          },
+          {
+            "NSPrivacyAccessedAPIType": "NSPrivacyAccessedAPICategoryUserDefaults",
+            "NSPrivacyAccessedAPITypeReasons": ["CA92.1"]
+          },
+        ]
+      }
     },
     "android": {
       "adaptiveIcon": {
