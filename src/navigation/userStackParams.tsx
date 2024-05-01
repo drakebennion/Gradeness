@@ -1,4 +1,4 @@
-import { type Activity } from '../types/Activity'
+import { type Activity } from '../types/Activity';
 
 export type RoadmapStackParamList = {
   RoadmapTabs: undefined;
@@ -6,4 +6,4 @@ export type RoadmapStackParamList = {
   GradeLevel: { year: number };
   Activity: { activityId: string };
   CreateUpdateActivity: { activity?: Activity };
-}
+};

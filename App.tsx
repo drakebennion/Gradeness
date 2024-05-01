@@ -2,13 +2,18 @@ import 'react-native-gesture-handler';
 import { DefaultTheme, PaperProvider } from 'react-native-paper';
 import './firebaseConfig';
 import RootNavigation from './src/navigation';
-import { useFonts, Roboto_300Light, Roboto_400Regular, Roboto_500Medium } from "@expo-google-fonts/roboto";
+import {
+  useFonts,
+  Roboto_300Light,
+  Roboto_400Regular,
+  Roboto_500Medium,
+} from '@expo-google-fonts/roboto';
 
 export default function App() {
-  let [fontsLoaded, fontError] = useFonts({
+  const [fontsLoaded, fontError] = useFonts({
     Roboto_300Light,
     Roboto_400Regular,
-    Roboto_500Medium
+    Roboto_500Medium,
   });
 
   if (!fontsLoaded && !fontError) {

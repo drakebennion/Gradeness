@@ -1,8 +1,8 @@
-import React from 'react'
-import { Image, StyleSheet, View } from 'react-native'
-import { Colors, fontSizes } from '../Constants'
+import React from 'react';
+import { Image, StyleSheet, View } from 'react-native';
+import { Colors, fontSizes } from '../Constants';
 
-import { Button } from '../components/Button'
+import { Button } from '../components/Button';
 
 export default function HomeScreen({ navigation }) {
   return (
@@ -11,15 +11,21 @@ export default function HomeScreen({ navigation }) {
         <Image source={require('../../assets/logo.png')} />
       </View>
       <View style={styles.buttons}>
-        <Button type='primary' style={styles.button} onPress={() => navigation.navigate('Sign Up')}>
+        <Button
+          type="primary"
+          style={styles.button}
+          onPress={() => navigation.navigate('Sign Up')}>
           Get started
         </Button>
-        <Button type='secondary' style={styles.button} onPress={() => navigation.navigate('Sign In')}>
+        <Button
+          type="secondary"
+          style={styles.button}
+          onPress={() => navigation.navigate('Sign In')}>
           Sign in
         </Button>
       </View>
     </View>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
@@ -41,7 +47,7 @@ const styles = StyleSheet.create({
     text: {
       fontFamily: 'Roboto_400Regular',
       fontSize: fontSizes.xl,
-    }
+    },
   },
   buttons: {
     marginBottom: 24,
@@ -49,5 +55,5 @@ const styles = StyleSheet.create({
   button: {
     marginBottom: 16,
     marginHorizontal: 12,
-  }
-})
+  },
+});
