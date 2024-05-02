@@ -15,6 +15,8 @@ import { Drawer } from 'react-native-drawer-layout'
 import { useState } from 'react'
 import { RoadmapDialogContext, RoadmapDrawerContext } from '../Contexts'
 import { DrawerContent } from '../Roadmap/DrawerContent'
+import { Linking } from 'react-native';
+import * as Notifications from 'expo-notifications';
 
 const Stack = createNativeStackNavigator<RoadmapStackParamList>()
 const Tab = createBottomTabNavigator()
@@ -71,6 +73,40 @@ export default function UserStack() {
     const [drawerOpen, setDrawerOpen] = useState(false);
     const [dialogOpen, setDialogOpen] = useState(false);
 
+    const config = {
+        screens: {
+            Activity: 'activity/:activityId'
+        }
+    };
+
+    const linking = {
+        prefixes: ["gradeness://"],
+        config,
+        subscribe(listener) {
+            const onReceiveURL = ({ url }: { url: string }) => listener(url);
+  
+            // Listen to incoming links from deep linking
+            const eventListenerSubscription = Linking.addEventListener('url', onReceiveURL);
+  
+            // Listen to expo push notifications
+            const subscription = Notifications.addNotificationResponseReceivedListener(response => {
+              const url = response.notification.request.content.data.url;
+  
+              // Any custom logic to see whether the URL needs to be handled
+              //...
+  
+              // Let React Navigation handle the URL
+              listener(url);
+            });
+  
+            return () => {
+              // Clean up the event listeners
+              eventListenerSubscription.remove();
+              subscription.remove();
+            };
+          },
+    };
+
     return (
         <RoadmapDialogContext.Provider value={{ dialogOpen, setDialogOpen }}>
             <RoadmapDrawerContext.Provider value={{ drawerOpen, setDrawerOpen }}>
@@ -83,7 +119,7 @@ export default function UserStack() {
                     drawerStyle={{ backgroundColor: '#E9ECF2', width: '90%', borderRadius: 16 }}
                     hideStatusBarOnOpen={false}
                 >
-                    <NavigationContainer theme={Theme}>
+                    <NavigationContainer theme={Theme} linking={linking}>
                         <Stack.Navigator screenOptions={{ headerShown: false }}>
                             <Stack.Group>
                                 <Stack.Screen

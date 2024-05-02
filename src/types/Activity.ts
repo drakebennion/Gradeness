@@ -6,6 +6,7 @@ export interface Activity {
   createdAt: Date
   defaultActivityId?: string
   dueDate?: Timestamp
+  notificationId?: string
   testActivityId?: string
   description: {
     header: string,

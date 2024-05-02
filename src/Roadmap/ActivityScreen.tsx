@@ -18,8 +18,10 @@ import { TextInput } from '../components/TextInput'
 import { Button } from '../components/Button'
 import BottomSheet, { BottomSheetBackdrop } from '@gorhom/bottom-sheet'
 import DateTimePicker from '@react-native-community/datetimepicker';
+import * as Notifications from 'expo-notifications';
+import { RoadmapStackParamList } from '../navigation/userStackParams'
 
-type Props = NativeStackScreenProps<UserStackParamList, 'Activity'>
+type Props = NativeStackScreenProps<RoadmapStackParamList, 'Activity'>
 export const ActivityScreen = ({ navigation, route }: Props) => {
   const db = getFirestore()
   const { user } = useAuthentication()
@@ -90,7 +92,7 @@ export const ActivityScreen = ({ navigation, route }: Props) => {
 
   // todo: pull all this into its own component? for bottomsheet and datepicker
   const sheetRef = useRef<BottomSheet>(null);
-  const snapPoints = useMemo(() => [1, "55%"], []);
+  const snapPoints = useMemo(() => [1, "30%"], []);
   const handleSnapPress = useCallback((index) => {
     sheetRef.current?.snapToIndex(index);
   }, []);
@@ -105,7 +107,7 @@ export const ActivityScreen = ({ navigation, route }: Props) => {
     []
   );
 
-  const [date, setDate] = useState(activity?.dueDate.toDate());
+  const [date, setDate] = useState(activity?.dueDate?.toDate() ?? new Date());
   const [show, setShow] = useState(false);
   const onChange = (_event, selectedDate) => {
     const currentDate = selectedDate;
@@ -113,11 +115,12 @@ export const ActivityScreen = ({ navigation, route }: Props) => {
     setDate(currentDate);
   };
 
-  const updateActivityWithDatabase = async () => {
+  const updateActivityWithDatabase = async (notificationId: string) => {
     const activityRef = doc(db, 'activities', activityId)
     const activityEntity = {
       ...activity,
       dueDate: date,
+      notificationId,
       updatedAt: Date.now(),
       updatedBy: user.uid
     }
@@ -125,9 +128,24 @@ export const ActivityScreen = ({ navigation, route }: Props) => {
   }
 
   const saveActivityDueDate = async () => {
-    await updateActivityWithDatabase();
+    if (activity?.notificationId) {
+      await Notifications.cancelScheduledNotificationAsync(activity.notificationId);
+    }
+
+    const scheduledNotificationId = await Notifications.scheduleNotificationAsync({
+      content: {
+        title: 'Activity reminder',
+        body: `You have a due date coming up for [${ activity.name }]`,
+        data: {
+          url: `gradeness://activity/${activityId}`,
+        }
+      }, 
+      trigger: date.setHours(0, 0, 0, 0) <= (new Date()).setHours(0, 0, 0, 0) ? 
+      null : date.setHours(12),
+      // todo: set icon for notification
+    });
+    await updateActivityWithDatabase(scheduledNotificationId);
     setShouldRefetch(true);
-    // schedule notification
   }
 
   return (
@@ -274,14 +292,14 @@ export const ActivityScreen = ({ navigation, route }: Props) => {
           </View>
           <Text color='background'>Please provide a due date for this activity.</Text>
           <View style={{ borderColor: Colors.background, borderWidth: 1, flexDirection: 'row', justifyContent: 'space-between' }}>
-
-            {show ? <DateTimePicker
+          <Text color='background'>{date?.toLocaleDateString()}</Text>
+            { show && <DateTimePicker
               value={date}
               mode='date'
               minimumDate={new Date()}
               onChange={onChange}
-            /> : <Text color='background'>{date?.toDateString()}</Text>
-            }
+            /> }
+            
             <IconButton icon='calendar' onPress={() => {
               if (!date) {
                 setDate(new Date());

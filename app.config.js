@@ -12,6 +12,7 @@ export default {
     "orientation": "portrait",
     "icon": "./assets/icon.jpg",
     "userInterfaceStyle": "automatic",
+    "scheme": "gradeness",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
