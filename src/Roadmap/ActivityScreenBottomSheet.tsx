@@ -19,7 +19,6 @@ export const ActivityScreenBottomSheet = ({ db, user, activityId, activity, setS
   };
 
   const updateActivityWithDatabase = async (notificationId: string) => {
-    console.log(activity)
     const activityRef = doc(db, 'activities', activityId)
     const activityEntity = {
       ...activity,
@@ -39,7 +38,7 @@ export const ActivityScreenBottomSheet = ({ db, user, activityId, activity, setS
     const scheduledNotificationId = await Notifications.scheduleNotificationAsync({
       content: {
         title: 'Activity reminder',
-        body: `You have a due date coming up for [${ activity.name }]`,
+        body: `You have a due date coming up for ${ activity.name }`,
         data: {
           url: `gradeness://activity/${activityId}`,
         }

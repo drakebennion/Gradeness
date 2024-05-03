@@ -90,7 +90,7 @@ export const ActivityScreen = ({ navigation, route }: Props) => {
   )
 
   const sheetRef = useRef<BottomSheet>(null);
-  const snapPoints = useMemo(() => [1, "30%"], []);
+  const snapPoints = useMemo(() => [1, "55%"], []);
   const handleSnapPress = useCallback((index) => {
     sheetRef.current?.snapToIndex(index);
   }, []);
