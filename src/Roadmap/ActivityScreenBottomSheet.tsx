@@ -54,12 +54,12 @@ export const ActivityScreenBottomSheet = ({ db, user, activityId, activity, setS
     return (
         <>
             <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-                <Text color='background'>Add due date</Text>
-                <IconButton icon='close' onPress={() => sheetRef.current?.close()} />
+                <Text size='s' color='background'>Add due date</Text>
+                <IconButton icon='close' onPress={() => sheetRef.current?.close()} style={{ marginRight: -8 }} />
             </View>
-            <Text color='background'>Please provide a due date for this activity.</Text>
+            <Text color='background' size='xs' style={{ marginBottom: 12 }}>Please provide a due date for this activity.</Text>
             <View style={{ borderColor: Colors.background, borderWidth: 1, flexDirection: 'row', justifyContent: 'space-between' }}>
-            <Text color='background'>{date?.toLocaleDateString()}</Text>
+            <Text color='background' style={{ marginTop: 8, marginLeft: 8 }}>{date?.toLocaleDateString()}</Text>
                 { show && <DateTimePicker
                 value={date}
                 mode='date'
@@ -68,11 +68,11 @@ export const ActivityScreenBottomSheet = ({ db, user, activityId, activity, setS
                 /> }
                 
                 <IconButton icon='calendar' onPress={() => {
-                if (!date) {
-                    setDate(new Date());
-                }
+                  if (!date) {
+                      setDate(new Date());
+                  }
 
-                setShow(true);
+                  setShow(true);
                 }} />
             </View>
             <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'flex-end', marginTop: 16 }}>
