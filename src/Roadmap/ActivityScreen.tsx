@@ -146,19 +146,19 @@ export const ActivityScreen = ({ navigation, route }: Props) => {
                 </View>
               </ImageBackground>
             </View>
-            <View style={{ paddingHorizontal: 24, marginTop: 16 }}>
+            <View style={{ paddingHorizontal: 24, marginVertical: 16 }}>
               {/* todo: fix spacing/make look better lol */}
               <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                 <Icon size={24} source='calendar' />
-                <View>
-                  <Text color='background'>Due Date</Text>
-                  {/* todo: wire this to existing activity due date */}
+                <View style={{ flex: 1, marginLeft: 8, marginTop: -4 }}>
+                  <Text color='background' size='xxs'>Due date</Text>
                   <Text color='background'>{activity.dueDate ? activity.dueDate.toDate().toDateString() : 'No date set. Set a due date.'} </Text>
-                  {/* <Text color='background'>{(new Date()).toLocaleDateString()} </Text> */}
                 </View>
-                <IconButton icon='pencil-outline' onPress={() => handleSnapPress(1)} />
+                <View style={{ marginRight: -8, marginTop: -12 }}>
+                  <IconButton icon='pencil-outline' onPress={() => handleSnapPress(1)} />
+                </View>
               </View>
-              <Divider style={{ marginBottom: 12 }} />
+              <Divider style={{ marginVertical: 16 }} />
               {/* todo: could def handle this better - if no overview show nothing, if overview is string display it, otherwise show header and items */}
               {typeof activity.overview === "string" ?
                 <Text color='background' style={{ marginBottom: 12 }}>{activity.overview}</Text> :

@@ -9,8 +9,8 @@ import * as Notifications from 'expo-notifications';
 import { Colors } from "../Constants";
 
 export const ActivityScreenBottomSheet = ({ db, user, activityId, activity, setShouldRefetch, sheetRef }) => {
-
-  const [date, setDate] = useState(activity?.dueDate?.toDate() ?? new Date());
+  const minimumDate = new Date((new Date()).setDate((new Date()).getDate() + 1));
+  const [date, setDate] = useState(activity?.dueDate?.toDate() ?? minimumDate);
   const [show, setShow] = useState(false);
   const onChange = (_event, selectedDate) => {
     const currentDate = selectedDate;
@@ -43,8 +43,7 @@ export const ActivityScreenBottomSheet = ({ db, user, activityId, activity, setS
           url: `gradeness://activity/${activityId}`,
         }
       }, 
-      trigger: date.setHours(0, 0, 0, 0) <= (new Date()).setHours(0, 0, 0, 0) ? 
-      null : date.setHours(12),
+      trigger: date.setHours(12),
       // todo: set icon for notification
     });
     await updateActivityWithDatabase(scheduledNotificationId);
@@ -63,13 +62,13 @@ export const ActivityScreenBottomSheet = ({ db, user, activityId, activity, setS
                 { show && <DateTimePicker
                 value={date}
                 mode='date'
-                minimumDate={new Date()}
+                minimumDate={minimumDate}
                 onChange={onChange}
                 /> }
                 
                 <IconButton icon='calendar' onPress={() => {
                   if (!date) {
-                      setDate(new Date());
+                      setDate(minimumDate);
                   }
 
                   setShow(true);
