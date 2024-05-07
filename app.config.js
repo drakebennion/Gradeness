@@ -1,7 +1,7 @@
 import 'dotenv/config'
 
-const appVersion = '1.0.13';
-const versionCode = 13;
+const appVersion = '1.0.14';
+const versionCode = 14;
 const projectId = "ad714b42-ee9b-4763-b2ce-23fcbd430692";
 
 export default {
@@ -63,8 +63,7 @@ export default {
       "package": "com.drakeywakey.gradeness",
       "userInterfaceStyle": "automatic",
       "versionCode": versionCode,
-      // todo: setup env vars so this file can be checked in securely
-      "googleServicesFile": "./gradeness-google-key.json"
+      "googleServicesFile": process.env.GOOGLE_SERVICES_JSON,
     },
     "web": {
       "favicon": "./assets/favicon.png"
