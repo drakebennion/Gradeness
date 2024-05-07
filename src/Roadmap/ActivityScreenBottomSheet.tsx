@@ -1,6 +1,6 @@
 import { doc, setDoc } from "firebase/firestore";
 import { useState } from "react";
-import { View } from "react-native";
+import { Platform, View } from "react-native";
 import { IconButton } from "react-native-paper";
 import { Text } from '../Typography';
 import { Button } from '../components/Button';
@@ -58,14 +58,14 @@ export const ActivityScreenBottomSheet = ({ db, user, activityId, activity, setS
             </View>
             <Text color='background' size='xs' style={{ marginBottom: 12 }}>Please provide a due date for this activity.</Text>
             <View style={{ borderColor: Colors.background, borderWidth: 1, flexDirection: 'row', justifyContent: 'space-between' }}>
-            <Text color='background' style={{ marginTop: 8, marginLeft: 8 }}>{date?.toLocaleDateString()}</Text>
-                { show && <DateTimePicker
+            { Platform.OS === 'android' && <Text color='background' style={{ marginTop: 8, marginLeft: 8 }}>{date?.toLocaleDateString()}</Text> }
+             { (show || Platform.OS === 'ios') && <DateTimePicker
                 value={date}
                 mode='date'
                 minimumDate={minimumDate}
                 onChange={onChange}
-                /> }
-                
+                />
+             }
                 <IconButton icon='calendar' onPress={() => {
                   if (!date) {
                       setDate(minimumDate);
