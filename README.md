@@ -42,3 +42,4 @@ Then you have the option of opening on an emulator, or through the Expo Go app o
 - Create a shared secrets / password manager for sharing creds.
 - a way to manage secrets such as environment vars.
 - local development that doesnt need production creds.
+- fix `@react-native-community/datetimepicker` dependency version - `7.6.1` fails the build entirely, but `7.6.3` throws a warning by expo. (This may just be waiting for expo to fix this)
