@@ -1,7 +1,7 @@
 import 'dotenv/config'
 
-const appVersion = '1.0.11';
-const versionCode = 10;
+const appVersion = '1.0.13';
+const versionCode = 13;
 const projectId = "ad714b42-ee9b-4763-b2ce-23fcbd430692";
 
 export default {
@@ -13,6 +13,9 @@ export default {
     "icon": "./assets/icon.jpg",
     "userInterfaceStyle": "automatic",
     "scheme": "gradeness",
+    "plugins": [
+      "expo-font"
+    ],
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
@@ -20,11 +23,6 @@ export default {
     },
     "updates": {
       "url": `https://u.expo.dev/${projectId}`,
-      "requestHeaders": {
-        "expo-runtime-version": appVersion,
-        // not sustainable, but eas update might require this?
-        "expo-channel-name": "production"
-      }
     },
     "runtimeVersion": {
       "policy": "appVersion"
@@ -36,6 +34,26 @@ export default {
       "supportsTablet": true,
       "bundleIdentifier": "com.drakeywakey.gradeness",
       "userInterfaceStyle": "automatic",
+      "privacyManifests": {
+        "NSPrivacyAccessedAPITypes": [
+          {
+            "NSPrivacyAccessedAPIType": "NSPrivacyAccessedAPICategoryFileTimestamp",
+            "NSPrivacyAccessedAPITypeReasons": ["DDA9.1"]
+          },
+          {
+            "NSPrivacyAccessedAPIType": "NSPrivacyAccessedAPICategoryDiskSpace",
+            "NSPrivacyAccessedAPITypeReasons": ["85F4.1"]
+          },
+          {
+            "NSPrivacyAccessedAPIType": "NSPrivacyAccessedAPICategorySystemBootTime",
+            "NSPrivacyAccessedAPITypeReasons": ["35F9.1"]
+          },
+          {
+            "NSPrivacyAccessedAPIType": "NSPrivacyAccessedAPICategoryUserDefaults",
+            "NSPrivacyAccessedAPITypeReasons": ["CA92.1"]
+          },
+        ]
+      }
     },
     "android": {
       "adaptiveIcon": {
