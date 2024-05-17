@@ -1,22 +1,16 @@
 import { doc, setDoc } from "firebase/firestore";
 import { useState } from "react";
-import { Platform, View } from "react-native";
-import { IconButton } from "react-native-paper";
+import { View } from "react-native";
+import { Icon, IconButton } from "react-native-paper";
 import { Text } from '../Typography';
 import { Button } from '../components/Button';
-import DateTimePicker from '@react-native-community/datetimepicker';
 import * as Notifications from 'expo-notifications';
 import { Colors } from "../Constants";
+import DatePicker from "../components/DatePicker";
 
 export const ActivityScreenBottomSheet = ({ db, user, activityId, activity, setShouldRefetch, sheetRef }) => {
   const minimumDate = new Date((new Date()).setDate((new Date()).getDate() + 1));
   const [date, setDate] = useState(activity?.dueDate?.toDate() ?? minimumDate);
-  const [show, setShow] = useState(false);
-  const onChange = (_event, selectedDate) => {
-    const currentDate = selectedDate;
-    setShow(false);
-    setDate(currentDate);
-  };
 
   const updateActivityWithDatabase = async (notificationId: string) => {
     const activityRef = doc(db, 'activities', activityId)
@@ -51,28 +45,17 @@ export const ActivityScreenBottomSheet = ({ db, user, activityId, activity, setS
   }
   
     return (
-        <>
+        <View>
             <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
                 <Text size='s' color='background'>Add due date</Text>
                 <IconButton icon='close' onPress={() => sheetRef.current?.close()} style={{ marginRight: -8 }} />
             </View>
             <Text color='background' size='xs' style={{ marginBottom: 12 }}>Please provide a due date for this activity.</Text>
-            <View style={{ borderColor: Colors.background, borderWidth: 1, flexDirection: 'row', justifyContent: 'space-between' }}>
-            { Platform.OS === 'android' && <Text color='background' style={{ marginTop: 8, marginLeft: 8 }}>{date?.toLocaleDateString()}</Text> }
-             { (show || Platform.OS === 'ios') && <DateTimePicker
-                value={date}
-                mode='date'
-                minimumDate={minimumDate}
-                onChange={onChange}
-                />
-             }
-                <IconButton icon='calendar' onPress={() => {
-                  if (!date) {
-                      setDate(minimumDate);
-                  }
-
-                  setShow(true);
-                }} />
+            <View style={{ borderColor: Colors.background, borderWidth: 1, flexDirection: 'row', justifyContent: 'space-between', padding: 8 }}>
+              <DatePicker date={date} setDate={setDate} minimumDate={minimumDate} />
+              <View style={{ alignSelf: 'center' }}>
+                <Icon source='calendar' size={24} />
+              </View>
             </View>
             <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'flex-end', marginTop: 16 }}>
                 <Button
@@ -89,6 +72,6 @@ export const ActivityScreenBottomSheet = ({ db, user, activityId, activity, setS
                 Save
                 </Button>
             </View>
-        </>
+        </View>
     )
 }

@@ -14,7 +14,13 @@ export default {
     "userInterfaceStyle": "automatic",
     "scheme": "gradeness",
     "plugins": [
-      "expo-font"
+      "expo-font",
+      [
+        "expo-notifications",
+        {
+          "icon": "./assets/icon.jpg"
+        }
+      ]
     ],
     "splash": {
       "image": "./assets/splash.png",

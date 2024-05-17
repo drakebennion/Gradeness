@@ -16,7 +16,7 @@ import { useHeaderHeight } from '@react-navigation/elements'
 import { Text } from '../Typography'
 import { TextInput } from '../components/TextInput'
 import { Button } from '../components/Button'
-import BottomSheet, { BottomSheetBackdrop } from '@gorhom/bottom-sheet'
+import BottomSheet, { BottomSheetBackdrop, BottomSheetView } from '@gorhom/bottom-sheet'
 import { RoadmapStackParamList } from '../navigation/userStackParams'
 import { ActivityScreenBottomSheet } from './ActivityScreenBottomSheet'
 
@@ -90,7 +90,7 @@ export const ActivityScreen = ({ navigation, route }: Props) => {
   )
 
   const sheetRef = useRef<BottomSheet>(null);
-  const snapPoints = useMemo(() => [1, "55%"], []);
+  const snapPoints = useMemo(() => ["45%"], []);
   const handleSnapPress = useCallback((index) => {
     sheetRef.current?.snapToIndex(index);
   }, []);
@@ -152,13 +152,13 @@ export const ActivityScreen = ({ navigation, route }: Props) => {
                 <Icon size={24} source='calendar' />
                 <View style={{ flex: 1, marginLeft: 8, marginTop: -4 }}>
                   <Text color='background' size='xxs'>Due date</Text>
-                  <Text color='background'>{activity.dueDate ? activity.dueDate.toDate().toDateString() : 'No date set. Set a due date.'} </Text>
+                  <Text color='background' size='xs'>{activity.dueDate ? activity.dueDate.toDate().toDateString() : 'No date set. Set a due date.'} </Text>
                 </View>
                 <View style={{ marginRight: -8, marginTop: -12 }}>
                   <IconButton icon='pencil-outline' onPress={() => handleSnapPress(1)} />
                 </View>
               </View>
-              <Divider style={{ marginVertical: 16 }} />
+              <Divider style={{ marginVertical: 8 }} />
               {/* todo: could def handle this better - if no overview show nothing, if overview is string display it, otherwise show header and items */}
               {typeof activity.overview === "string" ?
                 <Text color='background' style={{ marginBottom: 12 }}>{activity.overview}</Text> :
@@ -239,13 +239,18 @@ export const ActivityScreen = ({ navigation, route }: Props) => {
         <BottomSheet
           ref={sheetRef}
           snapPoints={snapPoints}
+          enableDynamicSizing
           handleStyle={{ display: 'none' }}
           style={{ borderRadius: 5, paddingHorizontal: 16 }}
           backdropComponent={renderBackdrop}
+          index={-1}
         >
-          <ActivityScreenBottomSheet 
-            { ...{db, user, activityId, activity, setShouldRefetch, sheetRef }}
-          />
+          <BottomSheetView>
+
+            <ActivityScreenBottomSheet 
+              { ...{db, user, activityId, activity, setShouldRefetch, sheetRef }}
+              />
+          </BottomSheetView>
         </BottomSheet>
       </KeyboardAvoidingView >
   )
