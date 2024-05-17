@@ -1,38 +1,58 @@
 import 'dotenv/config';
 
-const appVersion = '1.0.11';
-const versionCode = 10;
+const appVersion = '1.0.13';
+const versionCode = 13;
 const projectId = 'ad714b42-ee9b-4763-b2ce-23fcbd430692';
 
 export default {
-  expo: {
-    name: 'Gradeness',
-    slug: 'gradeness',
-    version: appVersion,
-    orientation: 'portrait',
-    icon: './assets/icon.jpg',
-    userInterfaceStyle: 'automatic',
-    splash: {
-      image: './assets/splash.png',
-      resizeMode: 'contain',
-      backgroundColor: '#1C222E',
+  "expo": {
+    "name": "Gradeness",
+    "slug": "gradeness",
+    "version": appVersion,
+    "orientation": "portrait",
+    "icon": "./assets/icon.jpg",
+    "userInterfaceStyle": "automatic",
+    "plugins": [
+      "expo-font"
+    ],
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#1C222E",
     },
-    updates: {
-      url: `https://u.expo.dev/${projectId}`,
-      requestHeaders: {
-        'expo-runtime-version': appVersion,
-        // not sustainable, but eas update might require this?
-        'expo-channel-name': 'production',
-      },
+    "updates": {
+      "url": `https://u.expo.dev/${projectId}`,
     },
     runtimeVersion: {
       policy: 'appVersion',
     },
-    assetBundlePatterns: ['**/*'],
-    ios: {
-      supportsTablet: true,
-      bundleIdentifier: 'com.drakeywakey.gradeness',
-      userInterfaceStyle: 'automatic',
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.drakeywakey.gradeness",
+      "userInterfaceStyle": "automatic",
+      "privacyManifests": {
+        "NSPrivacyAccessedAPITypes": [
+          {
+            "NSPrivacyAccessedAPIType": "NSPrivacyAccessedAPICategoryFileTimestamp",
+            "NSPrivacyAccessedAPITypeReasons": ["DDA9.1"]
+          },
+          {
+            "NSPrivacyAccessedAPIType": "NSPrivacyAccessedAPICategoryDiskSpace",
+            "NSPrivacyAccessedAPITypeReasons": ["85F4.1"]
+          },
+          {
+            "NSPrivacyAccessedAPIType": "NSPrivacyAccessedAPICategorySystemBootTime",
+            "NSPrivacyAccessedAPITypeReasons": ["35F9.1"]
+          },
+          {
+            "NSPrivacyAccessedAPIType": "NSPrivacyAccessedAPICategoryUserDefaults",
+            "NSPrivacyAccessedAPITypeReasons": ["CA92.1"]
+          },
+        ]
+      }
     },
     android: {
       adaptiveIcon: {

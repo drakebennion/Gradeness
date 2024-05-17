@@ -25,7 +25,7 @@ You will need to configure your .env file
 You should then be able to run
 
 ```
-npm i
+npx expo install
 npm start
 ```
 
