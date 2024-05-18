@@ -185,26 +185,6 @@ export const ActivityScreen = ({ navigation, route }: Props) => {
                   });
                 }}
                 iconColor={Colors.text}
-                icon="arrow-left"
-              />
-            )}
-            )
-            {activity.testActivityId ? (
-              <></>
-            ) : (
-              <IconButton
-                onPress={() => {
-                  navigation.navigate('CreateUpdateActivity', {
-                    activity: {
-                      activityId,
-                      name: activity.name,
-                      semester: activity.semester,
-                      year: activity.year,
-                      description: activity.description,
-                    },
-                  });
-                }}
-                iconColor={Colors.text}
                 icon="square-edit-outline"
               />
             )}

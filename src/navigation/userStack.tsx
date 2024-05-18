@@ -1,8 +1,9 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { DefaultTheme, NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import * as Notifications from 'expo-notifications';
 import { useState } from 'react';
-import { Dimensions, Platform } from 'react-native';
+import { Dimensions, Linking, Platform } from 'react-native';
 import { Drawer } from 'react-native-drawer-layout';
 import { Icon } from 'react-native-paper';
 import Toast, { BaseToast } from 'react-native-toast-message';
@@ -79,6 +80,34 @@ const toastConfig = {
 export default function UserStack() {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
+
+  const config = {
+    screens: {
+      Activity: 'activity/:activityId',
+    },
+  };
+
+  const linking = {
+    prefixes: ['gradeness://'],
+    config,
+    subscribe(listener) {
+      const onReceiveURL = ({ url }: { url: string }) => listener(url);
+      const eventListenerSubscription = Linking.addEventListener(
+        'url',
+        onReceiveURL,
+      );
+      const subscription =
+        Notifications.addNotificationResponseReceivedListener(response => {
+          const url = response.notification.request.content.data.url;
+          listener(url);
+        });
+
+      return () => {
+        eventListenerSubscription.remove();
+        subscription.remove();
+      };
+    },
+  };
 
   return (
     <RoadmapDialogContext.Provider value={{ dialogOpen, setDialogOpen }}>
