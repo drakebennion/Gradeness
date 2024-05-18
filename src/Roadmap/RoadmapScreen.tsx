@@ -59,9 +59,10 @@ export const RoadmapScreen = ({ navigation }: Props) => {
   const RoadmapCard = ({ year, name, objective }) => {
     const [numberOfActivities, setNumberOfActivities] = useState(0);
     const [loadingActivities, setLoadingActivities] = useState(true);
+    const [numberOfOverdue, setNumberOfOverdue] = useState(0);
     useFocusEffect(
       useCallback(() => {
-        const fetchData = async () => {
+        const fetchNumberOfActivities = async () => {
           if (user) {
             const q = query(
               collection(db, 'activities'),
@@ -71,10 +72,19 @@ export const RoadmapScreen = ({ navigation }: Props) => {
             const snapshot = await getCountFromServer(q);
             setNumberOfActivities(snapshot.data().count);
             setLoadingActivities(false);
+
+            const overdueQuery = query(
+              collection(db, 'activities'),
+              where('userId', '==', user.uid),
+              where('year', '==', year),
+              where('dueDate', '<', new Date()),
+            );
+            const overdueSnapshot = await getCountFromServer(overdueQuery);
+            setNumberOfOverdue(overdueSnapshot.data().count);
           }
         };
 
-        fetchData().catch(console.error);
+        fetchNumberOfActivities().catch(console.error);
       }, [user]),
     );
 
@@ -121,6 +131,25 @@ export const RoadmapScreen = ({ navigation }: Props) => {
                   activities
                 </Text>
               </View>
+              {numberOfOverdue ? (
+                <View style={{ flexDirection: 'row' }}>
+                  <Text
+                    style={{
+                      color: getColorForYear(year),
+                      fontSize: 8,
+                      marginTop: 10,
+                    }}>
+                    {'\u2B24  '}
+                  </Text>
+                  <Text size="xxs" style={{ marginTop: 8 }}>
+                    {numberOfOverdue + ' '}
+                    overdue
+                    {numberOfOverdue === 1 ? ' activity' : ' activities'}
+                  </Text>
+                </View>
+              ) : (
+                <></>
+              )}
             </View>
             <Text
               weight="light"
