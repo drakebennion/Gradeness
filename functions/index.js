@@ -13,10 +13,9 @@ exports.createUserActivities = auth.user().onCreate(async (user) => {
 
   await createAccomplishmentForUser(user);
 
-  Promise.all(
-      testActivities.docs.map(createTestActivityForUser(user)),
-  )
-      .catch(logger.error);
+  Promise.all(testActivities.docs.map(createTestActivityForUser(user))).catch(
+      logger.error,
+  );
 });
 
 const createAccomplishmentForUser = async (user) => {
@@ -40,21 +39,19 @@ const createAccomplishmentForUser = async (user) => {
 const createTestActivityForUser = (user) => async (testActivity) => {
   const {year, semester, name, id, order, overview, description} =
     testActivity.data();
-  await getFirestore()
-      .collection("activities")
-      .add({
-        userId: user.uid,
-        createdAt: Date.now(),
-        createdBy: -1,
-        updatedAt: Date.now(),
-        updatedBy: -1,
-        complete: false,
-        testActivityId: id,
-        order,
-        year,
-        semester,
-        name,
-        overview,
-        description,
-      });
+  await getFirestore().collection("activities").add({
+    userId: user.uid,
+    createdAt: Date.now(),
+    createdBy: -1,
+    updatedAt: Date.now(),
+    updatedBy: -1,
+    complete: false,
+    testActivityId: id,
+    order,
+    year,
+    semester,
+    name,
+    overview,
+    description,
+  });
 };
