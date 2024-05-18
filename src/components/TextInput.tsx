@@ -3,12 +3,13 @@ import { Props } from 'react-native-paper/src/components/TextInput/TextInput';
 import { Colors } from '../Constants';
 
 export const TextInput = (props: Props) => {
-    return (
-        <ReactNativePaperTextInput
-            mode='outlined'
-            textColor={Colors.background}
-            selectionColor={Colors.background}
-            activeOutlineColor={Colors.background}
-            {...props} />
-    )
-}
+  return (
+    <ReactNativePaperTextInput
+      mode="outlined"
+      textColor={Colors.background}
+      selectionColor={Colors.background}
+      activeOutlineColor={Colors.background}
+      {...props}
+    />
+  );
+};
