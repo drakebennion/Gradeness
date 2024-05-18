@@ -1,11 +1,11 @@
-import { Dialog, Portal } from 'react-native-paper';
 import * as Linking from 'expo-linking';
-import { RoadmapDialogContext } from '../Contexts';
 import { useContext } from 'react';
-import { Text } from '../Typography';
+import { Dialog, Portal } from 'react-native-paper';
 import { auth } from '../../firebaseConfig';
-import { Button } from '../components/Button';
 import { Colors } from '../Constants';
+import { RoadmapDialogContext } from '../Contexts';
+import { Text } from '../Typography';
+import { Button } from '../components/Button';
 
 export const DeleteAccountDialog = () => {
   const { dialogOpen, setDialogOpen } = useContext(RoadmapDialogContext);

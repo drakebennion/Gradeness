@@ -1,6 +1,7 @@
-import { Pressable, View, StyleSheet, Platform } from "react-native";
-import DateTimePicker from "@react-native-community/datetimepicker";
-import { DateTimePickerAndroid } from "@react-native-community/datetimepicker";
+import DateTimePicker, {
+  DateTimePickerAndroid,
+} from '@react-native-community/datetimepicker';
+import { Platform, Pressable, StyleSheet, View } from 'react-native';
 import { Text } from '../Typography';
 
 export default function DatePicker({ date, setDate, minimumDate }) {
@@ -8,8 +9,8 @@ export default function DatePicker({ date, setDate, minimumDate }) {
     setDate(selectedDate);
   };
 
-  if (Platform.OS === "android") {
-    const showMode = (currentMode) => {
+  if (Platform.OS === 'android') {
+    const showMode = currentMode => {
       DateTimePickerAndroid.open({
         value: date,
         onChange,
@@ -19,18 +20,18 @@ export default function DatePicker({ date, setDate, minimumDate }) {
     };
 
     const showDatepicker = () => {
-      showMode("date");
+      showMode('date');
     };
 
     return (
       <View style={styles.androidDateTime}>
         <Pressable onPress={showDatepicker}>
-          <Text color='background'>
+          <Text color="background">
             {date.toLocaleDateString([], {
-              weekday: "short",
-              year: "numeric",
-              month: "short",
-              day: "2-digit",
+              weekday: 'short',
+              year: 'numeric',
+              month: 'short',
+              day: '2-digit',
             })}
           </Text>
         </Pressable>
@@ -51,7 +52,7 @@ export default function DatePicker({ date, setDate, minimumDate }) {
 
 const styles = StyleSheet.create({
   androidDateTime: {
-    flexDirection: "row",
-    justifyContent: "space-around",
+    flexDirection: 'row',
+    justifyContent: 'space-around',
   },
 });
