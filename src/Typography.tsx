@@ -5,7 +5,7 @@ import { Colors, fontSizes, fontWeights } from './Constants';
 // todo: find good typescripty way to share these enums w/ corresponding Constants
 type TextWeight = 'medium' | 'regular' | 'light';
 type TextSize = 'xxs' | 'xs' | 's' | 'm' | 'l' | 'xl' | 'xxl';
-type TextColors = 'text' | 'background';
+type TextColors = 'text' | 'background' | 'error';
 
 // todo: figure out the style typing, does not feel worth fighting with right now :)
 type TextProps = {

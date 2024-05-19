@@ -235,7 +235,7 @@ const ActivityList = ({
               {semester}
             </Text>
             {toSorted(activities[semester], activitySort).map(
-              ({ id, name, complete }) => (
+              ({ id, name, complete, dueDate }) => (
                 <GradeLevelListItem
                   key={name + complete}
                   title={name}
@@ -246,6 +246,7 @@ const ActivityList = ({
                   onPress={() => {
                     navigation.navigate('Activity', { activityId: id });
                   }}
+                  dueDate={dueDate}
                 />
               ),
             )}
@@ -263,6 +264,7 @@ const GradeLevelListItem = ({
   checked,
   onPress,
   highlightColor,
+  dueDate,
 }) => {
   const [iconName, setIconName] = useState(
     checked ? 'checkbox-marked-circle' : 'checkbox-blank-circle-outline',
@@ -276,6 +278,8 @@ const GradeLevelListItem = ({
     await toggleComplete();
     setShouldRefetch(true);
   };
+
+  const overdue = dueDate?.toDate() < new Date();
 
   return (
     <Pressable
@@ -302,13 +306,25 @@ const GradeLevelListItem = ({
           />
         </View>
         <View style={{ flex: 1, marginHorizontal: 16 }}>
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-            }}>
+          <View>
             <Text color="background">{title}</Text>
+            <View
+              style={{
+                marginTop: 12,
+                flexDirection: 'row',
+              }}>
+              <Icon
+                source="calendar"
+                size={16}
+                color={overdue ? Colors.error : Colors.background}
+              />
+              <Text
+                color={overdue ? 'error' : 'background'}
+                size="xs"
+                style={{ marginLeft: 8, marginTop: -2 }}>
+                {dueDate ? dueDate.toDate().toDateString() : 'No date set'}
+              </Text>
+            </View>
           </View>
         </View>
         <View
