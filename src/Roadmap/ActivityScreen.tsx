@@ -248,7 +248,27 @@ export const ActivityScreen = ({ navigation, route }: Props) => {
                 <Text color="background" size="xs">
                   {activity.dueDate
                     ? activity.dueDate.toDate().toDateString()
-                    : 'No date set. Set a due date.'}{' '}
+                    : 'No date set. Set a due date.'}
+                  {'   '}
+                  {/* todo: fix alignment on this */}
+                  {activity.dueDate?.toDate() < new Date() && (
+                    <View
+                      style={{
+                        borderColor: Colors.error,
+                        borderWidth: 1,
+                        borderRadius: 8,
+                        backgroundColor: Colors.errorContainer,
+                        padding: 4,
+                        paddingHorizontal: 8,
+                      }}>
+                      <Text
+                        color="error"
+                        size="xs"
+                        style={{ textAlign: 'center' }}>
+                        Overdue
+                      </Text>
+                    </View>
+                  )}
                 </Text>
               </View>
               <View style={{ marginRight: -8, marginTop: -12 }}>

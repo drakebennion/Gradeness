@@ -44,6 +44,7 @@ export const Colors = {
   background: '#1C222E',
   text: '#FFF',
   error: '#B3261E',
+  errorContainer: '#F8EAE9',
 };
 
 export const fontSizes = {
