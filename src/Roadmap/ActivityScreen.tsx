@@ -181,6 +181,7 @@ export const ActivityScreen = ({ navigation, route }: Props) => {
                       semester: activity.semester,
                       year: activity.year,
                       description: activity.description,
+                      dueDate: activity.dueDate,
                     },
                   });
                 }}

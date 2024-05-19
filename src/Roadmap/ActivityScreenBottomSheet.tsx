@@ -50,7 +50,6 @@ export const ActivityScreenBottomSheet = ({
           },
         },
         trigger: date.setHours(12),
-        // todo: set icon for notification
       });
     await updateActivityWithDatabase(scheduledNotificationId);
     setShouldRefetch(true);

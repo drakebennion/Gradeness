@@ -1,4 +1,8 @@
+import { Timestamp } from 'firebase/firestore';
+
 type CreateUpdateActivity = {
+  notificationId?: string;
+  dueDate?: Timestamp;
   activityId: string;
   name: string;
   semester: string;
