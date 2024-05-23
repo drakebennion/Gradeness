@@ -35,6 +35,7 @@ import BottomSheet, {
   BottomSheetBackdrop,
   BottomSheetView,
 } from '@gorhom/bottom-sheet';
+import * as Notifications from 'expo-notifications';
 import { Text } from '../Typography';
 import { Button } from '../components/Button';
 import { TextInput } from '../components/TextInput';
@@ -59,8 +60,15 @@ export const ActivityScreen = ({ navigation, route }: Props) => {
   const headerHeight = useHeaderHeight();
 
   const toggleComplete = async () => {
+    const complete = !activity.complete;
     const activityRef = doc(db, 'activities', activityId);
-    await updateDoc(activityRef, { complete: !activity.complete });
+    await updateDoc(activityRef, { complete });
+
+    if (complete && activity.notificationId) {
+      await Notifications.cancelScheduledNotificationAsync(
+        activity.notificationId,
+      );
+    }
   };
 
   const saveAccomplishment = async () => {
@@ -251,31 +259,33 @@ export const ActivityScreen = ({ navigation, route }: Props) => {
                       ? activity.dueDate.toDate().toDateString()
                       : 'No date set. Set a due date.'}
                   </Text>
-                  {activity.dueDate?.toDate() < new Date() && (
-                    <View
-                      style={{
-                        borderColor: Colors.error,
-                        borderWidth: 1,
-                        borderRadius: 8,
-                        backgroundColor: Colors.errorContainer,
-                        marginTop: -6,
-                        marginLeft: 16,
-                        padding: 4,
-                        paddingHorizontal: 8,
-                      }}>
-                      <Text
-                        color="error"
-                        size="xs"
-                        weight="medium"
-                        style={{ textAlign: 'center' }}>
-                        Overdue
-                      </Text>
-                    </View>
-                  )}
+                  {activity.dueDate?.toDate() < new Date() &&
+                    !activity.complete && (
+                      <View
+                        style={{
+                          borderColor: Colors.error,
+                          borderWidth: 1,
+                          borderRadius: 8,
+                          backgroundColor: Colors.errorContainer,
+                          marginTop: -6,
+                          marginLeft: 16,
+                          padding: 4,
+                          paddingHorizontal: 8,
+                        }}>
+                        <Text
+                          color="error"
+                          size="xs"
+                          weight="medium"
+                          style={{ textAlign: 'center' }}>
+                          Overdue
+                        </Text>
+                      </View>
+                    )}
                 </View>
               </View>
               <View style={{ marginRight: -8, marginTop: -12 }}>
                 <IconButton
+                  disabled={activity.complete}
                   icon="pencil-outline"
                   onPress={() => handleSnapPress(1)}
                 />

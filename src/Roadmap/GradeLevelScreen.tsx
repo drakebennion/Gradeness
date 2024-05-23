@@ -279,7 +279,7 @@ const GradeLevelListItem = ({
     setShouldRefetch(true);
   };
 
-  const overdue = dueDate?.toDate() < new Date();
+  const overdue = !checked && dueDate?.toDate() < new Date();
 
   return (
     <Pressable
