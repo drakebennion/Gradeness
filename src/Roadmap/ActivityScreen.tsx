@@ -13,7 +13,7 @@ import {
   where,
 } from 'firebase/firestore';
 import { getDownloadURL, getStorage, ref } from 'firebase/storage';
-import { useCallback, useState } from 'react';
+import React, { useCallback, useMemo, useRef, useState } from 'react';
 import {
   Dimensions,
   ImageBackground,
@@ -23,7 +23,7 @@ import {
   StyleSheet,
   View,
 } from 'react-native';
-import { IconButton } from 'react-native-paper';
+import { Divider, Icon, IconButton } from 'react-native-paper';
 import * as Progress from 'react-native-progress';
 import Toast from 'react-native-toast-message';
 import { Colors } from '../Constants';
@@ -31,11 +31,18 @@ import { type Activity } from '../types/Activity';
 import { useAuthentication } from '../utils/hooks/useAuthentication';
 import { getGradeLevelNameForYear } from '../utils/style';
 
+import BottomSheet, {
+  BottomSheetBackdrop,
+  BottomSheetView,
+} from '@gorhom/bottom-sheet';
+import * as Notifications from 'expo-notifications';
 import { Text } from '../Typography';
 import { Button } from '../components/Button';
 import { TextInput } from '../components/TextInput';
+import { RoadmapStackParamList } from '../navigation/userStackParams';
+import { ActivityScreenBottomSheet } from './ActivityScreenBottomSheet';
 
-type Props = NativeStackScreenProps<UserStackParamList, 'Activity'>;
+type Props = NativeStackScreenProps<RoadmapStackParamList, 'Activity'>;
 export const ActivityScreen = ({ navigation, route }: Props) => {
   const db = getFirestore();
   const { user } = useAuthentication();
@@ -53,8 +60,15 @@ export const ActivityScreen = ({ navigation, route }: Props) => {
   const headerHeight = useHeaderHeight();
 
   const toggleComplete = async () => {
+    const complete = !activity.complete;
     const activityRef = doc(db, 'activities', activityId);
-    await updateDoc(activityRef, { complete: !activity.complete });
+    await updateDoc(activityRef, { complete });
+
+    if (complete && activity.notificationId) {
+      await Notifications.cancelScheduledNotificationAsync(
+        activity.notificationId,
+      );
+    }
   };
 
   const saveAccomplishment = async () => {
@@ -119,6 +133,22 @@ export const ActivityScreen = ({ navigation, route }: Props) => {
     }, [activityId, user, shouldRefetch]),
   );
 
+  const sheetRef = useRef<BottomSheet>(null);
+  const snapPoints = useMemo(() => ['45%'], []);
+  const handleSnapPress = useCallback(index => {
+    sheetRef.current?.snapToIndex(index);
+  }, []);
+  const renderBackdrop = useCallback(
+    props => (
+      <BottomSheetBackdrop
+        {...props}
+        disappearsOnIndex={0}
+        appearsOnIndex={1}
+      />
+    ),
+    [],
+  );
+
   return loadingActivity ? (
     <Progress.Circle
       size={40}
@@ -159,6 +189,7 @@ export const ActivityScreen = ({ navigation, route }: Props) => {
                       semester: activity.semester,
                       year: activity.year,
                       description: activity.description,
+                      dueDate: activity.dueDate,
                     },
                   });
                 }}
@@ -213,7 +244,54 @@ export const ActivityScreen = ({ navigation, route }: Props) => {
               </View>
             </ImageBackground>
           </View>
-          <View style={{ paddingHorizontal: 24, marginTop: 16 }}>
+          <View style={{ paddingHorizontal: 24, marginVertical: 16 }}>
+            {/* todo: fix spacing/make look better lol */}
+            <View
+              style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+              <Icon size={24} source="calendar" />
+              <View style={{ flex: 1, marginLeft: 8, marginTop: -4 }}>
+                <Text color="background" size="xxs">
+                  Due date
+                </Text>
+                <View style={{ flexDirection: 'row' }}>
+                  <Text color="background" size="xs">
+                    {activity.dueDate
+                      ? activity.dueDate.toDate().toDateString()
+                      : 'No date set. Set a due date.'}
+                  </Text>
+                  {activity.dueDate?.toDate() < new Date() &&
+                    !activity.complete && (
+                      <View
+                        style={{
+                          borderColor: Colors.error,
+                          borderWidth: 1,
+                          borderRadius: 8,
+                          backgroundColor: Colors.errorContainer,
+                          marginTop: -6,
+                          marginLeft: 16,
+                          padding: 4,
+                          paddingHorizontal: 8,
+                        }}>
+                        <Text
+                          color="error"
+                          size="xs"
+                          weight="medium"
+                          style={{ textAlign: 'center' }}>
+                          Overdue
+                        </Text>
+                      </View>
+                    )}
+                </View>
+              </View>
+              <View style={{ marginRight: -8, marginTop: -12 }}>
+                <IconButton
+                  disabled={activity.complete}
+                  icon="pencil-outline"
+                  onPress={() => handleSnapPress(1)}
+                />
+              </View>
+            </View>
+            <Divider style={{ marginVertical: 8 }} />
             {/* todo: could def handle this better - if no overview show nothing, if overview is string display it, otherwise show header and items */}
             {typeof activity.overview === 'string' ? (
               <Text color="background" style={{ marginBottom: 12 }}>
@@ -266,7 +344,6 @@ export const ActivityScreen = ({ navigation, route }: Props) => {
               />
               <Button
                 disabled={!addAccomplishment}
-                //color={Colors.background}
                 type="tertiary"
                 style={{ alignSelf: 'flex-end', marginTop: 16 }}
                 onPress={() =>
@@ -323,6 +400,20 @@ export const ActivityScreen = ({ navigation, route }: Props) => {
           </View>
         </ScrollView>
       </View>
+      <BottomSheet
+        ref={sheetRef}
+        snapPoints={snapPoints}
+        enableDynamicSizing
+        handleStyle={{ display: 'none' }}
+        style={{ borderRadius: 5, paddingHorizontal: 16 }}
+        backdropComponent={renderBackdrop}
+        index={-1}>
+        <BottomSheetView>
+          <ActivityScreenBottomSheet
+            {...{ db, user, activityId, activity, setShouldRefetch, sheetRef }}
+          />
+        </BottomSheetView>
+      </BottomSheet>
     </KeyboardAvoidingView>
   );
 };

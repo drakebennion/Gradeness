@@ -9,10 +9,9 @@ import {
   query,
   where,
 } from 'firebase/firestore';
-import { useCallback, useContext, useEffect, useState } from 'react';
+import { useCallback, useContext, useState } from 'react';
 import { Dimensions, FlatList, Pressable, View } from 'react-native';
 import { IconButton } from 'react-native-paper';
-import Toast from 'react-native-toast-message';
 import { Colors, GradeLevels } from '../Constants';
 import { RoadmapDrawerContext } from '../Contexts';
 import { Text } from '../Typography';
@@ -37,31 +36,13 @@ export const RoadmapScreen = ({ navigation }: Props) => {
   const cardWidth = (windowWidth - cardMargin * 3) / 2;
   const cardHeight = cardWidth;
 
-  useEffect(
-    useCallback(() => {
-      if (!toastHidden && user) {
-        if (!user.emailVerified) {
-          Toast.show({
-            type: 'success',
-            text1: 'Thanks for signing up!',
-            text2: 'We sent you a verification email.',
-            swipeable: true,
-            autoHide: true,
-            visibilityTime: 10000,
-            topOffset: 75,
-            onHide: () => setToastHidden(true),
-          });
-        }
-      }
-    }, [user, toastHidden]),
-  );
-
   const RoadmapCard = ({ year, name, objective }) => {
     const [numberOfActivities, setNumberOfActivities] = useState(0);
     const [loadingActivities, setLoadingActivities] = useState(true);
+    const [numberOfOverdue, setNumberOfOverdue] = useState(0);
     useFocusEffect(
       useCallback(() => {
-        const fetchData = async () => {
+        const fetchNumberOfActivities = async () => {
           if (user) {
             const q = query(
               collection(db, 'activities'),
@@ -71,10 +52,20 @@ export const RoadmapScreen = ({ navigation }: Props) => {
             const snapshot = await getCountFromServer(q);
             setNumberOfActivities(snapshot.data().count);
             setLoadingActivities(false);
+
+            const overdueQuery = query(
+              collection(db, 'activities'),
+              where('userId', '==', user.uid),
+              where('year', '==', year),
+              where('complete', '==', false),
+              where('dueDate', '<', new Date()),
+            );
+            const overdueSnapshot = await getCountFromServer(overdueQuery);
+            setNumberOfOverdue(overdueSnapshot.data().count);
           }
         };
 
-        fetchData().catch(console.error);
+        fetchNumberOfActivities().catch(console.error);
       }, [user]),
     );
 
@@ -121,6 +112,25 @@ export const RoadmapScreen = ({ navigation }: Props) => {
                   activities
                 </Text>
               </View>
+              {numberOfOverdue ? (
+                <View style={{ flexDirection: 'row' }}>
+                  <Text
+                    style={{
+                      color: getColorForYear(year),
+                      fontSize: 8,
+                      marginTop: 10,
+                    }}>
+                    {'\u2B24  '}
+                  </Text>
+                  <Text size="xxs" style={{ marginTop: 8 }}>
+                    {numberOfOverdue + ' '}
+                    overdue
+                    {numberOfOverdue === 1 ? ' activity' : ' activities'}
+                  </Text>
+                </View>
+              ) : (
+                <></>
+              )}
             </View>
             <Text
               weight="light"

@@ -38,3 +38,5 @@ seedData.js
 .env
 
 gradeness-google-key.json
+google-services.json
+firebase-key.json

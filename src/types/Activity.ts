@@ -1,3 +1,5 @@
+import { Timestamp } from 'firebase/firestore';
+
 export interface Activity {
   activityId?: string;
   complete: boolean;
@@ -18,6 +20,8 @@ export interface Activity {
   updatedAt: Date;
   userId: string;
   year: number;
+  dueDate?: Timestamp;
+  notificationId?: string;
   overview?:
     | {
         header: string;

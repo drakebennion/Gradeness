@@ -1,14 +1,14 @@
+import * as Clipboard from 'expo-clipboard';
+import * as Updates from 'expo-updates';
+import { useContext } from 'react';
+import { Dimensions, Image, Linking, Pressable, View } from 'react-native';
 import { Icon } from 'react-native-paper';
-import { Dimensions, Linking, Pressable, View, Image } from 'react-native';
 import Toast from 'react-native-toast-message';
 import { auth } from '../../firebaseConfig';
 import { Colors } from '../Constants';
-import * as Clipboard from 'expo-clipboard';
-import { Text } from '../Typography';
-import { useContext } from 'react';
 import { RoadmapDialogContext } from '../Contexts';
+import { Text } from '../Typography';
 import { useAuthentication } from '../utils/hooks/useAuthentication';
-import * as Updates from 'expo-updates';
 
 const DrawerItem = ({ onPress, iconName, text, subtext, lastItem = false }) => {
   return (

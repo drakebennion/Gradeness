@@ -43,6 +43,8 @@ export const Colors = {
   highlight2: '#3CD0F5',
   background: '#1C222E',
   text: '#FFF',
+  error: '#B3261E',
+  errorContainer: '#F8EAE9',
 };
 
 export const fontSizes = {

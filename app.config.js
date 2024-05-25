@@ -1,58 +1,66 @@
 import 'dotenv/config';
 
-const appVersion = '1.0.13';
-const versionCode = 13;
+const appVersion = '1.0.16';
+const versionCode = 16;
 const projectId = 'ad714b42-ee9b-4763-b2ce-23fcbd430692';
 
 export default {
-  "expo": {
-    "name": "Gradeness",
-    "slug": "gradeness",
-    "version": appVersion,
-    "orientation": "portrait",
-    "icon": "./assets/icon.jpg",
-    "userInterfaceStyle": "automatic",
-    "plugins": [
-      "expo-font"
+  expo: {
+    name: 'Gradeness',
+    slug: 'gradeness',
+    version: appVersion,
+    orientation: 'portrait',
+    icon: './assets/icon.jpg',
+    userInterfaceStyle: 'automatic',
+    scheme: 'gradeness',
+    plugins: [
+      'expo-font',
+      [
+        'expo-notifications',
+        {
+          icon: './assets/icon.jpg',
+        },
+      ],
     ],
-    "splash": {
-      "image": "./assets/splash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#1C222E",
+    splash: {
+      image: './assets/splash.png',
+      resizeMode: 'contain',
+      backgroundColor: '#1C222E',
     },
-    "updates": {
-      "url": `https://u.expo.dev/${projectId}`,
+    updates: {
+      url: `https://u.expo.dev/${projectId}`,
     },
     runtimeVersion: {
       policy: 'appVersion',
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
-    "ios": {
-      "supportsTablet": true,
-      "bundleIdentifier": "com.drakeywakey.gradeness",
-      "userInterfaceStyle": "automatic",
-      "privacyManifests": {
-        "NSPrivacyAccessedAPITypes": [
+    assetBundlePatterns: ['**/*'],
+    ios: {
+      supportsTablet: true,
+      bundleIdentifier: 'com.drakeywakey.gradeness',
+      userInterfaceStyle: 'automatic',
+      privacyManifests: {
+        NSPrivacyAccessedAPITypes: [
           {
-            "NSPrivacyAccessedAPIType": "NSPrivacyAccessedAPICategoryFileTimestamp",
-            "NSPrivacyAccessedAPITypeReasons": ["DDA9.1"]
+            NSPrivacyAccessedAPIType:
+              'NSPrivacyAccessedAPICategoryFileTimestamp',
+            NSPrivacyAccessedAPITypeReasons: ['DDA9.1'],
           },
           {
-            "NSPrivacyAccessedAPIType": "NSPrivacyAccessedAPICategoryDiskSpace",
-            "NSPrivacyAccessedAPITypeReasons": ["85F4.1"]
+            NSPrivacyAccessedAPIType: 'NSPrivacyAccessedAPICategoryDiskSpace',
+            NSPrivacyAccessedAPITypeReasons: ['85F4.1'],
           },
           {
-            "NSPrivacyAccessedAPIType": "NSPrivacyAccessedAPICategorySystemBootTime",
-            "NSPrivacyAccessedAPITypeReasons": ["35F9.1"]
+            NSPrivacyAccessedAPIType:
+              'NSPrivacyAccessedAPICategorySystemBootTime',
+            NSPrivacyAccessedAPITypeReasons: ['35F9.1'],
           },
           {
-            "NSPrivacyAccessedAPIType": "NSPrivacyAccessedAPICategoryUserDefaults",
-            "NSPrivacyAccessedAPITypeReasons": ["CA92.1"]
+            NSPrivacyAccessedAPIType:
+              'NSPrivacyAccessedAPICategoryUserDefaults',
+            NSPrivacyAccessedAPITypeReasons: ['CA92.1'],
           },
-        ]
-      }
+        ],
+      },
     },
     android: {
       adaptiveIcon: {
@@ -62,6 +70,7 @@ export default {
       package: 'com.drakeywakey.gradeness',
       userInterfaceStyle: 'automatic',
       versionCode,
+      googleServicesFile: process.env.GOOGLE_SERVICES_JSON,
     },
     web: {
       favicon: './assets/favicon.png',
