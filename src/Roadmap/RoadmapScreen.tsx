@@ -25,7 +25,6 @@ const roadmapGradeLevels = GradeLevels;
 type Props = NativeStackScreenProps<RoadmapStackParamList, 'Roadmap'>;
 export const RoadmapScreen = ({ navigation }: Props) => {
   const { user } = useAuthentication();
-  const [toastHidden, setToastHidden] = useState(false);
   const db = getFirestore();
 
   const { setDrawerOpen } = useContext(RoadmapDrawerContext);
@@ -85,7 +84,7 @@ export const RoadmapScreen = ({ navigation }: Props) => {
           <View
             style={{
               display: 'flex',
-              margin: 16,
+              margin: 12,
               height: '88%',
               justifyContent: 'space-between',
             }}>
@@ -149,24 +148,18 @@ export const RoadmapScreen = ({ navigation }: Props) => {
       style={{ height: '100%' }}
       colors={[Colors.background, '#2a354c']}>
       <DeleteAccountDialog />
-      <View style={{ marginHorizontal: 16, marginVertical: windowHeight / 50 }}>
+      <View style={{ marginHorizontal: 16, marginBottom: 200 }}>
         <StatusBar backgroundColor={Colors.background} style="light" />
         <IconButton
           style={{
-            marginTop: windowHeight / 10,
+            marginTop: windowHeight / 15,
             marginBottom: 16,
-            marginLeft: -12,
+            marginLeft: -8,
           }}
           iconColor={Colors.text}
           onPress={() => setDrawerOpen(true)}
           icon="menu"
         />
-        <Text size="l">Welcome</Text>
-        <Text style={{ marginTop: 24 }}>
-          Gradeness is designed to simplify the high school process by providing
-          a roadmap of time sensitive activities to prepare you for your future
-          and a place to capture your accomplishments.
-        </Text>
         <View>
           <FlatList
             data={roadmapGradeLevels}
@@ -174,7 +167,18 @@ export const RoadmapScreen = ({ navigation }: Props) => {
               <RoadmapCard {...{ year, name, objective }} />
             )}
             numColumns={2}
-            style={{ marginTop: 24, alignSelf: 'center' }}
+            style={{ alignSelf: 'center' }}
+            ListHeaderComponent={
+              <View style={{ marginHorizontal: 2 }}>
+                <Text size="l">Welcome</Text>
+                <Text style={{ marginTop: 24, marginBottom: 16 }}>
+                  Gradeness is designed to simplify the high school process by
+                  providing a roadmap of time sensitive activities to prepare
+                  you for your future and a place to capture your
+                  accomplishments.
+                </Text>
+              </View>
+            }
           />
         </View>
       </View>
