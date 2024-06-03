@@ -1,14 +1,6 @@
-import { IconButton } from 'react-native-paper';
-import {
-  KeyboardAvoidingView,
-  Platform,
-  ScrollView,
-  View,
-  Dimensions,
-} from 'react-native';
-import { Colors, GradeLevels } from '../Constants';
+import { useHeaderHeight } from '@react-navigation/elements';
 import { useFocusEffect } from '@react-navigation/native';
-import { useCallback, useEffect, useState } from 'react';
+import * as Clipboard from 'expo-clipboard';
 import {
   collection,
   doc,
@@ -18,15 +10,23 @@ import {
   setDoc,
   where,
 } from 'firebase/firestore';
-import { useAuthentication } from '../utils/hooks/useAuthentication';
-import { useHeaderHeight } from '@react-navigation/elements';
+import { useCallback, useEffect, useState } from 'react';
+import {
+  Dimensions,
+  KeyboardAvoidingView,
+  Platform,
+  ScrollView,
+  View,
+} from 'react-native';
+import { IconButton } from 'react-native-paper';
 import * as Progress from 'react-native-progress';
-import * as Clipboard from 'expo-clipboard';
 import Toast from 'react-native-toast-message';
+import { Colors, GradeLevels } from '../Constants';
+import { useAuthentication } from '../utils/hooks/useAuthentication';
 
 import { Text } from '../Typography';
-import { TextInput } from '../components/TextInput';
 import { Button } from '../components/Button';
+import { TextInput } from '../components/TextInput';
 
 export const AccomplishmentScreen = ({ navigation }) => {
   const db = getFirestore();
@@ -117,14 +117,10 @@ export const AccomplishmentScreen = ({ navigation }) => {
         marginVertical: Dimensions.get('window').height / 10,
       }}>
       {/* todo: add badges at top and make filtering happen! */}
-      <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
-        <View style={{ marginBottom: 32, marginLeft: 32 }}>
+      <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+        <View style={{ marginLeft: 16 }}>
           <Text size="l" style={{ marginBottom: 16 }}>
             Accomplishments
-          </Text>
-          <Text style={{ lineHeight: 24 }}>
-            Capture your accomplishments along the way so it’s much easier to
-            respond to college applications or create a resume.
           </Text>
         </View>
         <IconButton
@@ -154,6 +150,14 @@ export const AccomplishmentScreen = ({ navigation }) => {
             justifyContent: 'space-between',
             paddingBottom: 128,
           }}>
+          <View style={{ backgroundColor: Colors.background }}>
+            <Text
+              size="xs"
+              style={{ lineHeight: 24, margin: 16, marginBottom: 24 }}>
+              Capture your accomplishments along the way so it’s much easier to
+              respond to college applications or create a resume.
+            </Text>
+          </View>
           {loadingAccomplishment ? (
             <Progress.Circle
               size={40}
@@ -190,10 +194,10 @@ const AccomplishmentContent = ({
     <View
       key={gradeLevel.year}
       style={{
-        borderWidth: 0.5,
+        borderWidth: 0.25,
         borderColor: '#1D1B20',
         borderRadius: 8,
-        marginVertical: 32,
+        marginTop: 16,
         marginHorizontal: 16,
         padding: 8,
         paddingVertical: 16,
