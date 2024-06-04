@@ -173,7 +173,7 @@ export const RoadmapScreen = ({ navigation }: Props) => {
           style={{
             alignSelf: 'center',
             height: windowHeight,
-            marginBottom: 100,
+            marginBottom: 75,
           }}
           ListHeaderComponent={
             <View style={{ marginHorizontal: 2 }}>
