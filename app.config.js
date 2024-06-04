@@ -1,7 +1,7 @@
 import 'dotenv/config';
 
-const appVersion = '1.0.16';
-const versionCode = 16;
+const appVersion = '1.0.17';
+const versionCode = 17;
 const projectId = 'ad714b42-ee9b-4763-b2ce-23fcbd430692';
 
 export default {
