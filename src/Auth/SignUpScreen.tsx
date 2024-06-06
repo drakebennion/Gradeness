@@ -1,14 +1,15 @@
-import React, { useState } from 'react';
-import { Linking, StyleSheet, Text, View } from 'react-native';
 import {
-  getAuth,
   createUserWithEmailAndPassword,
+  getAuth,
   sendEmailVerification,
 } from 'firebase/auth';
+import React, { useState } from 'react';
+import { Linking, StyleSheet, Text, View } from 'react-native';
 import { fontSizes } from '../Constants';
 
-import { TextInput } from '../components/TextInput';
+import { AlertCard } from '../components/AlertCard';
 import { Button } from '../components/Button';
+import { TextInput } from '../components/TextInput';
 
 export default function SignUpScreen({ navigation }) {
   const auth = getAuth();
@@ -40,6 +41,16 @@ export default function SignUpScreen({ navigation }) {
 
   return (
     <View style={styles.container}>
+      {!!signUp.error && (
+        <View>
+          <AlertCard
+            alertType="error"
+            flavorText="SUS, looks like we hit a snag. Please try again, if the glitches
+            continue please hit up our support team, and reference the error below. Thanks for your patience."
+            errorText={signUp.error}
+          />
+        </View>
+      )}
       <Text
         style={{
           fontFamily: 'Roboto_400Regular',
@@ -48,14 +59,6 @@ export default function SignUpScreen({ navigation }) {
         }}>
         Sign Up
       </Text>
-
-      {!!signUp.error && (
-        <View>
-          <Text style={{ fontFamily: 'Roboto_400Regular' }}>
-            {signUp.error}
-          </Text>
-        </View>
-      )}
 
       <View>
         <TextInput
