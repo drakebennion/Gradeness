@@ -1,13 +1,14 @@
-import React, { useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
 import {
   getAuth,
   sendEmailVerification,
   signInWithEmailAndPassword,
 } from 'firebase/auth';
+import React, { useState } from 'react';
+import { StyleSheet, Text, View } from 'react-native';
 import { fontSizes } from '../Constants';
 import { TextInput } from '../components/TextInput';
 
+import { AlertCard } from '../components/AlertCard';
 import { Button } from '../components/Button';
 
 export default function SignInScreen({ navigation }) {
@@ -42,6 +43,14 @@ export default function SignInScreen({ navigation }) {
 
   return (
     <View style={styles.container}>
+      {!!signIn.error && (
+        <AlertCard
+          alertType="error"
+          flavorText="SUS, looks like we hit a snag. Please try again, if the glitches
+            continue please hit up our support team, and reference the error below. Thanks for your patience. "
+          errorText={signIn.error}
+        />
+      )}
       <Text
         style={{
           fontFamily: 'Roboto_400Regular',
@@ -50,14 +59,6 @@ export default function SignInScreen({ navigation }) {
         }}>
         Sign In
       </Text>
-
-      {!!signIn.error && (
-        <View>
-          <Text style={{ fontFamily: 'Roboto_400Regular' }}>
-            {signIn.error}
-          </Text>
-        </View>
-      )}
 
       <View>
         <TextInput
