@@ -48,7 +48,7 @@ function RoadmapTabs() {
       })}>
       {/* <Tab.Screen name="Home" component={Home} /> */}
       <Tab.Screen name="Roadmap" component={RoadmapScreen} />
-      <Tab.Screen name="Accomplishment" component={AccomplishmentScreen} />
+      <Tab.Screen name="Accomplishments" component={AccomplishmentScreen} />
       {/* <Tab.Screen name="Goals" component={Goals} /> */}
     </Tab.Navigator>
   );

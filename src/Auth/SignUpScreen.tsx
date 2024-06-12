@@ -91,7 +91,7 @@ export default function SignUpScreen({ navigation }) {
             letterSpacing: 0.25,
             marginBottom: 16,
           }}>
-          By signing up you agree to the
+          By signing up you agree to the{' '}
           <Text
             onPress={() =>
               Linking.openURL('https://www.gradeness.app/privacy-policy')
@@ -104,7 +104,7 @@ export default function SignUpScreen({ navigation }) {
           Sign up
         </Button>
         <Text style={{ marginTop: 24, alignSelf: 'center' }}>
-          Already have an account?
+          Already have an account?{' '}
           <Text
             onPress={() => navigation.navigate('Sign In')}
             style={{ textDecorationLine: 'underline' }}>

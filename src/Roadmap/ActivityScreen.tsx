@@ -330,7 +330,11 @@ export const ActivityScreen = ({ navigation, route }: Props) => {
             </Button>
 
             <View style={{ marginBottom: 24 }}>
-              <Text color="background" style={{ marginTop: 16 }}>
+              <Text
+                color="background"
+                weight="medium"
+                size="xs"
+                style={{ marginTop: 16 }}>
                 Capture your accomplishments
               </Text>
               <TextInput
