@@ -3,7 +3,11 @@ import AuthStack from './authStack';
 import UserStack from './userStack';
 
 export default function RootNavigation() {
-  const { user } = useAuthentication();
+  const { user, isOwner } = useAuthentication();
 
-  return user ? <UserStack /> : <AuthStack />;
+  if (!user) {
+    return <AuthStack />;
+  }
+
+  return isOwner ? <UserStack /> : <UserStack />;
 }
