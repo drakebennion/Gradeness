@@ -10,14 +10,15 @@ import Toast, { BaseToast } from 'react-native-toast-message';
 import { AccomplishmentScreen } from '../Accomplishment/AccomplishmentScreen';
 import { Colors, fontSizes } from '../Constants';
 import { RoadmapDialogContext, RoadmapDrawerContext } from '../Contexts';
+import { DashboardScreen } from '../Owner/DashboardScreen';
 import { ActivityScreen } from '../Roadmap/ActivityScreen';
 import { CreateUpdateActivityScreen } from '../Roadmap/CreateUpdateActivityScreen';
 import { DrawerContent } from '../Roadmap/DrawerContent';
 import { GradeLevelScreen } from '../Roadmap/GradeLevelScreen';
 import { RoadmapScreen } from '../Roadmap/RoadmapScreen';
-import { type RoadmapStackParamList } from './userStackParams';
+import { useAuthentication } from '../utils/hooks/useAuthentication';
 
-const Stack = createNativeStackNavigator<RoadmapStackParamList>();
+const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
 function RoadmapTabs() {
@@ -80,6 +81,7 @@ const toastConfig = {
 export default function UserStack() {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
+  const { isOwner } = useAuthentication();
 
   const config = {
     screens: {
@@ -126,17 +128,29 @@ export default function UserStack() {
           hideStatusBarOnOpen={false}>
           <NavigationContainer theme={Theme} linking={linking}>
             <Stack.Navigator screenOptions={{ headerShown: false }}>
-              <Stack.Group>
-                <Stack.Screen name="RoadmapTabs" component={RoadmapTabs} />
-                <Stack.Screen name="GradeLevel" component={GradeLevelScreen} />
-                <Stack.Screen name="Activity" component={ActivityScreen} />
-              </Stack.Group>
-              <Stack.Group screenOptions={{ presentation: 'modal' }}>
+              {isOwner ? (
                 <Stack.Screen
-                  name="CreateUpdateActivity"
-                  component={CreateUpdateActivityScreen}
+                  name="OwnerDashboard"
+                  component={DashboardScreen}
                 />
-              </Stack.Group>
+              ) : (
+                <>
+                  <Stack.Group>
+                    <Stack.Screen name="RoadmapTabs" component={RoadmapTabs} />
+                    <Stack.Screen
+                      name="GradeLevel"
+                      component={GradeLevelScreen}
+                    />
+                    <Stack.Screen name="Activity" component={ActivityScreen} />
+                  </Stack.Group>
+                  <Stack.Group screenOptions={{ presentation: 'modal' }}>
+                    <Stack.Screen
+                      name="CreateUpdateActivity"
+                      component={CreateUpdateActivityScreen}
+                    />
+                  </Stack.Group>
+                </>
+              )}
             </Stack.Navigator>
           </NavigationContainer>
         </Drawer>

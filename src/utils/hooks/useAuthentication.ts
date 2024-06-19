@@ -14,11 +14,14 @@ export function useAuthentication() {
       auth,
       async user => {
         if (user) {
-          // todo: handle errors here
-          const userDetails = await getDoc(doc(db, 'userDetails', user.uid));
-          // console.log(userDetails.data().accountType);
+          const userDetails = await getDoc(
+            doc(db, 'userDetails', user.uid),
+          ).catch(() =>
+            console.log('something went wrong fetching user details'),
+          );
 
           if (
+            userDetails &&
             userDetails.exists() &&
             userDetails.data().accountType === 'owner'
           ) {
