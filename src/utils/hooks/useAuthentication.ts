@@ -1,32 +1,46 @@
 import { getAuth, onAuthStateChanged, type User } from 'firebase/auth';
-import React from 'react';
+import { doc, getDoc, getFirestore } from 'firebase/firestore';
+import React, { useState } from 'react';
 
 const auth = getAuth();
 
 export function useAuthentication() {
-  const [user, setUser] = React.useState<User>();
+  const [user, setUser] = useState<User>();
+  const [isOwner, setIsOwner] = useState(false);
+  const db = getFirestore();
 
   React.useEffect(() => {
-    const unsubscribeFromAuthStatusChanged = onAuthStateChanged(auth, user => {
-      if (user) {
-        // User is signed in, see docs for a list of available properties
-        // https://firebase.google.com/docs/reference/js/firebase.User
+    const unsubscribeFromAuthStatusChanged = onAuthStateChanged(
+      auth,
+      async user => {
+        if (user) {
+          const userDetails = await getDoc(
+            doc(db, 'userDetails', user.uid),
+          ).catch(() =>
+            console.log('something went wrong fetching user details'),
+          );
 
-        // todo: check if user has verified email
-        // if they do not, AND their account was created more than 3 days ago, set their user to undefined
-        // better pop a toast to say they need to verify their email
+          if (
+            userDetails &&
+            userDetails.exists() &&
+            userDetails.data().accountType === 'owner'
+          ) {
+            setIsOwner(true);
+          }
 
-        setUser(user);
-      } else {
-        // User is signed out
-        setUser(undefined);
-      }
-    });
+          setUser(user);
+        } else {
+          // User is signed out
+          setUser(undefined);
+        }
+      },
+    );
 
     return unsubscribeFromAuthStatusChanged;
   }, []);
 
   return {
     user,
+    isOwner,
   };
 }
