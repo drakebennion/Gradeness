@@ -36,8 +36,10 @@ export const AlertCard = (props: IAlertCardProps) => {
           style={{
             ...styles.container,
           }}>
-          <Icon size={24} source={alertType[props.alertType].icon} />
-          <View style={{ gap: 8 }}>
+          <View style={{ marginRight: 8 }}>
+            <Icon size={24} source={alertType[props.alertType].icon} />
+          </View>
+          <View style={{ gap: 8, marginRight: 16, paddingRight: 8 }}>
             <Text>{props.flavorText}</Text>
             <Text>{props.errorText}</Text>
           </View>
@@ -52,6 +54,5 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'flex-start',
-    gap: 8,
   },
 });
