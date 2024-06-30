@@ -242,6 +242,16 @@ export const ActivityScreen = ({ navigation, route }: Props) => {
                   {getGradeLevelNameForYear(activity.year)}
                 </Text>
               </View>
+              <View
+                style={{
+                  backgroundColor: Colors.text,
+                  padding: 8,
+                  borderRadius: 8,
+                  margin: 8,
+                  alignSelf: 'flex-end',
+                }}>
+                <Text color="background">{activity.tags[0]}</Text>
+              </View>
             </ImageBackground>
           </View>
           <View style={{ paddingHorizontal: 24, marginVertical: 16 }}>

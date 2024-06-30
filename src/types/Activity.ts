@@ -28,4 +28,5 @@ export interface Activity {
         items: string[];
       }
     | string;
+  tags?: string[];
 }
